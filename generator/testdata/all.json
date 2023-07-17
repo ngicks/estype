@@ -1,0 +1,221 @@
+{
+  "all": {
+    "mappings": {
+      "dynamic": "strict",
+      "properties": {
+        "agg": {
+          "type": "aggregate_metric_double",
+          "metrics": ["min", "max", "sum", "value_count"],
+          "default_metric": "max"
+        },
+        "alias": {
+          "type": "alias",
+          "path": "blob"
+        },
+        "blob": {
+          "type": "binary",
+          "doc_values": false,
+          "store": false
+        },
+        "bool": {
+          "type": "boolean",
+          "doc_values": true,
+          "index": true,
+          "null_value": null,
+          "store": false,
+          "meta": {}
+        },
+        "comp": {
+          "type": "completion",
+          "analyzer": "simple",
+          "search_analyzer": "simple",
+          "preserve_separators": true,
+          "preserve_position_increments": true,
+          "max_input_length": 255
+        },
+        "date": {
+          "type": "date",
+          "doc_values": true,
+          "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis",
+          "locale": "ja-jp",
+          "ignore_malformed": false,
+          "index": true,
+          "null_value": null,
+          "store": false,
+          "meta": {
+            "metric_type": "gauge"
+          }
+        },
+        "dateNano": {
+          "type": "date",
+          "doc_values": true,
+          "format": "strict_date_optional_time_nanos||epoch_second",
+          "locale": "ja-jp",
+          "ignore_malformed": false,
+          "index": true,
+          "null_value": null,
+          "store": false,
+          "meta": {
+            "metric_type": "gauge"
+          }
+        },
+        "dense_vector": {
+          "type": "dense_vector",
+          "dims": 3,
+          "index": true,
+          "similarity": "l2_norm",
+          "index_options": {
+            "type": "hnsw",
+            "m": 16,
+            "ef_construction": 100
+          }
+        },
+        "flattened": {
+          "type": "flattened",
+          "depth_limit": 20,
+          "doc_values": true,
+          "eager_global_ordinals": false,
+          "ignore_above": 255,
+          "index": true,
+          "index_options": "freqs",
+          "null_value": null,
+          "similarity": "BM25",
+          "split_queries_on_whitespace": false
+        },
+        "geopoint": {
+          "type": "geo_point",
+          "ignore_malformed": false,
+          "ignore_z_value": true,
+          "index": true,
+          "null_value": null
+        },
+        "geoshape": {
+          "type": "geo_shape"
+        },
+        "histogram": {
+          "type": "histogram"
+        },
+        "ip_addr": {
+          "type": "ip"
+        },
+        "join": {
+          "type": "join",
+          "relations": {
+            "question": "answer"
+          }
+        },
+        "kwd": {
+          "type": "keyword"
+        },
+        "constant_kwd": {
+          "type": "constant_keyword",
+          "value": "debug"
+        },
+        "wildcard": {
+          "type": "wildcard"
+        },
+        "nested": {
+          "properties": {
+            "age": { "type": "integer" },
+            "name": {
+              "properties": {
+                "first": { "type": "text" },
+                "last": { "type": "text" }
+              }
+            }
+          }
+        },
+        "long": {
+          "type": "long"
+        },
+        "integer": {
+          "type": "integer"
+        },
+        "short": {
+          "type": "short"
+        },
+        "byte": {
+          "type": "byte"
+        },
+        "double": {
+          "type": "double"
+        },
+        "float": {
+          "type": "float"
+        },
+        "half_float": {
+          "type": "half_float"
+        },
+        "scaled_float": {
+          "type": "scaled_float",
+          "scaling_factor": 10
+        },
+        "unsigned_long": {
+          "type": "unsigned_long"
+        },
+        "object": {
+          "properties": {
+            "age": { "type": "integer" },
+            "name": {
+              "properties": {
+                "first": { "type": "text" },
+                "last": { "type": "text" }
+              }
+            }
+          }
+        },
+        "query": {
+          "type": "percolator"
+        },
+        "point": {
+          "type": "point"
+        },
+        "integer_range": {
+          "type": "integer_range"
+        },
+        "float_range": {
+          "type": "float_range"
+        },
+        "long_range": {
+          "type": "long_range"
+        },
+        "double_range": {
+          "type": "double_range"
+        },
+        "date_range": {
+          "type": "date_range"
+        },
+        "ip_range": {
+          "type": "ip_range"
+        },
+        "rank_feature": {
+          "type": "rank_feature"
+        },
+        "rank_features": {
+          "type": "rank_features"
+        },
+        "search_as_you_type": {
+          "type": "search_as_you_type"
+        },
+        "shape": {
+          "type": "shape"
+        },
+        "text": {
+          "type": "text"
+        },
+        "text_w_token_count": {
+          "type": "text",
+          "fields": {
+            "length": {
+              "type": "token_count",
+              "analyzer": "standard"
+            }
+          }
+        },
+        "version": {
+          "type": "version"
+        }
+      }
+    }
+  }
+}
