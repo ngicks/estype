@@ -1,0 +1,261 @@
+{
+  "date_optional_time": [
+    "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
+    "yy-M-d'T'HH:mm:ss.SSSZ",
+    "yyyy-MM-dd",
+    "yy-M-d"
+  ],
+  "strict_date_optional_time": [
+    "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
+    "yyyy-MM-dd"
+  ],
+  "strict_date_optional_time_nanos": [
+    "yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSSZ", // this is documented as `yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ` but it should be 9 digit.
+    "yyyy-MM-dd"
+  ],
+  "basic_date": [
+    "yyyyMMdd",
+    // "yyMd", // This does not parse correctly since Go got misled as it as if it sees month like 72 when it is actually Sep 2nd.
+    "yyMMdd"
+  ],
+  "basic_date_time": [
+    "yyyyMMdd'T'HHmmss.SSSZ",
+    // "yyMd'T'HHmmss.SSSZ",
+    "yyMMdd'T'HHmmss.SSSZ"
+  ],
+  "basic_date_time_no_millis": [
+    "yyyyMMdd'T'HHmmssZ",
+    // "yyMd'T'HHmmssZ",
+    "yyMMdd'T'HHmmssZ"
+  ],
+  "basic_ordinal_date": [
+    "yyyyDDD",
+    "yyDDD"
+  ],
+  "basic_ordinal_date_time": [
+    "yyyyDDD'T'HHmmss.SSSZ",
+    "yyDDD'T'HHmmss.SSSZ"
+  ],
+  "basic_ordinal_date_time_no_millis": [
+    "yyyyDDD'T'HHmmssZ",
+    "yyDDD'T'HHmmssZ"
+  ],
+  "basic_time": [
+    "HHmmss.SSSZ"
+  ],
+  "basic_time_no_millis": [
+    "HHmmssZ"
+  ],
+  "basic_t_time": [
+    "'T'HHmmss.SSSZ"
+  ],
+  "basic_t_time_no_millis": [
+    "'T'HHmmssZ"
+  ],
+  // "basic_week_date": [
+  // 	"xxxx'W'wwe",
+  // ],
+  // "strict_basic_week_date": [
+  // 	"xxxx'W'wwe",
+  // ],
+  // "basic_week_date_time": [
+  // 	"xxxx'W'wwe'T'HHmmss.SSSZ",
+  // ],
+  // "strict_basic_week_date_time": [
+  // 	"xxxx'W'wwe'T'HHmmss.SSSZ",
+  // ],
+  // "basic_week_date_time_no_millis": [
+  // 	"xxxx'W'wwe'T'HHmmssZ",
+  // ],
+  // "strict_basic_week_date_time_no_millis": [
+  // 	"xxxx'W'wwe'T'HHmmssZ",
+  // ],
+  "date": [
+    "yyyy-MM-dd",
+    "yy-M-d"
+  ],
+  "strict_date": [
+    "yyyy-MM-dd"
+  ],
+  "date_hour": [
+    "yyyy-MM-dd'T'HH",
+    "yy-M-d'T'HH"
+  ],
+  "strict_date_hour": [
+    "yyyy-MM-dd'T'HH"
+  ],
+  "date_hour_minute": [
+    "yyyy-MM-dd'T'HH:mm",
+    "yy-M-d'T'HH:mm"
+  ],
+  "strict_date_hour_minute": [
+    "yyyy-MM-dd'T'HH:mm"
+  ],
+  "date_hour_minute_second": [
+    "yyyy-MM-dd'T'HH:mm:ss",
+    "yy-M-d'T'HH:mm:ss"
+  ],
+  "strict_date_hour_minute_second": [
+    "yyyy-MM-dd'T'HH:mm:ss"
+  ],
+  "date_hour_minute_second_fraction": [
+    "yyyy-MM-dd'T'HH:mm:ss.SSS",
+    "yy-M-d'T'HH:mm:ss.SSS"
+  ],
+  "strict_date_hour_minute_second_fraction": [
+    "yyyy-MM-dd'T'HH:mm:ss.SSS"
+  ],
+  "date_hour_minute_second_millis": [
+    "yyyy-MM-dd'T'HH:mm:ss.SSS",
+    "yy-M-d'T'HH:mm:ss.SSS"
+  ],
+  "strict_date_hour_minute_second_millis": [
+    "yyyy-MM-dd'T'HH:mm:ss.SSS"
+  ],
+  "date_time": [
+    "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
+    "yy-M-d'T'HH:mm:ss.SSSZ"
+  ],
+  "strict_date_time": [
+    "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+  ],
+  "date_time_no_millis": [
+    "yyyy-MM-dd'T'HH:mm:ssZ",
+    "yy-M-d'T'HH:mm:ssZ"
+  ],
+  "strict_date_time_no_millis": [
+    "yyyy-MM-dd'T'HH:mm:ssZ"
+  ],
+  "hour": [
+    "HH"
+  ],
+  "strict_hour": [
+    "HH"
+  ],
+  "hour_minute": [
+    "HH:mm"
+  ],
+  "strict_hour_minute": [
+    "HH:mm"
+  ],
+  "hour_minute_second": [
+    "HH:mm:ss"
+  ],
+  "strict_hour_minute_second": [
+    "HH:mm:ss"
+  ],
+  "hour_minute_second_fraction": [
+    "HH:mm:ss.SSS"
+  ],
+  "strict_hour_minute_second_fraction": [
+    "HH:mm:ss.SSS"
+  ],
+  "hour_minute_second_millis": [
+    "HH:mm:ss.SSS"
+  ],
+  "strict_hour_minute_second_millis": [
+    "HH:mm:ss.SSS"
+  ],
+  "ordinal_date": [
+    "yyyy-DDD",
+    "yy-DDD"
+  ],
+  "strict_ordinal_date": [
+    "yyyy-DDD"
+  ],
+  "ordinal_date_time": [
+    "yyyy-DDD'T'HH:mm:ss.SSSZ",
+    "yy-DDD'T'HH:mm:ss.SSSZ"
+  ],
+  "strict_ordinal_date_time": [
+    "yyyy-DDD'T'HH:mm:ss.SSSZ"
+  ],
+  "ordinal_date_time_no_millis": [
+    "yyyy-DDD'T'HH:mm:ssZ",
+    "yy-DDD'T'HH:mm:ssZ"
+  ],
+  "strict_ordinal_date_time_no_millis": [
+    "yyyy-DDD'T'HH:mm:ssZ"
+  ],
+  "time": [
+    "HH:mm:ss.SSSZ"
+  ],
+  "strict_time": [
+    "HH:mm:ss.SSSZ"
+  ],
+  "time_no_millis": [
+    "HH:mm:ssZ"
+  ],
+  "strict_time_no_millis": [
+    "HH:mm:ssZ"
+  ],
+  "t_time": [
+    "'T'HH:mm:ss.SSSZ"
+  ],
+  "strict_t_time": [
+    "'T'HH:mm:ss.SSSZ"
+  ],
+  "t_time_no_millis": [
+    "'T'HH:mm:ssZ"
+  ],
+  "strict_t_time_no_millis": [
+    "'T'HH:mm:ssZ"
+  ],
+  // "week_date": [
+  // 	"xxxx-'W'ww-e",
+  // ],
+  // "strict_week_date": [
+  // 	"xxxx-'W'ww-e",
+  // ],
+  // "week_date_time": [
+  // 	"xxxx-'W'ww-e'T'HH:mm:ss.SSSZ",
+  // ],
+  // "strict_week_date_time": [
+  // 	"xxxx-'W'ww-e'T'HH:mm:ss.SSSZ",
+  // ],
+  // "week_date_time_no_millis": [
+  // 	"xxxx-'W'ww-e'T'HH:mm:ssZ",
+  // ],
+  // "strict_week_date_time_no_millis": [
+  // 	"xxxx-'W'ww-e'T'HH:mm:ssZ",
+  // ],
+  // "weekyear": [
+  // 	"xxxx",
+  // ],
+  // "strict_weekyear": [
+  // 	"xxxx",
+  // ],
+  // "weekyear_week": [
+  // 	"xxxx-'W'ww",
+  // ],
+  // "strict_weekyear_week": [
+  // 	"xxxx-'W'ww",
+  // ],
+  // "weekyear_week_day": [
+  // 	"xxxx-'W'ww-e",
+  // ],
+  // "strict_weekyear_week_day": [
+  // 	"xxxx-'W'ww-e",
+  // ],
+  "year": [
+    "yyyy",
+    "yy"
+  ],
+  "strict_year": [
+    "yyyy"
+  ],
+  "year_month": [
+    "yyyy-MM",
+    "yy-M"
+  ],
+  "strict_year_month": [
+    "yyyy-MM"
+  ],
+  "year_month_day": [
+    "yyyy-MM-dd",
+    "yy-M-d"
+  ],
+  "strict_year_month_day": [
+    "yyyy-MM-dd"
+  ]
+}
