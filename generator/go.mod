@@ -4,9 +4,9 @@ go 1.20
 
 require (
 	github.com/dave/jennifer v1.6.1
-	github.com/ngicks/estype v0.0.0-20230717095124-1b800ce19173
-	github.com/ngicks/estype/helper v0.0.0-20230717175455-bdfe9d5598bf
-	github.com/ngicks/estype/spec v0.0.0-20230717175455-bdfe9d5598bf
+	github.com/ngicks/estype/fielddatatype v0.0.1-alpha0
+	github.com/ngicks/estype/helper v0.0.1-alpha0
+	github.com/ngicks/estype/spec v0.0.1-alpha0
 	github.com/ngicks/go-iterator v0.0.0-20230524101302-db8d55117ed8
 	github.com/ngicks/und v0.0.0-20230716183253-8b7839f325d7
 )
