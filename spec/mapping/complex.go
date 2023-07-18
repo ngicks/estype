@@ -35,7 +35,7 @@ type FlattenedProperty struct {
 	NullValue                undefinedable.Undefinedable[string]       `json:"null_value"`
 	Similarity               undefinedable.Undefinedable[string]       `json:"similarity"`
 	SplitQueriesOnWhitespace undefinedable.Undefinedable[bool]         `json:"split_queries_on_whitespace"`
-	Type                     EsType
+	Type                     EsType                                    `json:"type"`
 }
 
 type NestedProperty struct {
