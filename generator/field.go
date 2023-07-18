@@ -48,7 +48,7 @@ var fieldTypeTable = map[mapping.EsType]TypeId{
 	// FIXME: add special handling for this.
 	// Alias type needs knowledge about referenced field...
 	// Do nothing here?
-	mapping.FieldAlias:      {Id: "any"},
+	mapping.FieldAlias:      {Id: "any", NonWritable: true},
 	mapping.Binary:          {Id: "[]byte"},
 	mapping.Completion:      {Id: "string"},
 	mapping.DenseVector:     {Id: "[]float64"}, // TODO: read dim and use array instead of a slice?
@@ -67,7 +67,9 @@ var fieldTypeTable = map[mapping.EsType]TypeId{
 	mapping.TokenCount:      {Id: "int64"},
 	mapping.Version:         {Id: "string"}, // should this be sem ver package?
 	mapping.Keyword:         {Id: "string"},
-	mapping.ConstantKeyword: {Id: "string"}, // The field can be stored if and only if value is same as specified in param.
+	// The field can be stored if and only if value is same as specified in param.
+	// Should this field also be considered non writable?
+	mapping.ConstantKeyword: {Id: "string"},
 	mapping.Wildcard:        {Id: "string"},
 	mapping.Text:            {Id: "string"},
 	// https://www.elastic.co/guide/en/elasticsearch/reference/8.4/number.html

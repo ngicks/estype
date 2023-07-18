@@ -29,9 +29,10 @@ func (o typeIdRenderOption) IsSingle() bool {
 }
 
 type TypeId struct {
-	Qualifier string
-	TypeParam []TypeId
-	Id        string
+	Qualifier   string
+	TypeParam   []TypeId
+	Id          string
+	NonWritable bool
 }
 
 func (t TypeId) Render(option TypeIdRenderOption) *jen.Statement {

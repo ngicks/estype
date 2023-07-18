@@ -127,13 +127,17 @@ func ObjectLike(ctx *GeneratorContext, dryRun bool) (plain, raw TypeId) {
 			}
 
 			fieldTypeId = opt.Mapper(fieldTypeId)
+			var omitemptyOpt string
+			if fieldTypeId.NonWritable {
+				omitemptyOpt = ",omitempty"
+			}
 			fields = append(fields, structField{
 				Name:         pascalCase(propFieldName),
 				IsObjectLike: isObjectLike,
 				Opt:          opt.TypeIdRenderOption(nextCtx),
 				Stmt:         fieldTypeId.Render(opt.TypeIdRenderOption(nextCtx)),
 				TypeId:       fieldTypeId,
-				Tag:          map[string]string{"json": propFieldName},
+				Tag:          map[string]string{"json": propFieldName + omitemptyOpt},
 			})
 		}
 
