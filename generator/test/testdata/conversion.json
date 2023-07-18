@@ -1,9 +1,32 @@
 {
-  "dynamic": {
+  "conversion": {
     "mappings": {
       "dynamic": "strict",
       "properties": {
-        "nested_strict": {
+        "single_required": {
+          "properties": {
+            "age": { "type": "integer" },
+            "name": {
+              "properties": {
+                "first": { "type": "text" },
+                "last": { "type": "text" }
+              }
+            }
+          }
+        },
+        "single_optional": {
+          "properties": {
+            "age": { "type": "integer" },
+            "name": {
+              "properties": {
+                "first": { "type": "text" },
+                "last": { "type": "text" }
+              }
+            }
+          }
+        },
+        "multiple_required": {
+          "type": "nested",
           "dynamic": "strict",
           "properties": {
             "age": { "type": "integer" },
@@ -15,20 +38,9 @@
             }
           }
         },
-        "nested_runtime": {
-          "dynamic": "runtime",
-          "properties": {
-            "age": { "type": "integer" },
-            "name": {
-              "properties": {
-                "first": { "type": "text" },
-                "last": { "type": "text" }
-              }
-            }
-          }
-        },
-        "object_false": {
-          "dynamic": "false",
+        "multiple_optional": {
+          "type": "nested",
+          "dynamic": "strict",
           "properties": {
             "age": { "type": "integer" },
             "name": {

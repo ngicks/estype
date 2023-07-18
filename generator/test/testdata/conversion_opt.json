@@ -1,0 +1,24 @@
+{
+  "RootTypeName": "conversion",
+  "DefaultOption": {
+    "IsSingle": true
+  },
+  "MappingOption": {
+    "single_required": {
+      "IsSingle": true,
+      "IsOptional": false
+    },
+    "single_optional": {
+      "IsSingle": true,
+      "IsOptional": true
+    },
+    "multiple_required": {
+      "IsSingle": false,
+      "IsOptional": false
+    },
+    "multiple_optional": {
+      "IsSingle": false,
+      "IsOptional": true
+    }
+  }
+}

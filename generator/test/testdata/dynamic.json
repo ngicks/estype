@@ -1,0 +1,59 @@
+{
+  "dynamic": {
+    "mappings": {
+      "dynamic": "strict",
+      "properties": {
+        "nested_inherit": {
+          "type": "nested",
+          "properties": {
+            "age": { "type": "integer" },
+            "name": {
+              "properties": {
+                "first": { "type": "text" },
+                "last": { "type": "text" }
+              }
+            }
+          }
+        },
+        "nested_strict": {
+          "type": "nested",
+          "dynamic": "strict",
+          "properties": {
+            "age": { "type": "integer" },
+            "name": {
+              "properties": {
+                "first": { "type": "text" },
+                "last": { "type": "text" }
+              }
+            }
+          }
+        },
+        "nested_runtime": {
+          "type": "nested",
+          "dynamic": "runtime",
+          "properties": {
+            "age": { "type": "integer" },
+            "name": {
+              "properties": {
+                "first": { "type": "text" },
+                "last": { "type": "text" }
+              }
+            }
+          }
+        },
+        "object_false": {
+          "dynamic": "false",
+          "properties": {
+            "age": { "type": "integer" },
+            "name": {
+              "properties": {
+                "first": { "type": "text" },
+                "last": { "type": "text" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
