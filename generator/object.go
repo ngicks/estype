@@ -53,8 +53,7 @@ func ObjectLike(ctx *GeneratorContext, dryRun bool) (plain, raw TypeId) {
 		panic(fmt.Errorf("unknown type: %T", ctx.localState.prop))
 	}
 
-	// Nested is not documented that it would inherit parent's dynamic if not explicitly set.
-	// For now, keep inheritance. See behavior on real Elasticsearch instances and decide.
+	// While the document is not saying that, nested also inherit dynamic prop from its parent.
 	switch dynamic.Or(ctx.localState.dynamic).Value() {
 	case mapping.Strict:
 		strict = true
