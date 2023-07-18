@@ -23,6 +23,7 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/ngicks/und/serde"
 	"github.com/ngicks/und/undefinedable"
 )
 
@@ -80,7 +81,7 @@ type Property struct {
 }
 
 func (p Property) MarshalJSON() ([]byte, error) {
-	return json.Marshal(p.Val)
+	return serde.Marshal(p.Val)
 }
 
 func (p *Property) UnmarshalJSON(data []byte) error {
