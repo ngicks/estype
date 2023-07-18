@@ -32,8 +32,13 @@ type GeneratorContext struct {
 }
 
 type globalState struct {
-	generatedTypes   map[string]mapping.Property // unused. future update may use this to dedup generated types.
-	bufPoolGenerated bool
+	generatedTypes           map[string]mapping.Property // unused. future update may use this to dedup generated types.
+	bufPoolGenerated         bool
+	escapeValueGenerated     bool
+	escapeSliceGenerated     bool
+	mapToPlainGenerated      bool
+	mapToRawGenerated        bool
+	mapToRawPointerGenerated bool
 }
 
 type localState struct {
@@ -46,8 +51,7 @@ type localState struct {
 func (c *GeneratorContext) Gen() {
 	newCtx := *c
 	newCtx.globalState = &globalState{
-		generatedTypes:   make(map[string]mapping.Property),
-		bufPoolGenerated: false,
+		generatedTypes: make(map[string]mapping.Property),
 	}
 	newCtx.localState = localState{
 		fieldName: append(c.localState.fieldName, pascalCase(c.generatorOption.RootTypeName)),
