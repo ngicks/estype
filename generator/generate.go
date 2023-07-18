@@ -66,7 +66,7 @@ func (c *GeneratorContext) Gen() {
 		},
 		propOpt: PropertyOption{
 			TypeName: pascalCase(c.generatorOption.RootTypeName),
-			Child:    c.generatorOption.MappingOption,
+			Children: c.generatorOption.MappingOption,
 		},
 		dynamic: c.generatorOption.Mapping.Dynamic.Option,
 	}
@@ -98,7 +98,7 @@ func (c *GeneratorContext) next(
 		localState: localState{
 			fieldName: append(c.localState.fieldName, fieldName),
 			prop:      prop,
-			propOpt:   c.localState.propOpt.Child[fieldName],
+			propOpt:   c.localState.propOpt.Children[fieldName],
 			dynamic:   dynamic.Or(c.localState.dynamic),
 		},
 	}

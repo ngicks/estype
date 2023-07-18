@@ -28,7 +28,7 @@ type PropertyOption struct {
 	IsSingle                  option.Option[bool]
 	PreferStringBoolean       option.Option[bool]
 	PreferMarshalDateToNumber option.Option[bool]
-	Child                     MappingOption
+	Children                  MappingOption
 }
 
 func (o PropertyOption) GetTypeName(
