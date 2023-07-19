@@ -81,5 +81,5 @@ func printOption(opt generator.GeneratorOption) {
 		panic(err)
 	}
 
-	fmt.Println(string(bin))
+	fmt.Fprintln(os.Stderr, string(bin))
 }
