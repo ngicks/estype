@@ -4,12 +4,13 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"io"
 	"os"
 
 	"github.com/dave/jennifer/jen"
 	"github.com/ngicks/estype/generator"
+	"github.com/ngicks/estype/helper/eshelper"
 	"github.com/ngicks/estype/helper/util"
-	"github.com/ngicks/estype/spec/indices/indexstate"
 )
 
 var (
@@ -42,11 +43,14 @@ func main() {
 		panic(err)
 	}
 
-	var mappingIndex map[string]indexstate.IndexState
-	if err := json.NewDecoder(mappingFile).Decode(&mappingIndex); err != nil {
+	bin, err := io.ReadAll(mappingFile)
+	if err != nil {
 		panic(err)
 	}
-	generateOpt.Mapping = mappingIndex[generateOpt.RootTypeName].Mappings.Value()
+	generateOpt.Mapping, err = eshelper.GetMapping(bin)
+	if err != nil {
+		panic(err)
+	}
 
 	generateOpt.GenerateTypeName = generator.ChainFieldName
 

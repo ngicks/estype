@@ -3,6 +3,10 @@ github.com/dave/jennifer v1.6.1/go.mod h1:nXbxhEmQfOZhWml3D1cDK5M1FLnMSozpbFN/m3
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
+github.com/elastic/elastic-transport-go/v8 v8.3.0 h1:DJGxovyQLXGr62e9nDMPSxRyWION0Bh6d9eCFBriiHo=
+github.com/elastic/elastic-transport-go/v8 v8.3.0/go.mod h1:87Tcz8IVNe6rVSLdBux1o/PEItLtyabHU3naC7IoqKI=
+github.com/elastic/go-elasticsearch/v8 v8.8.2 h1:3ITzPlRNadzDnbLTnMRjrAN4j4G3LvFo5gCIWDPS6pY=
+github.com/elastic/go-elasticsearch/v8 v8.8.2/go.mod h1:GU1BJHO7WeamP7UhuElYwzzHtvf9SDmeVpSSy9+o6Qg=
 github.com/google/go-cmp v0.5.9 h1:O2Tfq5qg4qc4AmwVlvv0oLiVAGB7enBSJ2x2DqQFi38=
 github.com/google/gofuzz v1.0.0/go.mod h1:dBl0BpW6vV/+mYPU4Po3pmUjxk6FQPldtuIdl/M65Eg=
 github.com/json-iterator/go v1.1.12 h1:PV8peI4a0ysnczrg+LtxykD8LfKY9ML6u2jnxaEnrnM=
@@ -16,8 +20,10 @@ github.com/ngicks/estype/fielddatatype v0.0.1-alpha0 h1:QNVUkELDS9T4jOfJiuglxEpN
 github.com/ngicks/estype/fielddatatype v0.0.1-alpha0/go.mod h1:Lq3xpmmhiRDK03jJ7QrgBjCQNfvqtPYGa5JfvUng5fk=
 github.com/ngicks/estype/generator v0.0.1-alpha1 h1:NUwwtcLZc/tOlzDvIcJPTJq/ZzfWjyXv1dj9OA2BSqM=
 github.com/ngicks/estype/generator v0.0.1-alpha1/go.mod h1:723ftyUOxN21VBSA9EdKDiMQHKONuFCS3NQk0l6vomQ=
-github.com/ngicks/estype/helper v0.0.1-alpha0 h1:h/E/FcpYRjhGRCzZt93uVbErll47J2IvRIAm/aVV5V0=
-github.com/ngicks/estype/helper v0.0.1-alpha0/go.mod h1:xNRIVjpWZxAkPc0by+ru2UfnhJfNpThGMKIx/ZT43DI=
+github.com/ngicks/estype/helper v0.0.1-alpha1 h1:k2PpKLx57zDBaxusgvcA60tyrFkrIo6oa8wye60yWCo=
+github.com/ngicks/estype/helper v0.0.1-alpha1/go.mod h1:xNRIVjpWZxAkPc0by+ru2UfnhJfNpThGMKIx/ZT43DI=
+github.com/ngicks/estype/helper v0.0.1-alpha2 h1:e2zQWwG1TYyWQWENj462wizStJeS2Rm31R9sgxxyuj4=
+github.com/ngicks/estype/helper v0.0.1-alpha2/go.mod h1:xNRIVjpWZxAkPc0by+ru2UfnhJfNpThGMKIx/ZT43DI=
 github.com/ngicks/estype/spec v0.0.1-alpha1 h1:kqI8CBj1BTLXiQXDRRNPqe3npo60/uMrdzO/tCwdBuY=
 github.com/ngicks/estype/spec v0.0.1-alpha1/go.mod h1:aQYYorwpFaBJv1KC6AeQSpypuf06MezJpcaIS4ZUfto=
 github.com/ngicks/generic v0.0.0-20230320024227-32842ed7ed0f h1:faCGrsI60Uzwuo4ZTXvgWB9q5+M1pthIkq3U6PSG7F4=
