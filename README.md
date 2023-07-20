@@ -8,10 +8,66 @@
   such like a date string to a time.Time, or a geo point type that can be
   unmarshaled from every 6 variants of representations.
 
+## Usage
+
+```
+# ./genestype --help
+Usage of ./genestype:
+  -c string
+        path to config file.
+        see definition of github.com/ngicks/estype/generator.GeneratorOption.
+  -m string
+        path to mapping.json.
+        You can use one that can be fetched from '<index_name>/_mapping',
+        or one that you've sent when creating index.
+  -o string
+        [optional]
+        path to output generated code.
+        More than 2 distinct mappings should not be generated to the same directory
+        because it possibly creates helper functions / types depending on the config and the mapping.
+        defaults to stdout. (default "--")
+  -p string
+        package name of generated code.
+```
+
+see [./generator/test/testdata](./generator/test/testdata) for example mappings
+and options. see example of generated in [./generator/test](./generator/test)
+
+You can also use the `generator` module directly.
+
+```go
+var optionFile, mappingFile io.Reader
+var outputFile io.Writer
+
+var generateOpt generator.GeneratorOption
+if err := json.NewDecoder(optionFile).Decode(&generateOpt); err != nil {
+  panic(err)
+}
+
+bin, err := io.ReadAll(mappingFile)
+if err != nil {
+  panic(err)
+}
+generateOpt.Mapping, err = eshelper.GetMapping(bin)
+if err != nil {
+  panic(err)
+}
+
+generateOpt.GenerateTypeName = generator.ChainFieldName
+
+f := jen.NewFilePath(*packagePath)
+generateOpt.NewContext(f).Gen()
+
+if err := f.Render(outputFile); err != nil {
+  panic(err)
+}
+```
+
 ## Rationale
 
-The Elasticsearch is complex enough to confuse people when they are generating /
-consuming JSON documents it stores, needing a code generator and helper types.
+The Elasticsearch is complex enough to sometimes confuse people when they are
+trying to create / consume JSON documents it stores, needing a code generator
+and helper types.
 
 For an overview of the Elasticsearch, see
 [here](https://www.elastic.co/guide/en/elasticsearch/reference/8.4/elasticsearch-intro.html)
@@ -23,7 +79,7 @@ documents clients have stored, and provides great search functionality over
 them.
 
 While it can operate on schema-less way, it also allows users to set mapping on
-indices, through which you can define and optionally fixate data format of JSON
+indices, through which you can define and optionally fixate the shape of JSON
 documents partially or fully.
 
 Surprisingly, all fields of input JSON objects are allowed to be any of
@@ -41,7 +97,9 @@ Moreover, some of field data types need special handling.
   and
   [Date Nanoseconds](https://www.elastic.co/guide/en/elasticsearch/reference/8.4/date_nanos.html)
   vary their stringified data format on basis of corresponding `"format"` field
-  in mapping.
+  in mapping. If `"format"` is blank or includes `"epoch_millis"` or
+  `"epoch_second"` the field also accepts JSON number as milliseconds or seconds
+  since the epoch respectively.
 - [Geo Point](https://www.elastic.co/guide/en/elasticsearch/reference/8.4/geo-point.html#geo-point)
   and
   [Geo Shape](https://www.elastic.co/guide/en/elasticsearch/reference/8.4/geo-shape.html)
@@ -72,7 +130,7 @@ Conventional Go way is to use statically defined structures.
 
 Go has a native unmarshaling method to parse serialized JSON documents to
 structs. However unmarshaling multiple types of data source into a single Go
-type is not done automatically, needing efforts of user code.
+type is not done automatically. The user code must explicitly handle them.
 
 ## Helper types
 
@@ -89,20 +147,28 @@ into multiple formats.
   selected format, `{"lat":123,"lon":456}`
 - GeoShape accepts 2 possible formats as source. It marshal into GeoJSON format
   delegating behavior to `github.com/go-spatial/geom`.
-- The estime package is a set of functions that makes Go std time package
-  understand
-  [the DateTimeFormatter formats](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html).
-  - It flattens optional parts of the format into any possible patterns then
-    converts Java time tokens into Go equivalents.
-  - It drops support for number of tokens, for which Go has no counterparts,
-    including `G(era)`, `Q/q(quarter-of-year)`, `w(week-of-week-based-year)` and
-    `W(week-of-month)`.
-  - The code generator does this transformation.
+- The estime package is a collection of functions that helps the code generator
+  to parse
+  [the DateTimeFormatter formats](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html)
+  and generate time.Time-based types that understand all possible date format
+  defined in the mapping.
+  - `DateTimeFormatter` defines optional section tokens, `[` and `]`. The estime
+    package internally use the `optionalstring` sub package to break down
+    optional section to all possible strings. For example, `ab[c[d]]` into
+    `abcd`, `abc` and `ab`.
+  - Since Go defines its specific tokens for time layout. 2006 or 06 for year,
+    15 for hours and so on. The estime package converts Java time layout tokens
+    into Go std layout tokens if and only if Go has counterparts for them.
+    - It drops support for number of tokens including `G(era)`,
+      `Q/q(quarter-of-year)`, `w(week-of-week-based-year)` and
+      `W(week-of-month)`.
+  - With this package, the code generator generates time.Time-based types.
 
 ## The Code generator
 
-The code generator finally generates Go struct to generate / consume JSON
-documents which is stored in a (cluster of) Elasticsearch instance(s).
+The code generator finally generates Go struct for easier generation /
+consumption of JSON documents stored in a (cluster of) Elasticsearch
+instance(s).
 
 - It generates plain and raw types.
 - Raw types accept all possible field data.
