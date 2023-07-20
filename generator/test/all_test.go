@@ -9,6 +9,7 @@ import (
 	"github.com/go-spatial/geom"
 	"github.com/google/go-cmp/cmp"
 	"github.com/ngicks/estype/fielddatatype"
+	"github.com/ngicks/estype/fielddatatype/estime/builtin"
 	"github.com/stretchr/testify/require"
 )
 
@@ -95,15 +96,15 @@ var sampleAll = All{
 	ConstantKwd: "debug",
 	Date:        AllDateDate(sampleTime),
 	DateNano:    AllDateNanoDate(sampleTime),
-	DateRange: map[string]interface{}{
-		"gte": float64(12345),
-		"lte": float64(12350),
+	DateRange: fielddatatype.Range[builtin.Default]{
+		Gte: escape(builtin.Default(time.Date(2023, 4, 1, 0, 0, 0, 0, time.UTC))),
+		Lt:  escape(builtin.Default(time.Date(2023, 5, 1, 0, 0, 0, 0, time.UTC))),
 	},
 	DenseVector: []float64{16, 15, 14},
 	Double:      float64(68),
-	DoubleRange: map[string]interface{}{
-		"gte": 10.1,
-		"lt":  20.1,
+	DoubleRange: fielddatatype.Range[float64]{
+		Gte: escape(10.1),
+		Lt:  escape(20.1),
 	},
 	Flattened: map[string]interface{}{
 		"priority": "urgent",
@@ -114,9 +115,9 @@ var sampleAll = All{
 		},
 	},
 	Float: float32(357.3209),
-	FloatRange: map[string]interface{}{
-		"gte": 10.1,
-		"lt":  20.1,
+	FloatRange: fielddatatype.Range[float32]{
+		Gte: escape[float32](10.1),
+		Lt:  escape[float32](20.1),
 	},
 	Geopoint: fielddatatype.GeoPoint{
 		Lat: 41.12,
@@ -131,24 +132,24 @@ var sampleAll = All{
 		"counts": []any{float64(3), float64(7), float64(23), float64(12), float64(6)},
 	}),
 	Integer: int32(60),
-	IntegerRange: (map[string]interface{}{
-		"gte": float64(10),
-		"lt":  float64(20),
-	}),
+	IntegerRange: fielddatatype.Range[int32]{
+		Gte: escape[int32](10),
+		Lt:  escape[int32](20),
+	},
 	IpAddr: netip.MustParseAddr("192.168.0.1"),
-	IpRange: (map[string]interface{}{
-		"gte": "192.168.0.2",
-		"lt":  "192.168.0.240",
-	}),
+	IpRange: fielddatatype.Range[netip.Addr]{
+		Gte: escape(netip.AddrFrom4([4]byte{192, 168, 0, 2})),
+		Lt:  escape(netip.AddrFrom4([4]byte{192, 168, 0, 240})),
+	},
 	Join: (map[string]interface{}{
 		"name": "question",
 	}),
 	Kwd:  "naaaaaaaaaaaaaah",
 	Long: int64(210389467827),
-	LongRange: (map[string]interface{}{
-		"gte": float64(10),
-		"lt":  float64(20),
-	}),
+	LongRange: fielddatatype.Range[int64]{
+		Gte: escape[int64](10),
+		Lt:  escape[int64](20),
+	},
 	Nested: AllNestedObject{
 		Age: int32(123),
 		Name: AllNestedNameObject{

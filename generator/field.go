@@ -38,6 +38,9 @@ func Field(ctx *GeneratorContext, dryRun bool) (typeName TypeId) {
 		}
 	case mapping.DateProperty, mapping.DateNanosProperty:
 		return Date(ctx, dryRun)
+	case mapping.DateRangeProperty, mapping.DoubleRangeProperty, mapping.FloatRangeProperty,
+		mapping.IntegerRangeProperty, mapping.IpRangeProperty, mapping.LongRangeProperty:
+		return Range(ctx, dryRun)
 	}
 
 	// return any for unknown types.
@@ -82,12 +85,4 @@ var fieldTypeTable = map[mapping.EsType]TypeId{
 	mapping.HalfFloatNumber:    {Id: "float32"}, // TODO: use float16 package?
 	mapping.UnsignedLongNumber: {Id: "uint64"},
 	mapping.ScaledFloatNumber:  {Id: "float64"},
-	// TODO: implement
-	// see https://www.elastic.co/guide/en/elasticsearch/reference/8.4/range.html
-	mapping.IntegerRange: {Id: anyMap},
-	mapping.FloatRange:   {Id: anyMap},
-	mapping.LongRange:    {Id: anyMap},
-	mapping.DoubleRange:  {Id: anyMap},
-	mapping.DateRange:    {Id: anyMap},
-	mapping.IpRange:      {Id: anyMap},
 }

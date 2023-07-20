@@ -3,55 +3,56 @@ package test
 import (
 	fielddatatype "github.com/ngicks/estype/fielddatatype"
 	estime "github.com/ngicks/estype/fielddatatype/estime"
+	builtin "github.com/ngicks/estype/fielddatatype/estime/builtin"
 	elastic "github.com/ngicks/und/elastic"
 	"net/netip"
 	"time"
 )
 
 type All struct {
-	Agg             fielddatatype.AggregateMetricDouble `json:"agg"`
-	Alias           any                                 `json:"alias,omitempty"`
-	Blob            []byte                              `json:"blob"`
-	Bool            fielddatatype.Boolean               `json:"bool"`
-	Byte            int8                                `json:"byte"`
-	Comp            string                              `json:"comp"`
-	ConstantKwd     string                              `json:"constant_kwd"`
-	Date            AllDateDate                         `json:"date"`
-	DateNano        AllDateNanoDate                     `json:"dateNano"`
-	DateRange       map[string]any                      `json:"date_range"`
-	DenseVector     []float64                           `json:"dense_vector"`
-	Double          float64                             `json:"double"`
-	DoubleRange     map[string]any                      `json:"double_range"`
-	Flattened       map[string]any                      `json:"flattened"`
-	Float           float32                             `json:"float"`
-	FloatRange      map[string]any                      `json:"float_range"`
-	Geopoint        fielddatatype.GeoPoint              `json:"geopoint"`
-	Geoshape        fielddatatype.GeoShape              `json:"geoshape"`
-	HalfFloat       float32                             `json:"half_float"`
-	Histogram       map[string]any                      `json:"histogram"`
-	Integer         int32                               `json:"integer"`
-	IntegerRange    map[string]any                      `json:"integer_range"`
-	IpAddr          netip.Addr                          `json:"ip_addr"`
-	IpRange         map[string]any                      `json:"ip_range"`
-	Join            map[string]any                      `json:"join"`
-	Kwd             string                              `json:"kwd"`
-	Long            int64                               `json:"long"`
-	LongRange       map[string]any                      `json:"long_range"`
-	Nested          AllNestedObject                     `json:"nested"`
-	Object          AllObjectObject                     `json:"object"`
-	Point           map[string]any                      `json:"point"`
-	Query           map[string]any                      `json:"query"`
-	RankFeature     float64                             `json:"rank_feature"`
-	RankFeatures    map[string]float64                  `json:"rank_features"`
-	ScaledFloat     float64                             `json:"scaled_float"`
-	SearchAsYouType string                              `json:"search_as_you_type"`
-	Shape           fielddatatype.GeoShape              `json:"shape"`
-	Short           int16                               `json:"short"`
-	Text            string                              `json:"text"`
-	TextWTokenCount string                              `json:"text_w_token_count"`
-	UnsignedLong    uint64                              `json:"unsigned_long"`
-	Version         string                              `json:"version"`
-	Wildcard        string                              `json:"wildcard"`
+	Agg             fielddatatype.AggregateMetricDouble  `json:"agg"`
+	Alias           any                                  `json:"alias,omitempty"`
+	Blob            []byte                               `json:"blob"`
+	Bool            fielddatatype.Boolean                `json:"bool"`
+	Byte            int8                                 `json:"byte"`
+	Comp            string                               `json:"comp"`
+	ConstantKwd     string                               `json:"constant_kwd"`
+	Date            AllDateDate                          `json:"date"`
+	DateNano        AllDateNanoDate                      `json:"dateNano"`
+	DateRange       fielddatatype.Range[builtin.Default] `json:"date_range"`
+	DenseVector     []float64                            `json:"dense_vector"`
+	Double          float64                              `json:"double"`
+	DoubleRange     fielddatatype.Range[float64]         `json:"double_range"`
+	Flattened       map[string]any                       `json:"flattened"`
+	Float           float32                              `json:"float"`
+	FloatRange      fielddatatype.Range[float32]         `json:"float_range"`
+	Geopoint        fielddatatype.GeoPoint               `json:"geopoint"`
+	Geoshape        fielddatatype.GeoShape               `json:"geoshape"`
+	HalfFloat       float32                              `json:"half_float"`
+	Histogram       map[string]any                       `json:"histogram"`
+	Integer         int32                                `json:"integer"`
+	IntegerRange    fielddatatype.Range[int32]           `json:"integer_range"`
+	IpAddr          netip.Addr                           `json:"ip_addr"`
+	IpRange         fielddatatype.Range[netip.Addr]      `json:"ip_range"`
+	Join            map[string]any                       `json:"join"`
+	Kwd             string                               `json:"kwd"`
+	Long            int64                                `json:"long"`
+	LongRange       fielddatatype.Range[int64]           `json:"long_range"`
+	Nested          AllNestedObject                      `json:"nested"`
+	Object          AllObjectObject                      `json:"object"`
+	Point           map[string]any                       `json:"point"`
+	Query           map[string]any                       `json:"query"`
+	RankFeature     float64                              `json:"rank_feature"`
+	RankFeatures    map[string]float64                   `json:"rank_features"`
+	ScaledFloat     float64                              `json:"scaled_float"`
+	SearchAsYouType string                               `json:"search_as_you_type"`
+	Shape           fielddatatype.GeoShape               `json:"shape"`
+	Short           int16                                `json:"short"`
+	Text            string                               `json:"text"`
+	TextWTokenCount string                               `json:"text_w_token_count"`
+	UnsignedLong    uint64                               `json:"unsigned_long"`
+	Version         string                               `json:"version"`
+	Wildcard        string                               `json:"wildcard"`
 }
 
 func (d All) ToRaw() AllRaw {
@@ -102,49 +103,49 @@ func (d All) ToRaw() AllRaw {
 }
 
 type AllRaw struct {
-	Agg             elastic.Elastic[fielddatatype.AggregateMetricDouble] `json:"agg"`
-	Alias           elastic.Elastic[any]                                 `json:"alias"`
-	Blob            elastic.Elastic[[]byte]                              `json:"blob"`
-	Bool            elastic.Elastic[fielddatatype.Boolean]               `json:"bool"`
-	Byte            elastic.Elastic[int8]                                `json:"byte"`
-	Comp            elastic.Elastic[string]                              `json:"comp"`
-	ConstantKwd     elastic.Elastic[string]                              `json:"constant_kwd"`
-	Date            elastic.Elastic[AllDateDate]                         `json:"date"`
-	DateNano        elastic.Elastic[AllDateNanoDate]                     `json:"dateNano"`
-	DateRange       elastic.Elastic[map[string]any]                      `json:"date_range"`
-	DenseVector     elastic.Elastic[[]float64]                           `json:"dense_vector"`
-	Double          elastic.Elastic[float64]                             `json:"double"`
-	DoubleRange     elastic.Elastic[map[string]any]                      `json:"double_range"`
-	Flattened       elastic.Elastic[map[string]any]                      `json:"flattened"`
-	Float           elastic.Elastic[float32]                             `json:"float"`
-	FloatRange      elastic.Elastic[map[string]any]                      `json:"float_range"`
-	Geopoint        elastic.Elastic[fielddatatype.GeoPoint]              `json:"geopoint"`
-	Geoshape        elastic.Elastic[fielddatatype.GeoShape]              `json:"geoshape"`
-	HalfFloat       elastic.Elastic[float32]                             `json:"half_float"`
-	Histogram       elastic.Elastic[map[string]any]                      `json:"histogram"`
-	Integer         elastic.Elastic[int32]                               `json:"integer"`
-	IntegerRange    elastic.Elastic[map[string]any]                      `json:"integer_range"`
-	IpAddr          elastic.Elastic[netip.Addr]                          `json:"ip_addr"`
-	IpRange         elastic.Elastic[map[string]any]                      `json:"ip_range"`
-	Join            elastic.Elastic[map[string]any]                      `json:"join"`
-	Kwd             elastic.Elastic[string]                              `json:"kwd"`
-	Long            elastic.Elastic[int64]                               `json:"long"`
-	LongRange       elastic.Elastic[map[string]any]                      `json:"long_range"`
-	Nested          elastic.Elastic[AllNestedObjectRaw]                  `json:"nested"`
-	Object          elastic.Elastic[AllObjectObjectRaw]                  `json:"object"`
-	Point           elastic.Elastic[map[string]any]                      `json:"point"`
-	Query           elastic.Elastic[map[string]any]                      `json:"query"`
-	RankFeature     elastic.Elastic[float64]                             `json:"rank_feature"`
-	RankFeatures    elastic.Elastic[map[string]float64]                  `json:"rank_features"`
-	ScaledFloat     elastic.Elastic[float64]                             `json:"scaled_float"`
-	SearchAsYouType elastic.Elastic[string]                              `json:"search_as_you_type"`
-	Shape           elastic.Elastic[fielddatatype.GeoShape]              `json:"shape"`
-	Short           elastic.Elastic[int16]                               `json:"short"`
-	Text            elastic.Elastic[string]                              `json:"text"`
-	TextWTokenCount elastic.Elastic[string]                              `json:"text_w_token_count"`
-	UnsignedLong    elastic.Elastic[uint64]                              `json:"unsigned_long"`
-	Version         elastic.Elastic[string]                              `json:"version"`
-	Wildcard        elastic.Elastic[string]                              `json:"wildcard"`
+	Agg             elastic.Elastic[fielddatatype.AggregateMetricDouble]  `json:"agg"`
+	Alias           elastic.Elastic[any]                                  `json:"alias"`
+	Blob            elastic.Elastic[[]byte]                               `json:"blob"`
+	Bool            elastic.Elastic[fielddatatype.Boolean]                `json:"bool"`
+	Byte            elastic.Elastic[int8]                                 `json:"byte"`
+	Comp            elastic.Elastic[string]                               `json:"comp"`
+	ConstantKwd     elastic.Elastic[string]                               `json:"constant_kwd"`
+	Date            elastic.Elastic[AllDateDate]                          `json:"date"`
+	DateNano        elastic.Elastic[AllDateNanoDate]                      `json:"dateNano"`
+	DateRange       elastic.Elastic[fielddatatype.Range[builtin.Default]] `json:"date_range"`
+	DenseVector     elastic.Elastic[[]float64]                            `json:"dense_vector"`
+	Double          elastic.Elastic[float64]                              `json:"double"`
+	DoubleRange     elastic.Elastic[fielddatatype.Range[float64]]         `json:"double_range"`
+	Flattened       elastic.Elastic[map[string]any]                       `json:"flattened"`
+	Float           elastic.Elastic[float32]                              `json:"float"`
+	FloatRange      elastic.Elastic[fielddatatype.Range[float32]]         `json:"float_range"`
+	Geopoint        elastic.Elastic[fielddatatype.GeoPoint]               `json:"geopoint"`
+	Geoshape        elastic.Elastic[fielddatatype.GeoShape]               `json:"geoshape"`
+	HalfFloat       elastic.Elastic[float32]                              `json:"half_float"`
+	Histogram       elastic.Elastic[map[string]any]                       `json:"histogram"`
+	Integer         elastic.Elastic[int32]                                `json:"integer"`
+	IntegerRange    elastic.Elastic[fielddatatype.Range[int32]]           `json:"integer_range"`
+	IpAddr          elastic.Elastic[netip.Addr]                           `json:"ip_addr"`
+	IpRange         elastic.Elastic[fielddatatype.Range[netip.Addr]]      `json:"ip_range"`
+	Join            elastic.Elastic[map[string]any]                       `json:"join"`
+	Kwd             elastic.Elastic[string]                               `json:"kwd"`
+	Long            elastic.Elastic[int64]                                `json:"long"`
+	LongRange       elastic.Elastic[fielddatatype.Range[int64]]           `json:"long_range"`
+	Nested          elastic.Elastic[AllNestedObjectRaw]                   `json:"nested"`
+	Object          elastic.Elastic[AllObjectObjectRaw]                   `json:"object"`
+	Point           elastic.Elastic[map[string]any]                       `json:"point"`
+	Query           elastic.Elastic[map[string]any]                       `json:"query"`
+	RankFeature     elastic.Elastic[float64]                              `json:"rank_feature"`
+	RankFeatures    elastic.Elastic[map[string]float64]                   `json:"rank_features"`
+	ScaledFloat     elastic.Elastic[float64]                              `json:"scaled_float"`
+	SearchAsYouType elastic.Elastic[string]                               `json:"search_as_you_type"`
+	Shape           elastic.Elastic[fielddatatype.GeoShape]               `json:"shape"`
+	Short           elastic.Elastic[int16]                                `json:"short"`
+	Text            elastic.Elastic[string]                               `json:"text"`
+	TextWTokenCount elastic.Elastic[string]                               `json:"text_w_token_count"`
+	UnsignedLong    elastic.Elastic[uint64]                               `json:"unsigned_long"`
+	Version         elastic.Elastic[string]                               `json:"version"`
+	Wildcard        elastic.Elastic[string]                               `json:"wildcard"`
 }
 
 func (d AllRaw) ToPlain() All {

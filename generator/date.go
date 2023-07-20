@@ -26,6 +26,10 @@ func Date(ctx *GeneratorContext, dryRun bool) TypeId {
 		if x.Format.IsDefined() {
 			formats = x.Format.Value()
 		}
+	case mapping.DateRangeProperty:
+		if x.Format.IsDefined() {
+			formats = x.Format.Value()
+		}
 	}
 
 	if len(formats) == 0 {
@@ -53,6 +57,7 @@ func Date(ctx *GeneratorContext, dryRun bool) TypeId {
 	typeId = TypeId{
 		Id: ctx.getTypeName(),
 	}
+	// This is not great that FromJavaDateTimeLike is used to just parse + validation.
 	layouts, err := estime.FromJavaDateTimeLike(stringFormats, "")
 	if err != nil {
 		panic(err)
