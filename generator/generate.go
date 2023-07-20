@@ -71,7 +71,7 @@ func (c *GeneratorContext) Gen() {
 		dynamic: c.generatorOption.Mapping.Dynamic.Option,
 	}
 
-	ObjectLike(&newCtx, false)
+	genObjectLike(&newCtx, false)
 }
 
 func (c *GeneratorContext) getTypeName() string {

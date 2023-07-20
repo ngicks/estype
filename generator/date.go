@@ -13,7 +13,7 @@ const (
 	builtinEsDateQual = "github.com/ngicks/estype/fielddatatype/estime/builtin"
 )
 
-func Date(ctx *GeneratorContext, dryRun bool) TypeId {
+func genDate(ctx *GeneratorContext, dryRun bool) TypeId {
 	var formats string
 	isNano := false
 	switch x := ctx.localState.prop.Val.(type) {

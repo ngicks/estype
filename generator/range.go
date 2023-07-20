@@ -6,11 +6,11 @@ import (
 	"github.com/ngicks/estype/spec/mapping"
 )
 
-func Range(ctx *GeneratorContext, dryRun bool) TypeId {
+func genRange(ctx *GeneratorContext, dryRun bool) TypeId {
 	var param TypeId
 	switch ctx.localState.prop.Val.(type) {
 	case mapping.DateRangeProperty:
-		param = Date(ctx, dryRun)
+		param = genDate(ctx, dryRun)
 	case mapping.DoubleRangeProperty:
 		param = TypeId{Id: "float64"}
 	case mapping.FloatRangeProperty:

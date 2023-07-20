@@ -27,7 +27,7 @@ type structField struct {
 	Tag          map[string]string
 }
 
-func ObjectLike(ctx *GeneratorContext, dryRun bool) (plain, raw TypeId) {
+func genObjectLike(ctx *GeneratorContext, dryRun bool) (plain, raw TypeId) {
 	plain = TypeId{
 		Id: ctx.getTypeName(),
 	}
@@ -115,14 +115,14 @@ func ObjectLike(ctx *GeneratorContext, dryRun bool) (plain, raw TypeId) {
 			if mapping.IsObjectLike(propChild) {
 				isObjectLike = true
 
-				fieldHigh, fieldRaw := ObjectLike(nextCtx, true)
+				fieldHigh, fieldRaw := genObjectLike(nextCtx, true)
 				if !opt.IsRaw {
 					fieldTypeId = fieldHigh
 				} else {
 					fieldTypeId = fieldRaw
 				}
 			} else {
-				fieldTypeId = Field(nextCtx, true)
+				fieldTypeId = genField(nextCtx, true)
 			}
 
 			fieldTypeId = opt.Mapper(fieldTypeId)
@@ -180,13 +180,13 @@ func ObjectLike(ctx *GeneratorContext, dryRun bool) (plain, raw TypeId) {
 	iter := createPropsIter(props)
 	for next, ok := iter.Next(); ok; next, ok = iter.Next() {
 		fieldName := next.Former
-		field := next.Latter
-		nextCtx := ctx.next(fieldName, field, dynamic)
+		prop := next.Latter
+		nextCtx := ctx.next(fieldName, prop, dynamic)
 
-		if mapping.IsObjectLike(field) {
-			_, _ = ObjectLike(nextCtx, false)
+		if mapping.IsObjectLike(prop) {
+			_, _ = genObjectLike(nextCtx, false)
 		} else {
-			_ = Field(nextCtx, false)
+			_ = genField(nextCtx, false)
 		}
 	}
 

@@ -13,16 +13,16 @@ const (
 	float64Map = "map[string]float64"
 )
 
-// Field generates a type for input property.
+// genField generates a type for input property.
 // Input prop must be one that can not be nested (other than Object or Nested types).
-func Field(ctx *GeneratorContext, dryRun bool) (typeName TypeId) {
+func genField(ctx *GeneratorContext, dryRun bool) (typeName TypeId) {
 	if ty, ok := fieldTypeTable[mapping.GetTypeName(ctx.localState.prop)]; ok {
 		return ty
 	}
 
 	switch x := ctx.localState.prop.Val.(type) {
 	case mapping.AggregateMetricDoubleProperty:
-		gen := AggregateMetricDouble(x)
+		gen := genAggregateMetricDouble(x)
 		return gen
 	case mapping.BooleanProperty:
 		if ctx.PreferStringBoolean() {
@@ -37,10 +37,10 @@ func Field(ctx *GeneratorContext, dryRun bool) (typeName TypeId) {
 			}
 		}
 	case mapping.DateProperty, mapping.DateNanosProperty:
-		return Date(ctx, dryRun)
+		return genDate(ctx, dryRun)
 	case mapping.DateRangeProperty, mapping.DoubleRangeProperty, mapping.FloatRangeProperty,
 		mapping.IntegerRangeProperty, mapping.IpRangeProperty, mapping.LongRangeProperty:
-		return Range(ctx, dryRun)
+		return genRange(ctx, dryRun)
 	}
 
 	// return any for unknown types.
