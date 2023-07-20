@@ -14,10 +14,29 @@ import (
 )
 
 var (
-	outFile     = flag.String("o", "", "path to out file. defaults to stdout")
-	configFile  = flag.String("c", "", "path to config. see definition of generate.GeneratorOption.")
-	mappingFile = flag.String("m", "", "path to mapping.json.")
-	packagePath = flag.String("p", "", "generated package path.")
+	outFile = flag.String(
+		"o",
+		"--",
+		"[optional]\n"+
+			"path to output generated code.\n"+
+			"More than 2 distinct mappings should not be generated to the same directory\n"+
+			"because it possibly creates helper functions / types depending on the config and the mapping.\n"+
+			"defaults to stdout.",
+	)
+	configFile = flag.String(
+		"c",
+		"",
+		"path to config file.\n"+
+			"see definition of github.com/ngicks/estype/generator.GeneratorOption.",
+	)
+	mappingFile = flag.String(
+		"m",
+		"",
+		"path to mapping.json.\n"+
+			"You can use one that can be fetched from '<index_name>/_mapping',\n"+
+			"or one that you've sent when creating index.",
+	)
+	packagePath = flag.String("p", "", "package name of generated code.")
 )
 
 func main() {
