@@ -33,8 +33,12 @@
     "Serde",
     "SQUOTE",
     "stretchr",
+    "struct",
+    "structs",
     "timeseriesmetrictype",
     "undefinedable",
-    "unmarshaled"
+    "unmarshal",
+    "unmarshaled",
+    "unmarshaling"
   ]
 }
