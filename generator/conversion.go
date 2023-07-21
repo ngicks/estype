@@ -18,7 +18,7 @@ func generateToRaw(ctx *GeneratorContext, plain, raw TypeId, plainFields, rawFie
 				},
 				func(g *jen.Group) {
 					for idx, field := range rawFields {
-						if plainFields[idx].TypeId.NonWritable {
+						if plainFields[idx].TypeId.IgnoreInConversion() {
 							continue
 						}
 						stmt := jen.
@@ -105,6 +105,10 @@ func generateToPlain(ctx *GeneratorContext, plain, raw TypeId, plainFields, rawF
 				},
 				func(g *jen.Group) {
 					for _, field := range plainFields {
+						if field.TypeId.IgnoreInConversion() {
+							continue
+						}
+
 						stmt := jen.
 							Id(field.Name).
 							Op(":")

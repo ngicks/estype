@@ -73,3 +73,8 @@ func (t TypeId) IsSingle(option TypeIdRenderOption) bool {
 func (t TypeId) IsOptional(option TypeIdRenderOption) bool {
 	return option.IsOptional()
 }
+
+// IgnoreInConversion reports whether t must not be converted between plain and raw types.
+func (t TypeId) IgnoreInConversion() bool {
+	return t.NonWritable
+}
