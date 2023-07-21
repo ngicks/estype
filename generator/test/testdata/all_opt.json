@@ -2,5 +2,10 @@
   "RootTypeName": "all",
   "DefaultOption": {
     "IsSingle": true
+  },
+  "MappingOption": {
+    "agg": {
+      "IsSingle": false
+    }
   }
 }

@@ -93,31 +93,14 @@ func genObjectLike(ctx *GeneratorContext, dryRun bool) (plain, raw TypeId) {
 			propChild := next.Latter
 			nextCtx := ctx.next(propFieldName, propChild, dynamic)
 
-			// generate helpers for later uses.
-			if nextCtx.IsOptional() {
-				if nextCtx.IsSingle() {
-					generateEscapeValue(nextCtx)
-				} else {
-					generateEscapeSlice(nextCtx)
-				}
-			}
-			if !nextCtx.IsSingle() {
-				generateMapToPlain(nextCtx)
-				if nextCtx.IsOptional() {
-					generateMapToRawPointer(nextCtx)
-				} else {
-					generateMapToRaw(nextCtx)
-				}
-			}
-
 			var fieldTypeId TypeId
 			var isObjectLike bool
 			if mapping.IsObjectLike(propChild) {
 				isObjectLike = true
 
-				fieldHigh, fieldRaw := genObjectLike(nextCtx, true)
+				fieldPlain, fieldRaw := genObjectLike(nextCtx, true)
 				if !opt.IsRaw {
-					fieldTypeId = fieldHigh
+					fieldTypeId = fieldPlain
 				} else {
 					fieldTypeId = fieldRaw
 				}
@@ -125,17 +108,36 @@ func genObjectLike(ctx *GeneratorContext, dryRun bool) (plain, raw TypeId) {
 				fieldTypeId = genField(nextCtx, true)
 			}
 
-			fieldTypeId = opt.Mapper(fieldTypeId)
+			mappedFieldTypeId := opt.Mapper(fieldTypeId)
 			var omitemptyOpt string
-			if fieldTypeId.NonWritable {
+			if mappedFieldTypeId.NonWritable {
 				omitemptyOpt = ",omitempty"
 			}
+
+			// generate helpers for later uses.
+			if fieldTypeId.IsOptional(nextCtx) {
+				if fieldTypeId.IsSingle(nextCtx) {
+					generateEscapeValue(nextCtx)
+				} else {
+					generateEscapeSlice(nextCtx)
+				}
+			}
+			if !fieldTypeId.IsSingle(nextCtx) {
+				fmt.Printf("field name = %s, a = %+#v, b = %t\n", propFieldName, fieldTypeId, nextCtx.IsSingle())
+				generateMapToPlain(nextCtx)
+				if fieldTypeId.IsOptional(nextCtx) {
+					generateMapToRawPointer(nextCtx)
+				} else {
+					generateMapToRaw(nextCtx)
+				}
+			}
+
 			fields = append(fields, structField{
 				Name:         pascalCase(propFieldName),
 				IsObjectLike: isObjectLike,
 				Opt:          opt.TypeIdRenderOption(nextCtx),
-				Stmt:         fieldTypeId.Render(opt.TypeIdRenderOption(nextCtx)),
-				TypeId:       fieldTypeId,
+				Stmt:         mappedFieldTypeId.Render(opt.TypeIdRenderOption(nextCtx)),
+				TypeId:       mappedFieldTypeId,
 				Tag:          map[string]string{"json": propFieldName + omitemptyOpt},
 			})
 		}

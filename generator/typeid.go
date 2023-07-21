@@ -29,10 +29,11 @@ func (o typeIdRenderOption) IsSingle() bool {
 }
 
 type TypeId struct {
-	Qualifier   string
-	TypeParam   []TypeId
-	Id          string
-	NonWritable bool
+	Qualifier    string
+	TypeParam    []TypeId
+	Id           string
+	NonWritable  bool // A field data type for which the Elasticsearch does not allow store value.
+	AlwaysSingle bool // A field data type for which the Elasticsearch only accepts T or T[] with single element.
 }
 
 func (t TypeId) Render(option TypeIdRenderOption) *jen.Statement {
@@ -44,7 +45,7 @@ func (t TypeId) Render(option TypeIdRenderOption) *jen.Statement {
 	if option.IsOptional() {
 		stmt = stmt.Op("*")
 	}
-	if !option.IsSingle() {
+	if !t.AlwaysSingle && !option.IsSingle() {
 		stmt = stmt.Index()
 	}
 
@@ -63,4 +64,12 @@ func (t TypeId) Render(option TypeIdRenderOption) *jen.Statement {
 	}
 
 	return stmt
+}
+
+func (t TypeId) IsSingle(option TypeIdRenderOption) bool {
+	return t.AlwaysSingle || option.IsSingle()
+}
+
+func (t TypeId) IsOptional(option TypeIdRenderOption) bool {
+	return option.IsOptional()
 }

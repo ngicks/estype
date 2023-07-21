@@ -35,7 +35,8 @@ func genAggregateMetricDouble(prop mapping.AggregateMetricDoubleProperty) TypeId
 	}
 
 	return TypeId{
-		Qualifier: fielddatatypeQual,
-		Id:        "AggregateMetricDouble" + suffix,
+		Qualifier:    fielddatatypeQual,
+		Id:           "AggregateMetricDouble" + suffix,
+		AlwaysSingle: true,
 	}
 }

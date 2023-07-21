@@ -67,20 +67,20 @@ func generateToRaw(ctx *GeneratorContext, plain, raw TypeId, plainFields, rawFie
 
 func fromFuncName(f structField) string {
 	fromFnName := "From"
-	if f.Opt.IsSingle() {
+	if f.TypeId.IsSingle(f.Opt) {
 		fromFnName += "Single"
 	} else {
 		fromFnName += "Multiple"
 	}
-	if f.Opt.IsOptional() {
+	if f.TypeId.IsOptional(f.Opt) {
 		fromFnName += "Pointer"
 	}
 	return fromFnName
 }
 
 func escaperId(f structField) string {
-	if f.Opt.IsOptional() {
-		if f.Opt.IsSingle() {
+	if f.TypeId.IsOptional(f.Opt) {
+		if f.TypeId.IsSingle(f.Opt) {
 			return escapeValueId
 		} else {
 			return escapeSliceId
@@ -113,7 +113,7 @@ func generateToPlain(ctx *GeneratorContext, plain, raw TypeId, plainFields, rawF
 						if !field.IsObjectLike {
 							value = jen.Id("d").Dot(field.Name).Dot(toFuncName(field)).Call()
 						} else {
-							if field.Opt.IsSingle() {
+							if field.TypeId.IsSingle(field.Opt) {
 								value = jen.Id("d").Dot(field.Name).Dot(toFuncName(field)).Call().Dot("ToPlain").Call()
 							} else {
 								fieldType := jen.Id(field.TypeId.Id)
@@ -138,12 +138,12 @@ func generateToPlain(ctx *GeneratorContext, plain, raw TypeId, plainFields, rawF
 
 func toFuncName(f structField) string {
 	var toFuncName string
-	if f.Opt.IsOptional() {
+	if f.TypeId.IsOptional(f.Opt) {
 		toFuncName += "Plain"
 	} else {
 		toFuncName += "Value"
 	}
-	if f.Opt.IsSingle() {
+	if f.TypeId.IsSingle(f.Opt) {
 		toFuncName += "Single"
 	} else {
 		toFuncName += "Multiple"

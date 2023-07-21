@@ -151,7 +151,6 @@ type AllRaw struct {
 func (d AllRaw) ToPlain() All {
 	return All{
 		Agg:             d.Agg.ValueSingle(),
-		Alias:           d.Alias.ValueSingle(),
 		Blob:            d.Blob.ValueSingle(),
 		Bool:            d.Bool.ValueSingle(),
 		Byte:            d.Byte.ValueSingle(),
