@@ -48,10 +48,7 @@ func genField(ctx *GeneratorContext, dryRun bool) (typeName TypeId) {
 }
 
 var fieldTypeTable = map[mapping.EsType]TypeId{
-	// FIXME: add special handling for this.
-	// Alias type needs knowledge about referenced field...
-	// Do nothing here?
-	mapping.FieldAlias:      {Id: "any", NonWritable: true},
+	mapping.FieldAlias:      {NonWritable: true},
 	mapping.Binary:          {Id: "[]byte"},
 	mapping.Completion:      {Id: "string"},
 	mapping.DenseVector:     {Id: "[]float64"}, // TODO: read dim and use array instead of a slice?

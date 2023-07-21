@@ -38,6 +38,9 @@ type TypeId struct {
 func (t TypeId) Render(option TypeIdRenderOption) *jen.Statement {
 	stmt := new(jen.Statement)
 
+	if t.NonWritable {
+		return stmt.Op("*").Id("struct{}")
+	}
 	if option.IsOptional() {
 		stmt = stmt.Op("*")
 	}

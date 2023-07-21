@@ -11,7 +11,7 @@ import (
 
 type All struct {
 	Agg             fielddatatype.AggregateMetricDouble  `json:"agg"`
-	Alias           any                                  `json:"alias,omitempty"`
+	Alias           *struct{}                            `json:"alias,omitempty"`
 	Blob            []byte                               `json:"blob"`
 	Bool            fielddatatype.Boolean                `json:"bool"`
 	Byte            int8                                 `json:"byte"`
@@ -104,7 +104,7 @@ func (d All) ToRaw() AllRaw {
 
 type AllRaw struct {
 	Agg             elastic.Elastic[fielddatatype.AggregateMetricDouble]  `json:"agg"`
-	Alias           elastic.Elastic[any]                                  `json:"alias"`
+	Alias           elastic.Elastic[*struct{}]                            `json:"alias"`
 	Blob            elastic.Elastic[[]byte]                               `json:"blob"`
 	Bool            elastic.Elastic[fielddatatype.Boolean]                `json:"bool"`
 	Byte            elastic.Elastic[int8]                                 `json:"byte"`
