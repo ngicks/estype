@@ -72,6 +72,7 @@ var fieldTypeTable = map[mapping.EsType]TypeId{
 	mapping.ConstantKeyword: {Id: "string"},
 	mapping.Wildcard:        {Id: "string"},
 	mapping.Text:            {Id: "string"},
+	mapping.MatchOnlyText:   {Id: "string"},
 	// https://www.elastic.co/guide/en/elasticsearch/reference/8.4/number.html
 	mapping.LongNumber:         {Id: "int64"},
 	mapping.IntegerNumber:      {Id: "int32"},
