@@ -94,7 +94,7 @@ func toRawStmt(plain, raw structField) *jen.Statement {
 		if !plain.IsObjectLike {
 			input = jen.Id("d").Dot(raw.Name)
 		} else {
-			if plain.Opt.IsSingle() {
+			if plain.TypeId.IsSingle(plain.Opt) {
 				input = jen.Id("d").Dot(raw.Name).Dot("ToRaw").Call()
 			} else {
 				fieldType := jen.
@@ -135,18 +135,18 @@ func toPlainStmt(plain, raw structField) *jen.Statement {
 		}
 	case elasticTypeQual:
 		var value *jen.Statement
-		if !raw.IsObjectLike {
-			value = jen.Id("d").Dot(raw.Name).Dot(toFuncName(raw)).Call()
+		if !plain.IsObjectLike {
+			value = jen.Id("d").Dot(plain.Name).Dot(toFuncName(plain)).Call()
 		} else {
-			if raw.TypeId.IsSingle(raw.Opt) {
-				value = jen.Id("d").Dot(raw.Name).Dot(toFuncName(raw)).Call().Dot("ToPlain").Call()
+			if plain.TypeId.IsSingle(plain.Opt) {
+				value = jen.Id("d").Dot(plain.Name).Dot(toFuncName(plain)).Call().Dot("ToPlain").Call()
 			} else {
-				fieldType := jen.Id(raw.TypeId.Id)
+				fieldType := jen.Id(plain.TypeId.Id)
 				value = jen.Id(mapToPlainId).Index(fieldType).Call(fieldNameId.Dot("ValueMultiple").Call())
 			}
 		}
 
-		if escaper := escaperId(raw); escaper != "" {
+		if escaper := escaperId(plain); escaper != "" {
 			value = jen.Id(escaper).Call(value)
 		}
 
