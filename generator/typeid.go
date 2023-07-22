@@ -29,11 +29,13 @@ func (o typeIdRenderOption) IsSingle() bool {
 }
 
 type TypeId struct {
-	Qualifier    string
-	TypeParam    []TypeId
-	Id           string
-	NonWritable  bool // A field data type for which the Elasticsearch does not allow store value.
-	AlwaysSingle bool // A field data type for which the Elasticsearch only accepts T or T[] with single element.
+	Qualifier     string
+	TypeParam     []TypeId
+	Id            string
+	NonWritable   bool // A field data type for which the Elasticsearch does not allow store value.
+	AlwaysSingle  bool // A field data type for which the Elasticsearch only accepts T or T[] with single element.
+	DisallowArray bool // some type (dense_vector) can not even be an array of a single element.
+	DisallowNull  bool // some type (dense_vector) can not be `null` which means 
 }
 
 func (t TypeId) Render(option TypeIdRenderOption) *jen.Statement {

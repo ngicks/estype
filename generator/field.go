@@ -38,6 +38,8 @@ func genField(ctx *GeneratorContext, dryRun bool) (typeName TypeId) {
 		}
 	case mapping.DateProperty, mapping.DateNanosProperty:
 		return genDate(ctx, dryRun)
+	case mapping.DenseVectorProperty:
+		return genDenseVector(x)
 	case mapping.DateRangeProperty, mapping.DoubleRangeProperty, mapping.FloatRangeProperty,
 		mapping.IntegerRangeProperty, mapping.IpRangeProperty, mapping.LongRangeProperty:
 		return genRange(ctx, dryRun)
@@ -51,7 +53,6 @@ var fieldTypeTable = map[mapping.EsType]TypeId{
 	mapping.FieldAlias:      {NonWritable: true},
 	mapping.Binary:          {Id: "[]byte"},
 	mapping.Completion:      {Id: "string"},
-	mapping.DenseVector:     {Id: "[]float64"}, // TODO: read dim and use array instead of a slice?
 	mapping.Flattened:       {Id: anyMap},
 	mapping.GeoPoint:        {Id: "GeoPoint", Qualifier: fielddatatypeQual},
 	mapping.GeoShape:        {Id: "GeoShape", Qualifier: fielddatatypeQual},

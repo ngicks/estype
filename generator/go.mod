@@ -11,7 +11,7 @@ require (
 	github.com/ngicks/estype/helper v0.0.1-alpha0
 	github.com/ngicks/estype/spec v0.0.1-alpha1
 	github.com/ngicks/go-iterator v0.0.0-20230524101302-db8d55117ed8
-	github.com/ngicks/und v0.0.0-20230716183253-8b7839f325d7
+	github.com/ngicks/und v0.0.0-20230722050536-cec4d5496f24
 	github.com/stretchr/testify v1.8.4
 )
 

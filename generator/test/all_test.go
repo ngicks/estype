@@ -100,7 +100,7 @@ var sampleAll = All{
 		Gte: escape(builtin.Default(time.Date(2023, 4, 1, 0, 0, 0, 0, time.UTC))),
 		Lt:  escape(builtin.Default(time.Date(2023, 5, 1, 0, 0, 0, 0, time.UTC))),
 	},
-	DenseVector: []float64{16, 15, 14},
+	DenseVector: [3]float64{16, 15, 14},
 	Double:      float64(68),
 	DoubleRange: fielddatatype.Range[float64]{
 		Gte: escape(10.1),

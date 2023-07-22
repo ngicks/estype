@@ -5,6 +5,7 @@ import (
 	estime "github.com/ngicks/estype/fielddatatype/estime"
 	builtin "github.com/ngicks/estype/fielddatatype/estime/builtin"
 	elastic "github.com/ngicks/und/elastic"
+	undefinedable "github.com/ngicks/und/undefinedable"
 	"net/netip"
 	"time"
 )
@@ -20,7 +21,7 @@ type All struct {
 	Date            AllDateDate                          `json:"date"`
 	DateNano        AllDateNanoDate                      `json:"dateNano"`
 	DateRange       fielddatatype.Range[builtin.Default] `json:"date_range"`
-	DenseVector     []float64                            `json:"dense_vector"`
+	DenseVector     [3]float64                           `json:"dense_vector"`
 	Double          float64                              `json:"double"`
 	DoubleRange     fielddatatype.Range[float64]         `json:"double_range"`
 	Flattened       map[string]any                       `json:"flattened"`
@@ -66,7 +67,7 @@ func (d All) ToRaw() AllRaw {
 		Date:            elastic.FromSingle(d.Date),
 		DateNano:        elastic.FromSingle(d.DateNano),
 		DateRange:       elastic.FromSingle(d.DateRange),
-		DenseVector:     elastic.FromSingle(d.DenseVector),
+		DenseVector:     undefinedable.Defined(d.DenseVector),
 		Double:          elastic.FromSingle(d.Double),
 		DoubleRange:     elastic.FromSingle(d.DoubleRange),
 		Flattened:       elastic.FromSingle(d.Flattened),
@@ -113,7 +114,7 @@ type AllRaw struct {
 	Date            elastic.Elastic[AllDateDate]                          `json:"date"`
 	DateNano        elastic.Elastic[AllDateNanoDate]                      `json:"dateNano"`
 	DateRange       elastic.Elastic[fielddatatype.Range[builtin.Default]] `json:"date_range"`
-	DenseVector     elastic.Elastic[[]float64]                            `json:"dense_vector"`
+	DenseVector     undefinedable.Undefinedable[[3]float64]               `json:"dense_vector"`
 	Double          elastic.Elastic[float64]                              `json:"double"`
 	DoubleRange     elastic.Elastic[fielddatatype.Range[float64]]         `json:"double_range"`
 	Flattened       elastic.Elastic[map[string]any]                       `json:"flattened"`
@@ -159,7 +160,7 @@ func (d AllRaw) ToPlain() All {
 		Date:            d.Date.ValueSingle(),
 		DateNano:        d.DateNano.ValueSingle(),
 		DateRange:       d.DateRange.ValueSingle(),
-		DenseVector:     d.DenseVector.ValueSingle(),
+		DenseVector:     d.DenseVector.Value(),
 		Double:          d.Double.ValueSingle(),
 		DoubleRange:     d.DoubleRange.ValueSingle(),
 		Flattened:       d.Flattened.ValueSingle(),

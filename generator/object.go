@@ -12,15 +12,23 @@ import (
 )
 
 const (
-	elasticTypeQual  = "github.com/ngicks/und/elastic"
-	utilTypeQual     = "github.com/ngicks/estype/util"
-	additionalPropId = "AdditionalProperties_"
-	bufPoolId        = "bufferPool"
+	elasticTypeQual       = "github.com/ngicks/und/elastic"
+	undefinedableTypeQual = "github.com/ngicks/und/undefinedable"
+	jsonfieldTypeQual     = "github.com/ngicks/und/jsonfield"
+	utilTypeQual          = "github.com/ngicks/estype/util"
+	additionalPropId      = "AdditionalProperties_"
+	bufPoolId             = "bufferPool"
+)
+
+var (
+	elasticTypeId       = TypeId{Id: "Elastic", Qualifier: elasticTypeQual}
+	undefinedableTypeId = TypeId{Id: "Undefinedable", Qualifier: undefinedableTypeQual}
+	jsonfieldTypeId     = TypeId{Id: "JsonField", Qualifier: jsonfieldTypeQual}
 )
 
 type structField struct {
 	Name         string
-	IsObjectLike bool
+	IsObjectLike bool // nested or object field data type.
 	Opt          TypeIdRenderOption
 	Stmt         *jen.Statement
 	TypeId       TypeId
@@ -81,7 +89,20 @@ func genObjectLike(ctx *GeneratorContext, dryRun bool) (plain, raw TypeId) {
 			IsRaw:              true,
 			TypeIdRenderOption: func(_ *GeneratorContext) TypeIdRenderOption { return RenderOption(false, true) },
 			Mapper: func(i TypeId) TypeId {
-				return TypeId{Qualifier: elasticTypeQual, Id: "Elastic", TypeParam: []TypeId{i}}
+				var typeId TypeId
+				if i.DisallowArray {
+					if i.DisallowNull {
+						typeId = undefinedableTypeId
+					} else {
+						typeId = jsonfieldTypeId
+					}
+				} else {
+					// The type may only allow a single value
+					// however it may also allow an array containing only a single element.
+					typeId = elasticTypeId
+				}
+				typeId.TypeParam = []TypeId{i}
+				return typeId
 			},
 		},
 	} {
@@ -123,7 +144,6 @@ func genObjectLike(ctx *GeneratorContext, dryRun bool) (plain, raw TypeId) {
 				}
 			}
 			if !fieldTypeId.IsSingle(nextCtx) {
-				fmt.Printf("field name = %s, a = %+#v, b = %t\n", propFieldName, fieldTypeId, nextCtx.IsSingle())
 				generateMapToPlain(nextCtx)
 				if fieldTypeId.IsOptional(nextCtx) {
 					generateMapToRawPointer(nextCtx)
