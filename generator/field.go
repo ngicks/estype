@@ -52,17 +52,17 @@ func genField(ctx *GeneratorContext, dryRun bool) (typeName TypeId) {
 var fieldTypeTable = map[mapping.EsType]TypeId{
 	mapping.FieldAlias:      {NonWritable: true},
 	mapping.Binary:          {Id: "[]byte"},
-	mapping.Completion:      {Id: "string"},
+	mapping.Completion:      {Id: "string", DisallowNull: true},
 	mapping.Flattened:       {Id: anyMap},
 	mapping.GeoPoint:        {Id: "GeoPoint", Qualifier: fielddatatypeQual},
 	mapping.GeoShape:        {Id: "GeoShape", Qualifier: fielddatatypeQual},
 	mapping.Ip:              {Id: "Addr", Qualifier: "net/netip"},
 	mapping.Histogram:       {Id: "Histogram", Qualifier: fielddatatypeQual},
-	mapping.Join:            {Id: anyMap}, // TODO: implement
-	mapping.Percolator:      {Id: anyMap}, // TODO: implement
-	mapping.Point:           {Id: anyMap}, // TODO: implement
+	mapping.Join:            {Id: anyMap, DisallowNull: true}, // TODO: implement
+	mapping.Percolator:      {Id: anyMap},                     // TODO: implement
+	mapping.Point:           {Id: anyMap},                     // TODO: implement
 	mapping.RankFeature:     {Id: "float64"},
-	mapping.RankFeatures:    {Id: float64Map},
+	mapping.RankFeatures:    {Id: float64Map, DisallowNull: true},
 	mapping.SearchAsYouType: {Id: "string"},
 	mapping.Shape:           {Id: "GeoShape", Qualifier: fielddatatypeQual},
 	mapping.TokenCount:      {Id: "int64"},
@@ -70,7 +70,7 @@ var fieldTypeTable = map[mapping.EsType]TypeId{
 	mapping.Keyword:         {Id: "string"},
 	// The field can be stored if and only if value is same as specified in param.
 	// Should this field also be considered non writable?
-	mapping.ConstantKeyword: {Id: "string"},
+	mapping.ConstantKeyword: {Id: "string", DisallowNull: true},
 	mapping.Wildcard:        {Id: "string"},
 	mapping.Text:            {Id: "string"},
 	mapping.MatchOnlyText:   {Id: "string"},

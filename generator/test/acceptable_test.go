@@ -44,6 +44,7 @@ type settings struct {
 type elasticsearchAcceptanceTestCase struct {
 	mappings    []byte
 	sampleInput any
+	emptyValue  any // special value for testing stroing empty value.
 	toRaw       func(v any) any
 }
 
@@ -51,6 +52,8 @@ func toRaw[T interface{ ToRaw() U }, U any](v any) any {
 	return v.(T).ToRaw()
 }
 
+// This test checks that generated types are accepted with an index created with source mapping.
+// Both plain and raw types are tested.
 func TestElasticsearchAcceptance(t *testing.T) {
 	require := require.New(t)
 
@@ -68,8 +71,15 @@ func TestElasticsearchAcceptance(t *testing.T) {
 		{
 			mappings:    allMapping,
 			sampleInput: sampleAll,
+			emptyValue:  sampleEmptyAllRaw,
 			toRaw:       toRaw[All, AllRaw],
-		}, {
+		},
+		{
+			mappings:    allMapping,
+			sampleInput: sampleAllOptional,
+			toRaw:       toRaw[AllOptional, AllOptionalRaw],
+		},
+		{
 			mappings:    conversionMapping,
 			sampleInput: sampleConversion,
 			toRaw:       toRaw[Conversion, ConversionRaw],
@@ -113,6 +123,12 @@ func TestElasticsearchAcceptance(t *testing.T) {
 		docId, err = indexHelper.PostDoc(tc.toRaw(tc.sampleInput))
 		require.NoError(err)
 		t.Logf("docId = %s\n", docId)
+
+		if tc.emptyValue != nil {
+			docId, err = indexHelper.PostDoc(tc.emptyValue)
+			require.NoError(err)
+			t.Logf("docId = %s\n", docId)
+		}
 	}
 }
 

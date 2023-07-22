@@ -1,6 +1,13 @@
 package generator
 
-import "github.com/dave/jennifer/jen"
+import (
+	"github.com/dave/jennifer/jen"
+	"github.com/ngicks/estype/gentypehelper"
+)
+
+const (
+	gentypehelperQual = "github.com/ngicks/estype/gentypehelper"
+)
 
 func generateToRaw(ctx *GeneratorContext, plain, raw TypeId, plainFields, rawFields []structField, strict bool) {
 	ctx.file.Func().
@@ -78,41 +85,24 @@ func toRawStmt(plain, raw structField) *jen.Statement {
 	fieldNameId := jen.Id("d").Dot(plain.Name)
 	switch raw.TypeId.Qualifier {
 	case jsonfieldTypeQual:
+		// must be single at this point.
 		if plain.TypeId.IsOptional(plain.Opt) {
 			return jen.Qual(jsonfieldTypeQual, "FromPointer").Call(fieldNameId)
 		} else {
 			return jen.Qual(jsonfieldTypeQual, "Defined").Call(fieldNameId)
 		}
 	case undefinedableTypeQual:
+		// must single and null is not acceptable.
 		if plain.TypeId.IsOptional(plain.Opt) {
 			return jen.Qual(undefinedableTypeQual, "FromPointer").Call(fieldNameId)
 		} else {
 			return jen.Qual(undefinedableTypeQual, "Defined").Call(fieldNameId)
 		}
 	case elasticTypeQual:
-		var input *jen.Statement
-		if !plain.IsObjectLike {
-			input = jen.Id("d").Dot(raw.Name)
-		} else {
-			if plain.TypeId.IsSingle(plain.Opt) {
-				input = jen.Id("d").Dot(raw.Name).Dot("ToRaw").Call()
-			} else {
-				fieldType := jen.
-					Id(raw.TypeId.TypeParam[0].Id)
-				var mapperId string
-				if plain.Opt.IsOptional() {
-					mapperId = mapToRawPointerId
-				} else {
-					mapperId = mapToRawId
-				}
-				input = jen.Id(mapperId).Index(fieldType).Call(jen.Id("d").Dot(raw.Name))
-			}
-		}
-		if escaper := escaperId(plain); escaper != "" {
-			input = jen.Id(escaper).Call(input)
-		}
-
-		return jen.Qual(elasticTypeQual, fromFuncName(plain)).Call(input)
+		return jen.
+			Add(elasticMapper(plain)).
+			Index(raw.TypeId.TypeParam[0].Render(RenderOption(false, true))).
+			Call(fieldNameId)
 	}
 	panic("unknown")
 }
@@ -134,62 +124,83 @@ func toPlainStmt(plain, raw structField) *jen.Statement {
 			return fieldNameId.Dot("Value").Call()
 		}
 	case elasticTypeQual:
-		var value *jen.Statement
 		if !plain.IsObjectLike {
-			value = jen.Id("d").Dot(plain.Name).Dot(toFuncName(plain)).Call()
-		} else {
-			if plain.TypeId.IsSingle(plain.Opt) {
-				value = jen.Id("d").Dot(plain.Name).Dot(toFuncName(plain)).Call().Dot("ToPlain").Call()
-			} else {
-				fieldType := jen.Id(plain.TypeId.Id)
-				value = jen.Id(mapToPlainId).Index(fieldType).Call(fieldNameId.Dot("ValueMultiple").Call())
+			var valueMethodName string
+			switch {
+			case plain.TypeId.IsSingle(plain.Opt) && !plain.TypeId.IsOptional(plain.Opt):
+				valueMethodName = "ValueSingle"
+			case plain.TypeId.IsSingle(plain.Opt) && plain.TypeId.IsOptional(plain.Opt):
+				valueMethodName = "PlainSingle"
+			case !plain.TypeId.IsSingle(plain.Opt) && !plain.TypeId.IsOptional(plain.Opt):
+				valueMethodName = "ValueMultiple"
+			case !plain.TypeId.IsSingle(plain.Opt) && plain.TypeId.IsOptional(plain.Opt):
+				return jen.
+					Qual(gentypehelperQual, gentypehelper.IdMapElasticToMultipleValueOptional).
+					Index(plain.TypeId.Render(RenderOption(false, true))).
+					Call(fieldNameId)
 			}
+			return fieldNameId.Dot(valueMethodName).Call()
+		} else {
+			return jen.
+				Add(plainMapper(plain)).
+				Index(plain.TypeId.Render(RenderOption(false, true))).
+				Call(fieldNameId)
 		}
-
-		if escaper := escaperId(plain); escaper != "" {
-			value = jen.Id(escaper).Call(value)
-		}
-
-		return value
 	}
 	panic("unknown")
 }
 
-func fromFuncName(f structField) string {
-	fromFnName := "From"
-	if f.TypeId.IsSingle(f.Opt) {
-		fromFnName += "Single"
-	} else {
-		fromFnName += "Multiple"
-	}
-	if f.TypeId.IsOptional(f.Opt) {
-		fromFnName += "Pointer"
-	}
-	return fromFnName
-}
-
-func escaperId(f structField) string {
-	if f.TypeId.IsOptional(f.Opt) {
+func elasticMapper(f structField) *jen.Statement {
+	var fnName string
+	if f.TypeId.DisallowNull && f.TypeId.IsOptional(f.Opt) {
 		if f.TypeId.IsSingle(f.Opt) {
-			return escapeValueId
+			fnName = gentypehelper.IdMapPlainPointerToUndefinedElastic
 		} else {
-			return escapeSliceId
+			fnName = gentypehelper.IdMapPlainMultiplePointerToUndefinedElastic
+		}
+
+		return jen.Qual(gentypehelperQual, fnName)
+	}
+
+	if !f.IsObjectLike {
+		switch {
+		case f.TypeId.IsSingle(f.Opt) && !f.TypeId.IsOptional(f.Opt):
+			fnName = gentypehelper.IdMapSingleValueToElastic
+		case f.TypeId.IsSingle(f.Opt) && f.TypeId.IsOptional(f.Opt):
+			fnName = gentypehelper.IdMapSingleOptionalValueToElastic
+		case !f.TypeId.IsSingle(f.Opt) && !f.TypeId.IsOptional(f.Opt):
+			fnName = gentypehelper.IdMapMultipleValueToElastic
+		case !f.TypeId.IsSingle(f.Opt) && f.TypeId.IsOptional(f.Opt):
+			fnName = gentypehelper.IdMapMultipleOptionalValueToElastic
+		}
+	} else {
+		switch {
+		case f.TypeId.IsSingle(f.Opt) && !f.TypeId.IsOptional(f.Opt):
+			fnName = gentypehelper.IdMapPlainToRawElastic
+		case f.TypeId.IsSingle(f.Opt) && f.TypeId.IsOptional(f.Opt):
+			fnName = gentypehelper.IdMapPlainOptionalToRawElastic
+		case !f.TypeId.IsSingle(f.Opt) && !f.TypeId.IsOptional(f.Opt):
+			fnName = gentypehelper.IdMapPlainMultipleToRawElastic
+		case !f.TypeId.IsSingle(f.Opt) && f.TypeId.IsOptional(f.Opt):
+			fnName = gentypehelper.IdMapPlainMultipleOptionalToRawElastic
 		}
 	}
-	return ""
+
+	return jen.Qual(gentypehelperQual, fnName)
 }
 
-func toFuncName(f structField) string {
-	var toFuncName string
-	if f.TypeId.IsOptional(f.Opt) {
-		toFuncName += "Plain"
-	} else {
-		toFuncName += "Value"
+func plainMapper(f structField) *jen.Statement {
+	var fnName string
+	switch {
+	case f.TypeId.IsSingle(f.Opt) && !f.TypeId.IsOptional(f.Opt):
+		fnName = gentypehelper.IdMapElasticToPlainSingle
+	case f.TypeId.IsSingle(f.Opt) && f.TypeId.IsOptional(f.Opt):
+		fnName = gentypehelper.IdMapElasticToPlainSingleOptional
+	case !f.TypeId.IsSingle(f.Opt) && !f.TypeId.IsOptional(f.Opt):
+		fnName = gentypehelper.IdMapElasticToPlainMultple
+	case !f.TypeId.IsSingle(f.Opt) && f.TypeId.IsOptional(f.Opt):
+		fnName = gentypehelper.IdMapElasticToPlainMultpleOptinal
 	}
-	if f.TypeId.IsSingle(f.Opt) {
-		toFuncName += "Single"
-	} else {
-		toFuncName += "Multiple"
-	}
-	return toFuncName
+
+	return jen.Qual(gentypehelperQual, fnName)
 }

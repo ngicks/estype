@@ -131,25 +131,8 @@ func genObjectLike(ctx *GeneratorContext, dryRun bool) (plain, raw TypeId) {
 
 			mappedFieldTypeId := opt.Mapper(fieldTypeId)
 			var omitemptyOpt string
-			if mappedFieldTypeId.NonWritable {
+			if mappedFieldTypeId.MustOmit(nextCtx) {
 				omitemptyOpt = ",omitempty"
-			}
-
-			// generate helpers for later uses.
-			if fieldTypeId.IsOptional(nextCtx) {
-				if fieldTypeId.IsSingle(nextCtx) {
-					generateEscapeValue(nextCtx)
-				} else {
-					generateEscapeSlice(nextCtx)
-				}
-			}
-			if !fieldTypeId.IsSingle(nextCtx) {
-				generateMapToPlain(nextCtx)
-				if fieldTypeId.IsOptional(nextCtx) {
-					generateMapToRawPointer(nextCtx)
-				} else {
-					generateMapToRaw(nextCtx)
-				}
 			}
 
 			fields = append(fields, structField{

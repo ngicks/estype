@@ -1,0 +1,7 @@
+{
+  "RootTypeName": "AllOptional",
+  "DefaultOption": {
+    "IsSingle": false,
+    "IsOptional": true
+  }
+}

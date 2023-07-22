@@ -35,7 +35,7 @@ type TypeId struct {
 	NonWritable   bool // A field data type for which the Elasticsearch does not allow store value.
 	AlwaysSingle  bool // A field data type for which the Elasticsearch only accepts T or T[] with single element.
 	DisallowArray bool // some type (dense_vector) can not even be an array of a single element.
-	DisallowNull  bool // some type (dense_vector) can not be `null` which means 
+	DisallowNull  bool // some type (dense_vector) can not be `null` which means
 }
 
 func (t TypeId) Render(option TypeIdRenderOption) *jen.Statement {
@@ -74,6 +74,10 @@ func (t TypeId) IsSingle(option TypeIdRenderOption) bool {
 
 func (t TypeId) IsOptional(option TypeIdRenderOption) bool {
 	return option.IsOptional()
+}
+
+func (t TypeId) MustOmit(option TypeIdRenderOption) bool {
+	return t.NonWritable || (t.DisallowNull && option.IsOptional())
 }
 
 // IgnoreInConversion reports whether t must not be converted between plain and raw types.

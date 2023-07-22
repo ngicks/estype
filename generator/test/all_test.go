@@ -10,6 +10,8 @@ import (
 	"github.com/google/go-cmp/cmp"
 	"github.com/ngicks/estype/fielddatatype"
 	"github.com/ngicks/estype/fielddatatype/estime/builtin"
+	elastic "github.com/ngicks/und/elastic"
+	undefinedable "github.com/ngicks/und/undefinedable"
 	"github.com/stretchr/testify/require"
 )
 
@@ -41,6 +43,12 @@ func TestLosslessConversion(t *testing.T) {
 			unmarshalTargetRaw: &AllRaw{},
 			backConvert:        backConvert[All, AllRaw],
 			toPlain:            toPlain[All, *AllRaw],
+		},
+		{
+			inputPlain:         sampleAllOptional,
+			unmarshalTargetRaw: &AllOptionalRaw{},
+			backConvert:        backConvert[AllOptional, AllOptionalRaw],
+			toPlain:            toPlain[AllOptional, *AllOptionalRaw],
 		},
 		{
 			inputPlain:         sampleConversion,
@@ -189,4 +197,49 @@ var sampleAll = All{
 	UnsignedLong:    uint64(2109381027538706718),
 	Version:         "1.2.7",
 	Wildcard:        "8lnmkvlouiejhr02983",
+}
+
+var sampleEmptyAllRaw = AllRaw{
+	Agg:             elastic.Null[fielddatatype.AggregateMetricDouble](),
+	Blob:            elastic.Null[[]byte](),
+	Bool:            elastic.Null[fielddatatype.Boolean](),
+	Byte:            elastic.Null[int8](),
+	Comp:            elastic.Undefined[string](),
+	ConstantKwd:     elastic.Undefined[string](),
+	Date:            elastic.Null[AllDateDate](),
+	DateNano:        elastic.Null[AllDateNanoDate](),
+	DateRange:       elastic.Null[fielddatatype.Range[builtin.Default]](),
+	DenseVector:     undefinedable.Undefined[[3]float64](),
+	Double:          elastic.Null[float64](),
+	DoubleRange:     elastic.Null[fielddatatype.Range[float64]](),
+	Flattened:       elastic.Null[map[string]any](),
+	Float:           elastic.Null[float32](),
+	FloatRange:      elastic.Null[fielddatatype.Range[float32]](),
+	Geopoint:        elastic.Null[fielddatatype.GeoPoint](),
+	Geoshape:        elastic.Null[fielddatatype.GeoShape](),
+	HalfFloat:       elastic.Null[float32](),
+	Histogram:       elastic.Null[fielddatatype.Histogram](),
+	Integer:         elastic.Null[int32](),
+	IntegerRange:    elastic.Null[fielddatatype.Range[int32]](),
+	IpAddr:          elastic.Null[netip.Addr](),
+	IpRange:         elastic.Null[fielddatatype.Range[netip.Addr]](),
+	Join:            elastic.Undefined[map[string]any](),
+	Kwd:             elastic.Null[string](),
+	Long:            elastic.Null[int64](),
+	LongRange:       elastic.Null[fielddatatype.Range[int64]](),
+	Nested:          elastic.Null[AllNestedObjectRaw](),
+	Object:          elastic.Null[AllObjectObjectRaw](),
+	Point:           elastic.Null[map[string]any](),
+	Query:           elastic.Undefined[map[string]any](),
+	RankFeature:     elastic.Null[float64](),
+	RankFeatures:    elastic.Undefined[map[string]float64](),
+	ScaledFloat:     elastic.Null[float64](),
+	SearchAsYouType: elastic.Null[string](),
+	Shape:           elastic.Null[fielddatatype.GeoShape](),
+	Short:           elastic.Null[int16](),
+	Text:            elastic.Null[string](),
+	TextWTokenCount: elastic.Null[string](),
+	UnsignedLong:    elastic.Null[uint64](),
+	Version:         elastic.Null[string](),
+	Wildcard:        elastic.Null[string](),
 }

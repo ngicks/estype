@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	gentypehelper "github.com/ngicks/estype/gentypehelper"
 	elastic "github.com/ngicks/und/elastic"
 	serde "github.com/ngicks/und/serde"
 	"io"
@@ -21,10 +22,10 @@ type Dynamic struct {
 
 func (d Dynamic) ToRaw() DynamicRaw {
 	return DynamicRaw{
-		NestedInherit: elastic.FromSingle(d.NestedInherit.ToRaw()),
-		NestedRuntime: elastic.FromSingle(d.NestedRuntime.ToRaw()),
-		NestedStrict:  elastic.FromSingle(d.NestedStrict.ToRaw()),
-		ObjectFalse:   elastic.FromSingle(d.ObjectFalse.ToRaw()),
+		NestedInherit: gentypehelper.MapPlainToRawElastic[DynamicNestedInheritNestedRaw](d.NestedInherit),
+		NestedRuntime: gentypehelper.MapPlainToRawElastic[DynamicNestedRuntimeNestedRaw](d.NestedRuntime),
+		NestedStrict:  gentypehelper.MapPlainToRawElastic[DynamicNestedStrictNestedRaw](d.NestedStrict),
+		ObjectFalse:   gentypehelper.MapPlainToRawElastic[DynamicObjectFalseObjectRaw](d.ObjectFalse),
 	}
 }
 
@@ -37,10 +38,10 @@ type DynamicRaw struct {
 
 func (d DynamicRaw) ToPlain() Dynamic {
 	return Dynamic{
-		NestedInherit: d.NestedInherit.ValueSingle().ToPlain(),
-		NestedRuntime: d.NestedRuntime.ValueSingle().ToPlain(),
-		NestedStrict:  d.NestedStrict.ValueSingle().ToPlain(),
-		ObjectFalse:   d.ObjectFalse.ValueSingle().ToPlain(),
+		NestedInherit: gentypehelper.MapElasticToPlainSingle[DynamicNestedInheritNested](d.NestedInherit),
+		NestedRuntime: gentypehelper.MapElasticToPlainSingle[DynamicNestedRuntimeNested](d.NestedRuntime),
+		NestedStrict:  gentypehelper.MapElasticToPlainSingle[DynamicNestedStrictNested](d.NestedStrict),
+		ObjectFalse:   gentypehelper.MapElasticToPlainSingle[DynamicObjectFalseObject](d.ObjectFalse),
 	}
 }
 
@@ -51,8 +52,8 @@ type DynamicNestedInheritNested struct {
 
 func (d DynamicNestedInheritNested) ToRaw() DynamicNestedInheritNestedRaw {
 	return DynamicNestedInheritNestedRaw{
-		Age:  elastic.FromSingle(d.Age),
-		Name: elastic.FromSingle(d.Name.ToRaw()),
+		Age:  gentypehelper.MapSingleValueToElastic[int32](d.Age),
+		Name: gentypehelper.MapPlainToRawElastic[DynamicNestedInheritNameObjectRaw](d.Name),
 	}
 }
 
@@ -64,7 +65,7 @@ type DynamicNestedInheritNestedRaw struct {
 func (d DynamicNestedInheritNestedRaw) ToPlain() DynamicNestedInheritNested {
 	return DynamicNestedInheritNested{
 		Age:  d.Age.ValueSingle(),
-		Name: d.Name.ValueSingle().ToPlain(),
+		Name: gentypehelper.MapElasticToPlainSingle[DynamicNestedInheritNameObject](d.Name),
 	}
 }
 
@@ -75,8 +76,8 @@ type DynamicNestedInheritNameObject struct {
 
 func (d DynamicNestedInheritNameObject) ToRaw() DynamicNestedInheritNameObjectRaw {
 	return DynamicNestedInheritNameObjectRaw{
-		First: elastic.FromSingle(d.First),
-		Last:  elastic.FromSingle(d.Last),
+		First: gentypehelper.MapSingleValueToElastic[string](d.First),
+		Last:  gentypehelper.MapSingleValueToElastic[string](d.Last),
 	}
 }
 
@@ -100,8 +101,8 @@ type DynamicNestedRuntimeNested struct {
 
 func (d DynamicNestedRuntimeNested) ToRaw() DynamicNestedRuntimeNestedRaw {
 	return DynamicNestedRuntimeNestedRaw{
-		Age:                   elastic.FromSingle(d.Age),
-		Name:                  elastic.FromSingle(d.Name.ToRaw()),
+		Age:                   gentypehelper.MapSingleValueToElastic[int32](d.Age),
+		Name:                  gentypehelper.MapPlainToRawElastic[DynamicNestedRuntimeNameObjectRaw](d.Name),
 		AdditionalProperties_: d.AdditionalProperties_,
 	}
 }
@@ -222,7 +223,7 @@ type DynamicNestedRuntimeNestedRaw struct {
 func (d DynamicNestedRuntimeNestedRaw) ToPlain() DynamicNestedRuntimeNested {
 	return DynamicNestedRuntimeNested{
 		Age:                   d.Age.ValueSingle(),
-		Name:                  d.Name.ValueSingle().ToPlain(),
+		Name:                  gentypehelper.MapElasticToPlainSingle[DynamicNestedRuntimeNameObject](d.Name),
 		AdditionalProperties_: d.AdditionalProperties_,
 	}
 }
@@ -337,8 +338,8 @@ type DynamicNestedRuntimeNameObject struct {
 
 func (d DynamicNestedRuntimeNameObject) ToRaw() DynamicNestedRuntimeNameObjectRaw {
 	return DynamicNestedRuntimeNameObjectRaw{
-		First:                 elastic.FromSingle(d.First),
-		Last:                  elastic.FromSingle(d.Last),
+		First:                 gentypehelper.MapSingleValueToElastic[string](d.First),
+		Last:                  gentypehelper.MapSingleValueToElastic[string](d.Last),
 		AdditionalProperties_: d.AdditionalProperties_,
 	}
 }
@@ -568,8 +569,8 @@ type DynamicNestedStrictNested struct {
 
 func (d DynamicNestedStrictNested) ToRaw() DynamicNestedStrictNestedRaw {
 	return DynamicNestedStrictNestedRaw{
-		Age:  elastic.FromSingle(d.Age),
-		Name: elastic.FromSingle(d.Name.ToRaw()),
+		Age:  gentypehelper.MapSingleValueToElastic[int32](d.Age),
+		Name: gentypehelper.MapPlainToRawElastic[DynamicNestedStrictNameObjectRaw](d.Name),
 	}
 }
 
@@ -581,7 +582,7 @@ type DynamicNestedStrictNestedRaw struct {
 func (d DynamicNestedStrictNestedRaw) ToPlain() DynamicNestedStrictNested {
 	return DynamicNestedStrictNested{
 		Age:  d.Age.ValueSingle(),
-		Name: d.Name.ValueSingle().ToPlain(),
+		Name: gentypehelper.MapElasticToPlainSingle[DynamicNestedStrictNameObject](d.Name),
 	}
 }
 
@@ -592,8 +593,8 @@ type DynamicNestedStrictNameObject struct {
 
 func (d DynamicNestedStrictNameObject) ToRaw() DynamicNestedStrictNameObjectRaw {
 	return DynamicNestedStrictNameObjectRaw{
-		First: elastic.FromSingle(d.First),
-		Last:  elastic.FromSingle(d.Last),
+		First: gentypehelper.MapSingleValueToElastic[string](d.First),
+		Last:  gentypehelper.MapSingleValueToElastic[string](d.Last),
 	}
 }
 
@@ -617,8 +618,8 @@ type DynamicObjectFalseObject struct {
 
 func (d DynamicObjectFalseObject) ToRaw() DynamicObjectFalseObjectRaw {
 	return DynamicObjectFalseObjectRaw{
-		Age:                   elastic.FromSingle(d.Age),
-		Name:                  elastic.FromSingle(d.Name.ToRaw()),
+		Age:                   gentypehelper.MapSingleValueToElastic[int32](d.Age),
+		Name:                  gentypehelper.MapPlainToRawElastic[DynamicObjectFalseNameObjectRaw](d.Name),
 		AdditionalProperties_: d.AdditionalProperties_,
 	}
 }
@@ -734,7 +735,7 @@ type DynamicObjectFalseObjectRaw struct {
 func (d DynamicObjectFalseObjectRaw) ToPlain() DynamicObjectFalseObject {
 	return DynamicObjectFalseObject{
 		Age:                   d.Age.ValueSingle(),
-		Name:                  d.Name.ValueSingle().ToPlain(),
+		Name:                  gentypehelper.MapElasticToPlainSingle[DynamicObjectFalseNameObject](d.Name),
 		AdditionalProperties_: d.AdditionalProperties_,
 	}
 }
@@ -849,8 +850,8 @@ type DynamicObjectFalseNameObject struct {
 
 func (d DynamicObjectFalseNameObject) ToRaw() DynamicObjectFalseNameObjectRaw {
 	return DynamicObjectFalseNameObjectRaw{
-		First:                 elastic.FromSingle(d.First),
-		Last:                  elastic.FromSingle(d.Last),
+		First:                 gentypehelper.MapSingleValueToElastic[string](d.First),
+		Last:                  gentypehelper.MapSingleValueToElastic[string](d.Last),
 		AdditionalProperties_: d.AdditionalProperties_,
 	}
 }

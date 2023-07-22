@@ -1,50 +1,9 @@
 package test
 
-import elastic "github.com/ngicks/und/elastic"
-
-func escapeSlice[T any](sl []T) *[]T {
-	if sl == nil {
-		return nil
-	}
-	return &sl
-}
-
-func mapToPlain[T any, U interface{ ToPlain() T }](l []U) []T {
-	if l == nil {
-		return nil
-	}
-	out := make([]T, len(l))
-	for i, v := range l {
-		out[i] = v.ToPlain()
-	}
-	return out
-}
-
-func mapToRawPointer[T any, U interface{ ToRaw() T }](l *[]U) []T {
-	if l == nil {
-		return nil
-	}
-	out := make([]T, len(*l))
-	for i, v := range *l {
-		out[i] = v.ToRaw()
-	}
-	return out
-}
-
-func mapToRaw[T any, U interface{ ToRaw() T }](l []U) []T {
-	if l == nil {
-		return nil
-	}
-	out := make([]T, len(l))
-	for i, v := range l {
-		out[i] = v.ToRaw()
-	}
-	return out
-}
-
-func escapeValue[T any](v T) *T {
-	return &v
-}
+import (
+	gentypehelper "github.com/ngicks/estype/gentypehelper"
+	elastic "github.com/ngicks/und/elastic"
+)
 
 type Conversion struct {
 	MultipleOptional *[]ConversionMultipleOptionalNested `json:"multiple_optional"`
@@ -55,10 +14,10 @@ type Conversion struct {
 
 func (d Conversion) ToRaw() ConversionRaw {
 	return ConversionRaw{
-		MultipleOptional: elastic.FromMultiplePointer(escapeSlice(mapToRawPointer[ConversionMultipleOptionalNestedRaw](d.MultipleOptional))),
-		MultipleRequired: elastic.FromMultiple(mapToRaw[ConversionMultipleRequiredNestedRaw](d.MultipleRequired)),
-		SingleOptional:   elastic.FromSinglePointer(escapeValue(d.SingleOptional.ToRaw())),
-		SingleRequired:   elastic.FromSingle(d.SingleRequired.ToRaw()),
+		MultipleOptional: gentypehelper.MapPlainMultipleOptionalToRawElastic[ConversionMultipleOptionalNestedRaw](d.MultipleOptional),
+		MultipleRequired: gentypehelper.MapPlainMultipleToRawElastic[ConversionMultipleRequiredNestedRaw](d.MultipleRequired),
+		SingleOptional:   gentypehelper.MapPlainOptionalToRawElastic[ConversionSingleOptionalObjectRaw](d.SingleOptional),
+		SingleRequired:   gentypehelper.MapPlainToRawElastic[ConversionSingleRequiredObjectRaw](d.SingleRequired),
 	}
 }
 
@@ -71,10 +30,10 @@ type ConversionRaw struct {
 
 func (d ConversionRaw) ToPlain() Conversion {
 	return Conversion{
-		MultipleOptional: escapeSlice(mapToPlain[ConversionMultipleOptionalNested](d.MultipleOptional.ValueMultiple())),
-		MultipleRequired: mapToPlain[ConversionMultipleRequiredNested](d.MultipleRequired.ValueMultiple()),
-		SingleOptional:   escapeValue(d.SingleOptional.PlainSingle().ToPlain()),
-		SingleRequired:   d.SingleRequired.ValueSingle().ToPlain(),
+		MultipleOptional: gentypehelper.MapElasticToPlainMultpleOptinal[ConversionMultipleOptionalNested](d.MultipleOptional),
+		MultipleRequired: gentypehelper.MapElasticToPlainMultple[ConversionMultipleRequiredNested](d.MultipleRequired),
+		SingleOptional:   gentypehelper.MapElasticToPlainSingleOptional[ConversionSingleOptionalObject](d.SingleOptional),
+		SingleRequired:   gentypehelper.MapElasticToPlainSingle[ConversionSingleRequiredObject](d.SingleRequired),
 	}
 }
 
@@ -85,8 +44,8 @@ type ConversionMultipleOptionalNested struct {
 
 func (d ConversionMultipleOptionalNested) ToRaw() ConversionMultipleOptionalNestedRaw {
 	return ConversionMultipleOptionalNestedRaw{
-		Age:  elastic.FromSingle(d.Age),
-		Name: elastic.FromSingle(d.Name.ToRaw()),
+		Age:  gentypehelper.MapSingleValueToElastic[int32](d.Age),
+		Name: gentypehelper.MapPlainToRawElastic[ConversionMultipleOptionalNameObjectRaw](d.Name),
 	}
 }
 
@@ -98,7 +57,7 @@ type ConversionMultipleOptionalNestedRaw struct {
 func (d ConversionMultipleOptionalNestedRaw) ToPlain() ConversionMultipleOptionalNested {
 	return ConversionMultipleOptionalNested{
 		Age:  d.Age.ValueSingle(),
-		Name: d.Name.ValueSingle().ToPlain(),
+		Name: gentypehelper.MapElasticToPlainSingle[ConversionMultipleOptionalNameObject](d.Name),
 	}
 }
 
@@ -109,8 +68,8 @@ type ConversionMultipleOptionalNameObject struct {
 
 func (d ConversionMultipleOptionalNameObject) ToRaw() ConversionMultipleOptionalNameObjectRaw {
 	return ConversionMultipleOptionalNameObjectRaw{
-		First: elastic.FromSingle(d.First),
-		Last:  elastic.FromSingle(d.Last),
+		First: gentypehelper.MapSingleValueToElastic[string](d.First),
+		Last:  gentypehelper.MapSingleValueToElastic[string](d.Last),
 	}
 }
 
@@ -133,8 +92,8 @@ type ConversionMultipleRequiredNested struct {
 
 func (d ConversionMultipleRequiredNested) ToRaw() ConversionMultipleRequiredNestedRaw {
 	return ConversionMultipleRequiredNestedRaw{
-		Age:  elastic.FromSingle(d.Age),
-		Name: elastic.FromSingle(d.Name.ToRaw()),
+		Age:  gentypehelper.MapSingleValueToElastic[int32](d.Age),
+		Name: gentypehelper.MapPlainToRawElastic[ConversionMultipleRequiredNameObjectRaw](d.Name),
 	}
 }
 
@@ -146,7 +105,7 @@ type ConversionMultipleRequiredNestedRaw struct {
 func (d ConversionMultipleRequiredNestedRaw) ToPlain() ConversionMultipleRequiredNested {
 	return ConversionMultipleRequiredNested{
 		Age:  d.Age.ValueSingle(),
-		Name: d.Name.ValueSingle().ToPlain(),
+		Name: gentypehelper.MapElasticToPlainSingle[ConversionMultipleRequiredNameObject](d.Name),
 	}
 }
 
@@ -157,8 +116,8 @@ type ConversionMultipleRequiredNameObject struct {
 
 func (d ConversionMultipleRequiredNameObject) ToRaw() ConversionMultipleRequiredNameObjectRaw {
 	return ConversionMultipleRequiredNameObjectRaw{
-		First: elastic.FromSingle(d.First),
-		Last:  elastic.FromSingle(d.Last),
+		First: gentypehelper.MapSingleValueToElastic[string](d.First),
+		Last:  gentypehelper.MapSingleValueToElastic[string](d.Last),
 	}
 }
 
@@ -181,8 +140,8 @@ type ConversionSingleOptionalObject struct {
 
 func (d ConversionSingleOptionalObject) ToRaw() ConversionSingleOptionalObjectRaw {
 	return ConversionSingleOptionalObjectRaw{
-		Age:  elastic.FromSingle(d.Age),
-		Name: elastic.FromSingle(d.Name.ToRaw()),
+		Age:  gentypehelper.MapSingleValueToElastic[int32](d.Age),
+		Name: gentypehelper.MapPlainToRawElastic[ConversionSingleOptionalNameObjectRaw](d.Name),
 	}
 }
 
@@ -194,7 +153,7 @@ type ConversionSingleOptionalObjectRaw struct {
 func (d ConversionSingleOptionalObjectRaw) ToPlain() ConversionSingleOptionalObject {
 	return ConversionSingleOptionalObject{
 		Age:  d.Age.ValueSingle(),
-		Name: d.Name.ValueSingle().ToPlain(),
+		Name: gentypehelper.MapElasticToPlainSingle[ConversionSingleOptionalNameObject](d.Name),
 	}
 }
 
@@ -205,8 +164,8 @@ type ConversionSingleOptionalNameObject struct {
 
 func (d ConversionSingleOptionalNameObject) ToRaw() ConversionSingleOptionalNameObjectRaw {
 	return ConversionSingleOptionalNameObjectRaw{
-		First: elastic.FromSingle(d.First),
-		Last:  elastic.FromSingle(d.Last),
+		First: gentypehelper.MapSingleValueToElastic[string](d.First),
+		Last:  gentypehelper.MapSingleValueToElastic[string](d.Last),
 	}
 }
 
@@ -229,8 +188,8 @@ type ConversionSingleRequiredObject struct {
 
 func (d ConversionSingleRequiredObject) ToRaw() ConversionSingleRequiredObjectRaw {
 	return ConversionSingleRequiredObjectRaw{
-		Age:  elastic.FromSingle(d.Age),
-		Name: elastic.FromSingle(d.Name.ToRaw()),
+		Age:  gentypehelper.MapSingleValueToElastic[int32](d.Age),
+		Name: gentypehelper.MapPlainToRawElastic[ConversionSingleRequiredNameObjectRaw](d.Name),
 	}
 }
 
@@ -242,7 +201,7 @@ type ConversionSingleRequiredObjectRaw struct {
 func (d ConversionSingleRequiredObjectRaw) ToPlain() ConversionSingleRequiredObject {
 	return ConversionSingleRequiredObject{
 		Age:  d.Age.ValueSingle(),
-		Name: d.Name.ValueSingle().ToPlain(),
+		Name: gentypehelper.MapElasticToPlainSingle[ConversionSingleRequiredNameObject](d.Name),
 	}
 }
 
@@ -253,8 +212,8 @@ type ConversionSingleRequiredNameObject struct {
 
 func (d ConversionSingleRequiredNameObject) ToRaw() ConversionSingleRequiredNameObjectRaw {
 	return ConversionSingleRequiredNameObjectRaw{
-		First: elastic.FromSingle(d.First),
-		Last:  elastic.FromSingle(d.Last),
+		First: gentypehelper.MapSingleValueToElastic[string](d.First),
+		Last:  gentypehelper.MapSingleValueToElastic[string](d.Last),
 	}
 }
 

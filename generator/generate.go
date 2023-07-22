@@ -32,13 +32,8 @@ type GeneratorContext struct {
 }
 
 type globalState struct {
-	generatedTypes           map[string]mapping.Property // unused. future update may use this to dedup generated types.
-	bufPoolGenerated         bool
-	escapeValueGenerated     bool
-	escapeSliceGenerated     bool
-	mapToPlainGenerated      bool
-	mapToRawGenerated        bool
-	mapToRawPointerGenerated bool
+	generatedTypes   map[string]mapping.Property // unused. future update may use this to dedup generated types.
+	bufPoolGenerated bool
 }
 
 type localState struct {

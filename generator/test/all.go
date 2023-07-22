@@ -4,6 +4,7 @@ import (
 	fielddatatype "github.com/ngicks/estype/fielddatatype"
 	estime "github.com/ngicks/estype/fielddatatype/estime"
 	builtin "github.com/ngicks/estype/fielddatatype/estime/builtin"
+	gentypehelper "github.com/ngicks/estype/gentypehelper"
 	elastic "github.com/ngicks/und/elastic"
 	undefinedable "github.com/ngicks/und/undefinedable"
 	"net/netip"
@@ -58,48 +59,48 @@ type All struct {
 
 func (d All) ToRaw() AllRaw {
 	return AllRaw{
-		Agg:             elastic.FromSingle(d.Agg),
-		Blob:            elastic.FromSingle(d.Blob),
-		Bool:            elastic.FromSingle(d.Bool),
-		Byte:            elastic.FromSingle(d.Byte),
-		Comp:            elastic.FromSingle(d.Comp),
-		ConstantKwd:     elastic.FromSingle(d.ConstantKwd),
-		Date:            elastic.FromSingle(d.Date),
-		DateNano:        elastic.FromSingle(d.DateNano),
-		DateRange:       elastic.FromSingle(d.DateRange),
+		Agg:             gentypehelper.MapSingleValueToElastic[fielddatatype.AggregateMetricDouble](d.Agg),
+		Blob:            gentypehelper.MapSingleValueToElastic[[]byte](d.Blob),
+		Bool:            gentypehelper.MapSingleValueToElastic[fielddatatype.Boolean](d.Bool),
+		Byte:            gentypehelper.MapSingleValueToElastic[int8](d.Byte),
+		Comp:            gentypehelper.MapSingleValueToElastic[string](d.Comp),
+		ConstantKwd:     gentypehelper.MapSingleValueToElastic[string](d.ConstantKwd),
+		Date:            gentypehelper.MapSingleValueToElastic[AllDateDate](d.Date),
+		DateNano:        gentypehelper.MapSingleValueToElastic[AllDateNanoDate](d.DateNano),
+		DateRange:       gentypehelper.MapSingleValueToElastic[fielddatatype.Range[builtin.Default]](d.DateRange),
 		DenseVector:     undefinedable.Defined(d.DenseVector),
-		Double:          elastic.FromSingle(d.Double),
-		DoubleRange:     elastic.FromSingle(d.DoubleRange),
-		Flattened:       elastic.FromSingle(d.Flattened),
-		Float:           elastic.FromSingle(d.Float),
-		FloatRange:      elastic.FromSingle(d.FloatRange),
-		Geopoint:        elastic.FromSingle(d.Geopoint),
-		Geoshape:        elastic.FromSingle(d.Geoshape),
-		HalfFloat:       elastic.FromSingle(d.HalfFloat),
-		Histogram:       elastic.FromSingle(d.Histogram),
-		Integer:         elastic.FromSingle(d.Integer),
-		IntegerRange:    elastic.FromSingle(d.IntegerRange),
-		IpAddr:          elastic.FromSingle(d.IpAddr),
-		IpRange:         elastic.FromSingle(d.IpRange),
-		Join:            elastic.FromSingle(d.Join),
-		Kwd:             elastic.FromSingle(d.Kwd),
-		Long:            elastic.FromSingle(d.Long),
-		LongRange:       elastic.FromSingle(d.LongRange),
-		Nested:          elastic.FromSingle(d.Nested.ToRaw()),
-		Object:          elastic.FromSingle(d.Object.ToRaw()),
-		Point:           elastic.FromSingle(d.Point),
-		Query:           elastic.FromSingle(d.Query),
-		RankFeature:     elastic.FromSingle(d.RankFeature),
-		RankFeatures:    elastic.FromSingle(d.RankFeatures),
-		ScaledFloat:     elastic.FromSingle(d.ScaledFloat),
-		SearchAsYouType: elastic.FromSingle(d.SearchAsYouType),
-		Shape:           elastic.FromSingle(d.Shape),
-		Short:           elastic.FromSingle(d.Short),
-		Text:            elastic.FromSingle(d.Text),
-		TextWTokenCount: elastic.FromSingle(d.TextWTokenCount),
-		UnsignedLong:    elastic.FromSingle(d.UnsignedLong),
-		Version:         elastic.FromSingle(d.Version),
-		Wildcard:        elastic.FromSingle(d.Wildcard),
+		Double:          gentypehelper.MapSingleValueToElastic[float64](d.Double),
+		DoubleRange:     gentypehelper.MapSingleValueToElastic[fielddatatype.Range[float64]](d.DoubleRange),
+		Flattened:       gentypehelper.MapSingleValueToElastic[map[string]any](d.Flattened),
+		Float:           gentypehelper.MapSingleValueToElastic[float32](d.Float),
+		FloatRange:      gentypehelper.MapSingleValueToElastic[fielddatatype.Range[float32]](d.FloatRange),
+		Geopoint:        gentypehelper.MapSingleValueToElastic[fielddatatype.GeoPoint](d.Geopoint),
+		Geoshape:        gentypehelper.MapSingleValueToElastic[fielddatatype.GeoShape](d.Geoshape),
+		HalfFloat:       gentypehelper.MapSingleValueToElastic[float32](d.HalfFloat),
+		Histogram:       gentypehelper.MapSingleValueToElastic[fielddatatype.Histogram](d.Histogram),
+		Integer:         gentypehelper.MapSingleValueToElastic[int32](d.Integer),
+		IntegerRange:    gentypehelper.MapSingleValueToElastic[fielddatatype.Range[int32]](d.IntegerRange),
+		IpAddr:          gentypehelper.MapSingleValueToElastic[netip.Addr](d.IpAddr),
+		IpRange:         gentypehelper.MapSingleValueToElastic[fielddatatype.Range[netip.Addr]](d.IpRange),
+		Join:            gentypehelper.MapSingleValueToElastic[map[string]any](d.Join),
+		Kwd:             gentypehelper.MapSingleValueToElastic[string](d.Kwd),
+		Long:            gentypehelper.MapSingleValueToElastic[int64](d.Long),
+		LongRange:       gentypehelper.MapSingleValueToElastic[fielddatatype.Range[int64]](d.LongRange),
+		Nested:          gentypehelper.MapPlainToRawElastic[AllNestedObjectRaw](d.Nested),
+		Object:          gentypehelper.MapPlainToRawElastic[AllObjectObjectRaw](d.Object),
+		Point:           gentypehelper.MapSingleValueToElastic[map[string]any](d.Point),
+		Query:           gentypehelper.MapSingleValueToElastic[map[string]any](d.Query),
+		RankFeature:     gentypehelper.MapSingleValueToElastic[float64](d.RankFeature),
+		RankFeatures:    gentypehelper.MapSingleValueToElastic[map[string]float64](d.RankFeatures),
+		ScaledFloat:     gentypehelper.MapSingleValueToElastic[float64](d.ScaledFloat),
+		SearchAsYouType: gentypehelper.MapSingleValueToElastic[string](d.SearchAsYouType),
+		Shape:           gentypehelper.MapSingleValueToElastic[fielddatatype.GeoShape](d.Shape),
+		Short:           gentypehelper.MapSingleValueToElastic[int16](d.Short),
+		Text:            gentypehelper.MapSingleValueToElastic[string](d.Text),
+		TextWTokenCount: gentypehelper.MapSingleValueToElastic[string](d.TextWTokenCount),
+		UnsignedLong:    gentypehelper.MapSingleValueToElastic[uint64](d.UnsignedLong),
+		Version:         gentypehelper.MapSingleValueToElastic[string](d.Version),
+		Wildcard:        gentypehelper.MapSingleValueToElastic[string](d.Wildcard),
 	}
 }
 
@@ -178,8 +179,8 @@ func (d AllRaw) ToPlain() All {
 		Kwd:             d.Kwd.ValueSingle(),
 		Long:            d.Long.ValueSingle(),
 		LongRange:       d.LongRange.ValueSingle(),
-		Nested:          d.Nested.ValueSingle().ToPlain(),
-		Object:          d.Object.ValueSingle().ToPlain(),
+		Nested:          gentypehelper.MapElasticToPlainSingle[AllNestedObject](d.Nested),
+		Object:          gentypehelper.MapElasticToPlainSingle[AllObjectObject](d.Object),
 		Point:           d.Point.ValueSingle(),
 		Query:           d.Query.ValueSingle(),
 		RankFeature:     d.RankFeature.ValueSingle(),
@@ -293,8 +294,8 @@ type AllNestedObject struct {
 
 func (d AllNestedObject) ToRaw() AllNestedObjectRaw {
 	return AllNestedObjectRaw{
-		Age:  elastic.FromSingle(d.Age),
-		Name: elastic.FromSingle(d.Name.ToRaw()),
+		Age:  gentypehelper.MapSingleValueToElastic[int32](d.Age),
+		Name: gentypehelper.MapPlainToRawElastic[AllNestedNameObjectRaw](d.Name),
 	}
 }
 
@@ -306,7 +307,7 @@ type AllNestedObjectRaw struct {
 func (d AllNestedObjectRaw) ToPlain() AllNestedObject {
 	return AllNestedObject{
 		Age:  d.Age.ValueSingle(),
-		Name: d.Name.ValueSingle().ToPlain(),
+		Name: gentypehelper.MapElasticToPlainSingle[AllNestedNameObject](d.Name),
 	}
 }
 
@@ -317,8 +318,8 @@ type AllNestedNameObject struct {
 
 func (d AllNestedNameObject) ToRaw() AllNestedNameObjectRaw {
 	return AllNestedNameObjectRaw{
-		First: elastic.FromSingle(d.First),
-		Last:  elastic.FromSingle(d.Last),
+		First: gentypehelper.MapSingleValueToElastic[string](d.First),
+		Last:  gentypehelper.MapSingleValueToElastic[string](d.Last),
 	}
 }
 
@@ -341,8 +342,8 @@ type AllObjectObject struct {
 
 func (d AllObjectObject) ToRaw() AllObjectObjectRaw {
 	return AllObjectObjectRaw{
-		Age:  elastic.FromSingle(d.Age),
-		Name: elastic.FromSingle(d.Name.ToRaw()),
+		Age:  gentypehelper.MapSingleValueToElastic[int32](d.Age),
+		Name: gentypehelper.MapPlainToRawElastic[AllObjectNameObjectRaw](d.Name),
 	}
 }
 
@@ -354,7 +355,7 @@ type AllObjectObjectRaw struct {
 func (d AllObjectObjectRaw) ToPlain() AllObjectObject {
 	return AllObjectObject{
 		Age:  d.Age.ValueSingle(),
-		Name: d.Name.ValueSingle().ToPlain(),
+		Name: gentypehelper.MapElasticToPlainSingle[AllObjectNameObject](d.Name),
 	}
 }
 
@@ -365,8 +366,8 @@ type AllObjectNameObject struct {
 
 func (d AllObjectNameObject) ToRaw() AllObjectNameObjectRaw {
 	return AllObjectNameObjectRaw{
-		First: elastic.FromSingle(d.First),
-		Last:  elastic.FromSingle(d.Last),
+		First: gentypehelper.MapSingleValueToElastic[string](d.First),
+		Last:  gentypehelper.MapSingleValueToElastic[string](d.Last),
 	}
 }
 
