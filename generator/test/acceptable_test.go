@@ -1,6 +1,7 @@
 package test
 
 import (
+	"bytes"
 	"context"
 	_ "embed"
 	"encoding/json"
@@ -43,6 +44,11 @@ type settings struct {
 type elasticsearchAcceptanceTestCase struct {
 	mappings    []byte
 	sampleInput any
+	toRaw       func(v any) any
+}
+
+func toRaw[T interface{ ToRaw() U }, U any](v any) any {
+	return v.(T).ToRaw()
 }
 
 func TestElasticsearchAcceptance(t *testing.T) {
@@ -62,12 +68,15 @@ func TestElasticsearchAcceptance(t *testing.T) {
 		{
 			mappings:    allMapping,
 			sampleInput: sampleAll,
+			toRaw:       toRaw[All, AllRaw],
 		}, {
 			mappings:    conversionMapping,
 			sampleInput: sampleConversion,
+			toRaw:       toRaw[Conversion, ConversionRaw],
 		}, {
 			mappings:    dynamicMapping,
 			sampleInput: sampleDynamic,
+			toRaw:       toRaw[Dynamic, DynamicRaw],
 		},
 	} {
 		var mapping map[string]indexstate.IndexState
@@ -91,6 +100,17 @@ func TestElasticsearchAcceptance(t *testing.T) {
 		}()
 
 		docId, err := indexHelper.PostDoc(tc.sampleInput)
+		require.NoError(err)
+		t.Logf("docId = %s\n", docId)
+
+		// for debug.
+		buf := new(bytes.Buffer)
+		enc := serde.NewEncoder(buf)
+		enc.SetIndent("", "    ")
+		_ = enc.Encode(tc.toRaw(tc.sampleInput))
+		t.Logf("%s\n", buf.String())
+
+		docId, err = indexHelper.PostDoc(tc.toRaw(tc.sampleInput))
 		require.NoError(err)
 		t.Logf("docId = %s\n", docId)
 	}

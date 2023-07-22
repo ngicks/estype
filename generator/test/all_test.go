@@ -127,10 +127,10 @@ var sampleAll = All{
 		Geometry: geom.Point{-77.03653, 38.897676},
 	},
 	HalfFloat: float32(2131.57),
-	Histogram: (map[string]interface{}{
-		"values": []any{0.1, 0.2, 0.3, 0.4, 0.5},
-		"counts": []any{float64(3), float64(7), float64(23), float64(12), float64(6)},
-	}),
+	Histogram: fielddatatype.Histogram{
+		Values: []float64{0.1, 0.2, 0.3, 0.4, 0.5},
+		Counts: []int32{3, 7, 23, 12, 6},
+	},
 	Integer: int32(60),
 	IntegerRange: fielddatatype.Range[int32]{
 		Gte: escape[int32](10),

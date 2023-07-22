@@ -57,7 +57,7 @@ var fieldTypeTable = map[mapping.EsType]TypeId{
 	mapping.GeoPoint:        {Id: "GeoPoint", Qualifier: fielddatatypeQual},
 	mapping.GeoShape:        {Id: "GeoShape", Qualifier: fielddatatypeQual},
 	mapping.Ip:              {Id: "Addr", Qualifier: "net/netip"},
-	mapping.Histogram:       {Id: anyMap}, // TODO: implement
+	mapping.Histogram:       {Id: "Histogram", Qualifier: fielddatatypeQual},
 	mapping.Join:            {Id: anyMap}, // TODO: implement
 	mapping.Percolator:      {Id: anyMap}, // TODO: implement
 	mapping.Point:           {Id: anyMap}, // TODO: implement

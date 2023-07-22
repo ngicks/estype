@@ -30,7 +30,7 @@ type All struct {
 	Geopoint        fielddatatype.GeoPoint               `json:"geopoint"`
 	Geoshape        fielddatatype.GeoShape               `json:"geoshape"`
 	HalfFloat       float32                              `json:"half_float"`
-	Histogram       map[string]any                       `json:"histogram"`
+	Histogram       fielddatatype.Histogram              `json:"histogram"`
 	Integer         int32                                `json:"integer"`
 	IntegerRange    fielddatatype.Range[int32]           `json:"integer_range"`
 	IpAddr          netip.Addr                           `json:"ip_addr"`
@@ -123,7 +123,7 @@ type AllRaw struct {
 	Geopoint        elastic.Elastic[fielddatatype.GeoPoint]               `json:"geopoint"`
 	Geoshape        elastic.Elastic[fielddatatype.GeoShape]               `json:"geoshape"`
 	HalfFloat       elastic.Elastic[float32]                              `json:"half_float"`
-	Histogram       elastic.Elastic[map[string]any]                       `json:"histogram"`
+	Histogram       elastic.Elastic[fielddatatype.Histogram]              `json:"histogram"`
 	Integer         elastic.Elastic[int32]                                `json:"integer"`
 	IntegerRange    elastic.Elastic[fielddatatype.Range[int32]]           `json:"integer_range"`
 	IpAddr          elastic.Elastic[netip.Addr]                           `json:"ip_addr"`
