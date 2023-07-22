@@ -1,7 +1,6 @@
 package fielddatatype
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 
@@ -17,8 +16,9 @@ type GeoShape struct {
 }
 
 func (g *GeoShape) UnmarshalJSON(data []byte) error {
-	data = bytes.TrimLeft(data, " ")
-
+	if len(data) < 3 {
+		return fmt.Errorf("too short: input must longer than 2 chars but %d", len(data))
+	}
 	switch data[0] {
 	case '{':
 		var geo geojson.Geometry

@@ -13,9 +13,8 @@ import (
 )
 
 func UnmarshalEsGeoPointJSON(data []byte) (GeoPoint, error) {
-	data = bytes.Trim(data, " ")
 	if len(data) < 3 {
-		return GeoPoint{}, fmt.Errorf("too short: input must longer than 3 chars but %d", len(data))
+		return GeoPoint{}, fmt.Errorf("too short: input must longer than 2 chars but %d", len(data))
 	}
 	switch data[0] {
 	case '[':
@@ -87,7 +86,7 @@ func UnmarshalEsGeoPointJSON(data []byte) (GeoPoint, error) {
 
 func UnmarshalEsGeoPointText(text []byte) (GeoPoint, error) {
 	strText := string(text)
-	if strText[0] == 'P' {
+	if len(strText) > 0 && strText[0] == 'P' {
 		// POINT(lon lat)
 		geo, err := wkt.Decode(strings.NewReader(strText))
 		if err != nil {
