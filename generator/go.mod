@@ -7,13 +7,12 @@ require (
 	github.com/elastic/go-elasticsearch/v8 v8.8.2
 	github.com/go-spatial/geom v0.0.0-20220918193402-3cd2f5a9a082
 	github.com/google/go-cmp v0.5.9
-	github.com/ngicks/estype/fielddatatype v0.0.1-alpha1
-	github.com/ngicks/estype/gentypehelper v0.0.0-20230723053102-76e7dbe53172
-	github.com/ngicks/estype/helper v0.0.1-alpha2
-	github.com/ngicks/estype/spec v0.0.1-alpha1
-	github.com/ngicks/generic v0.0.0-20230320024227-32842ed7ed0f
+	github.com/ngicks/estype/fielddatatype v0.0.1-alpha3
+	github.com/ngicks/estype/gentypehelper v0.0.0-20230723112013-c313d9b782b7
+	github.com/ngicks/estype/helper v0.0.1-alpha3
+	github.com/ngicks/estype/spec v0.0.1-alpha2
 	github.com/ngicks/go-iterator v0.0.0-20230524101302-db8d55117ed8
-	github.com/ngicks/und v0.0.0-20230722050536-cec4d5496f24
+	github.com/ngicks/und v0.0.0-20230723110635-fd0b45653fa9
 	github.com/stretchr/testify v1.8.4
 )
 

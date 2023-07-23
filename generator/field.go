@@ -57,11 +57,11 @@ var fieldTypeTable = map[mapping.EsType]TypeId{
 	mapping.GeoPoint:        {Id: "GeoPoint", Qualifier: fielddatatypeQual},
 	mapping.GeoShape:        {Id: "GeoShape", Qualifier: fielddatatypeQual},
 	mapping.Ip:              {Id: "Addr", Qualifier: "net/netip"},
-	mapping.Histogram:       {Id: "Histogram", Qualifier: fielddatatypeQual},
-	mapping.Join:            {Id: anyMap, DisallowNull: true}, // TODO: implement
-	mapping.Percolator:      {Id: anyMap},                     // TODO: implement
-	mapping.Point:           {Id: anyMap},                     // TODO: implement
-	mapping.RankFeature:     {Id: "float64"},
+	mapping.Histogram:       {Id: "Histogram", Qualifier: fielddatatypeQual, AlwaysSingle: true},
+	mapping.Join:            {Id: anyMap, DisallowNull: true, AlwaysSingle: true}, // TODO: implement
+	mapping.Percolator:      {Id: anyMap, DisallowNull: true, AlwaysSingle: true},
+	mapping.Point:           {Id: anyMap}, // TODO: implement
+	mapping.RankFeature:     {Id: "float64", AlwaysSingle: true},
 	mapping.RankFeatures:    {Id: float64Map, DisallowNull: true},
 	mapping.SearchAsYouType: {Id: "string"},
 	mapping.Shape:           {Id: "GeoShape", Qualifier: fielddatatypeQual},

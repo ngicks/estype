@@ -1,7 +1,6 @@
 package test
 
 import (
-	"bytes"
 	"context"
 	_ "embed"
 	"encoding/json"
@@ -80,6 +79,11 @@ func TestElasticsearchAcceptance(t *testing.T) {
 			toRaw:       toRaw[AllOptional, AllOptionalRaw],
 		},
 		{
+			mappings:    allMapping,
+			sampleInput: sampleAllOptionalZero,
+			toRaw:       toRaw[AllOptional, AllOptionalRaw],
+		},
+		{
 			mappings:    conversionMapping,
 			sampleInput: sampleConversion,
 			toRaw:       toRaw[Conversion, ConversionRaw],
@@ -109,22 +113,19 @@ func TestElasticsearchAcceptance(t *testing.T) {
 			_ = indexHelper.Delete()
 		}()
 
+		printJson(t, tc.sampleInput)
 		docId, err := indexHelper.PostDoc(tc.sampleInput)
 		require.NoError(err)
 		t.Logf("docId = %s\n", docId)
 
-		// for debug.
-		buf := new(bytes.Buffer)
-		enc := serde.NewEncoder(buf)
-		enc.SetIndent("", "    ")
-		_ = enc.Encode(tc.toRaw(tc.sampleInput))
-		t.Logf("%s\n", buf.String())
-
-		docId, err = indexHelper.PostDoc(tc.toRaw(tc.sampleInput))
+		raw := tc.toRaw(tc.sampleInput)
+		printJson(t, raw)
+		docId, err = indexHelper.PostDoc(raw)
 		require.NoError(err)
 		t.Logf("docId = %s\n", docId)
 
 		if tc.emptyValue != nil {
+			printJson(t, tc.emptyValue)
 			docId, err = indexHelper.PostDoc(tc.emptyValue)
 			require.NoError(err)
 			t.Logf("docId = %s\n", docId)
@@ -138,4 +139,12 @@ func getMapping(m map[string]indexstate.IndexState) mapping.TypeMapping {
 		return v.Mappings.Value()
 	}
 	panic(fmt.Errorf("unknown input = %+#v", m))
+}
+
+func printJson(t *testing.T, v any) {
+	bin, err := serde.Marshal(v)
+	if err != nil {
+		panic(err)
+	}
+	t.Logf("%s\n", bin)
 }

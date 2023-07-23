@@ -31,20 +31,20 @@ type AllOptional struct {
 	Geopoint        *[]fielddatatype.GeoPoint               `json:"geopoint"`
 	Geoshape        *[]fielddatatype.GeoShape               `json:"geoshape"`
 	HalfFloat       *[]float32                              `json:"half_float"`
-	Histogram       *[]fielddatatype.Histogram              `json:"histogram"`
+	Histogram       *fielddatatype.Histogram                `json:"histogram"`
 	Integer         *[]int32                                `json:"integer"`
 	IntegerRange    *[]fielddatatype.Range[int32]           `json:"integer_range"`
 	IpAddr          *[]netip.Addr                           `json:"ip_addr"`
 	IpRange         *[]fielddatatype.Range[netip.Addr]      `json:"ip_range"`
-	Join            *[]map[string]any                       `json:"join,omitempty"`
+	Join            *map[string]any                         `json:"join,omitempty"`
 	Kwd             *[]string                               `json:"kwd"`
 	Long            *[]int64                                `json:"long"`
 	LongRange       *[]fielddatatype.Range[int64]           `json:"long_range"`
 	Nested          *[]AllOptionalNestedObject              `json:"nested"`
 	Object          *[]AllOptionalObjectObject              `json:"object"`
 	Point           *[]map[string]any                       `json:"point"`
-	Query           *[]map[string]any                       `json:"query"`
-	RankFeature     *[]float64                              `json:"rank_feature"`
+	Query           *map[string]any                         `json:"query,omitempty"`
+	RankFeature     *float64                                `json:"rank_feature"`
 	RankFeatures    *[]map[string]float64                   `json:"rank_features,omitempty"`
 	ScaledFloat     *[]float64                              `json:"scaled_float"`
 	SearchAsYouType *[]string                               `json:"search_as_you_type"`
@@ -77,20 +77,20 @@ func (d AllOptional) ToRaw() AllOptionalRaw {
 		Geopoint:        gentypehelper.MapMultipleOptionalValueToElastic[fielddatatype.GeoPoint](d.Geopoint),
 		Geoshape:        gentypehelper.MapMultipleOptionalValueToElastic[fielddatatype.GeoShape](d.Geoshape),
 		HalfFloat:       gentypehelper.MapMultipleOptionalValueToElastic[float32](d.HalfFloat),
-		Histogram:       gentypehelper.MapMultipleOptionalValueToElastic[fielddatatype.Histogram](d.Histogram),
+		Histogram:       gentypehelper.MapSingleOptionalValueToElastic[fielddatatype.Histogram](d.Histogram),
 		Integer:         gentypehelper.MapMultipleOptionalValueToElastic[int32](d.Integer),
 		IntegerRange:    gentypehelper.MapMultipleOptionalValueToElastic[fielddatatype.Range[int32]](d.IntegerRange),
 		IpAddr:          gentypehelper.MapMultipleOptionalValueToElastic[netip.Addr](d.IpAddr),
 		IpRange:         gentypehelper.MapMultipleOptionalValueToElastic[fielddatatype.Range[netip.Addr]](d.IpRange),
-		Join:            gentypehelper.MapPlainMultiplePointerToUndefinedElastic[map[string]any](d.Join),
+		Join:            gentypehelper.MapPlainPointerToUndefinedElastic[map[string]any](d.Join),
 		Kwd:             gentypehelper.MapMultipleOptionalValueToElastic[string](d.Kwd),
 		Long:            gentypehelper.MapMultipleOptionalValueToElastic[int64](d.Long),
 		LongRange:       gentypehelper.MapMultipleOptionalValueToElastic[fielddatatype.Range[int64]](d.LongRange),
 		Nested:          gentypehelper.MapPlainMultipleOptionalToRawElastic[AllOptionalNestedObjectRaw](d.Nested),
 		Object:          gentypehelper.MapPlainMultipleOptionalToRawElastic[AllOptionalObjectObjectRaw](d.Object),
 		Point:           gentypehelper.MapMultipleOptionalValueToElastic[map[string]any](d.Point),
-		Query:           gentypehelper.MapMultipleOptionalValueToElastic[map[string]any](d.Query),
-		RankFeature:     gentypehelper.MapMultipleOptionalValueToElastic[float64](d.RankFeature),
+		Query:           gentypehelper.MapPlainPointerToUndefinedElastic[map[string]any](d.Query),
+		RankFeature:     gentypehelper.MapSingleOptionalValueToElastic[float64](d.RankFeature),
 		RankFeatures:    gentypehelper.MapPlainMultiplePointerToUndefinedElastic[map[string]float64](d.RankFeatures),
 		ScaledFloat:     gentypehelper.MapMultipleOptionalValueToElastic[float64](d.ScaledFloat),
 		SearchAsYouType: gentypehelper.MapMultipleOptionalValueToElastic[string](d.SearchAsYouType),
@@ -170,20 +170,20 @@ func (d AllOptionalRaw) ToPlain() AllOptional {
 		Geopoint:        gentypehelper.MapElasticToMultipleValueOptional[fielddatatype.GeoPoint](d.Geopoint),
 		Geoshape:        gentypehelper.MapElasticToMultipleValueOptional[fielddatatype.GeoShape](d.Geoshape),
 		HalfFloat:       gentypehelper.MapElasticToMultipleValueOptional[float32](d.HalfFloat),
-		Histogram:       gentypehelper.MapElasticToMultipleValueOptional[fielddatatype.Histogram](d.Histogram),
+		Histogram:       d.Histogram.PlainSingle(),
 		Integer:         gentypehelper.MapElasticToMultipleValueOptional[int32](d.Integer),
 		IntegerRange:    gentypehelper.MapElasticToMultipleValueOptional[fielddatatype.Range[int32]](d.IntegerRange),
 		IpAddr:          gentypehelper.MapElasticToMultipleValueOptional[netip.Addr](d.IpAddr),
 		IpRange:         gentypehelper.MapElasticToMultipleValueOptional[fielddatatype.Range[netip.Addr]](d.IpRange),
-		Join:            gentypehelper.MapElasticToMultipleValueOptional[map[string]any](d.Join),
+		Join:            d.Join.PlainSingle(),
 		Kwd:             gentypehelper.MapElasticToMultipleValueOptional[string](d.Kwd),
 		Long:            gentypehelper.MapElasticToMultipleValueOptional[int64](d.Long),
 		LongRange:       gentypehelper.MapElasticToMultipleValueOptional[fielddatatype.Range[int64]](d.LongRange),
 		Nested:          gentypehelper.MapElasticToPlainMultipleOptional[AllOptionalNestedObject](d.Nested),
 		Object:          gentypehelper.MapElasticToPlainMultipleOptional[AllOptionalObjectObject](d.Object),
 		Point:           gentypehelper.MapElasticToMultipleValueOptional[map[string]any](d.Point),
-		Query:           gentypehelper.MapElasticToMultipleValueOptional[map[string]any](d.Query),
-		RankFeature:     gentypehelper.MapElasticToMultipleValueOptional[float64](d.RankFeature),
+		Query:           d.Query.PlainSingle(),
+		RankFeature:     d.RankFeature.PlainSingle(),
 		RankFeatures:    gentypehelper.MapElasticToMultipleValueOptional[map[string]float64](d.RankFeatures),
 		ScaledFloat:     gentypehelper.MapElasticToMultipleValueOptional[float64](d.ScaledFloat),
 		SearchAsYouType: gentypehelper.MapElasticToMultipleValueOptional[string](d.SearchAsYouType),
