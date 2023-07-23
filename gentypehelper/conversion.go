@@ -15,8 +15,8 @@ const (
 	IdMapPlainMultipleOptionalToRawElastic      = "MapPlainMultipleOptionalToRawElastic"
 	IdMapElasticToPlainSingle                   = "MapElasticToPlainSingle"
 	IdMapElasticToPlainSingleOptional           = "MapElasticToPlainSingleOptional"
-	IdMapElasticToPlainMultple                  = "MapElasticToPlainMultple"
-	IdMapElasticToPlainMultpleOptinal           = "MapElasticToPlainMultpleOptinal"
+	IdMapElasticToPlainMultiple                 = "MapElasticToPlainMultiple"
+	IdMapElasticToPlainMultipleOptional         = "MapElasticToPlainMultipleOptional"
 	IdMapElasticToMultipleValueOptional         = "MapElasticToMultipleValueOptional"
 )
 
@@ -88,7 +88,7 @@ func MapElasticToPlainSingleOptional[T any, U interface{ ToPlain() T }](v elasti
 	return &p
 }
 
-func MapElasticToPlainMultple[T any, U interface{ ToPlain() T }](v elastic.Elastic[U]) []T {
+func MapElasticToPlainMultiple[T any, U interface{ ToPlain() T }](v elastic.Elastic[U]) []T {
 	values := v.ValueMultiple()
 	out := make([]T, len(values))
 	for idx, vv := range values {
@@ -97,11 +97,11 @@ func MapElasticToPlainMultple[T any, U interface{ ToPlain() T }](v elastic.Elast
 	return out
 }
 
-func MapElasticToPlainMultpleOptinal[T any, U interface{ ToPlain() T }](v elastic.Elastic[U]) *[]T {
+func MapElasticToPlainMultipleOptional[T any, U interface{ ToPlain() T }](v elastic.Elastic[U]) *[]T {
 	if v.IsUndefined() || v.IsNull() {
 		return nil
 	}
-	p := MapElasticToPlainMultple[T, U](v)
+	p := MapElasticToPlainMultiple[T, U](v)
 	return &p
 }
 
