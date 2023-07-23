@@ -179,8 +179,8 @@ func (d AllOptionalRaw) ToPlain() AllOptional {
 		Kwd:             gentypehelper.MapElasticToMultipleValueOptional[string](d.Kwd),
 		Long:            gentypehelper.MapElasticToMultipleValueOptional[int64](d.Long),
 		LongRange:       gentypehelper.MapElasticToMultipleValueOptional[fielddatatype.Range[int64]](d.LongRange),
-		Nested:          gentypehelper.MapElasticToPlainMultpleOptinal[AllOptionalNestedObject](d.Nested),
-		Object:          gentypehelper.MapElasticToPlainMultpleOptinal[AllOptionalObjectObject](d.Object),
+		Nested:          gentypehelper.MapElasticToPlainMultipleOptional[AllOptionalNestedObject](d.Nested),
+		Object:          gentypehelper.MapElasticToPlainMultipleOptional[AllOptionalObjectObject](d.Object),
 		Point:           gentypehelper.MapElasticToMultipleValueOptional[map[string]any](d.Point),
 		Query:           gentypehelper.MapElasticToMultipleValueOptional[map[string]any](d.Query),
 		RankFeature:     gentypehelper.MapElasticToMultipleValueOptional[float64](d.RankFeature),
@@ -307,7 +307,7 @@ type AllOptionalNestedObjectRaw struct {
 func (d AllOptionalNestedObjectRaw) ToPlain() AllOptionalNestedObject {
 	return AllOptionalNestedObject{
 		Age:  gentypehelper.MapElasticToMultipleValueOptional[int32](d.Age),
-		Name: gentypehelper.MapElasticToPlainMultpleOptinal[AllOptionalNestedNameObject](d.Name),
+		Name: gentypehelper.MapElasticToPlainMultipleOptional[AllOptionalNestedNameObject](d.Name),
 	}
 }
 
@@ -355,7 +355,7 @@ type AllOptionalObjectObjectRaw struct {
 func (d AllOptionalObjectObjectRaw) ToPlain() AllOptionalObjectObject {
 	return AllOptionalObjectObject{
 		Age:  gentypehelper.MapElasticToMultipleValueOptional[int32](d.Age),
-		Name: gentypehelper.MapElasticToPlainMultpleOptinal[AllOptionalObjectNameObject](d.Name),
+		Name: gentypehelper.MapElasticToPlainMultipleOptional[AllOptionalObjectNameObject](d.Name),
 	}
 }
 

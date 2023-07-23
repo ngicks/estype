@@ -30,8 +30,8 @@ type ConversionRaw struct {
 
 func (d ConversionRaw) ToPlain() Conversion {
 	return Conversion{
-		MultipleOptional: gentypehelper.MapElasticToPlainMultpleOptinal[ConversionMultipleOptionalNested](d.MultipleOptional),
-		MultipleRequired: gentypehelper.MapElasticToPlainMultple[ConversionMultipleRequiredNested](d.MultipleRequired),
+		MultipleOptional: gentypehelper.MapElasticToPlainMultipleOptional[ConversionMultipleOptionalNested](d.MultipleOptional),
+		MultipleRequired: gentypehelper.MapElasticToPlainMultiple[ConversionMultipleRequiredNested](d.MultipleRequired),
 		SingleOptional:   gentypehelper.MapElasticToPlainSingleOptional[ConversionSingleOptionalObject](d.SingleOptional),
 		SingleRequired:   gentypehelper.MapElasticToPlainSingle[ConversionSingleRequiredObject](d.SingleRequired),
 	}

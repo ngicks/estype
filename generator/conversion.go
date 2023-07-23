@@ -197,9 +197,9 @@ func plainMapper(f structField) *jen.Statement {
 	case f.TypeId.IsSingle(f.Opt) && f.TypeId.IsOptional(f.Opt):
 		fnName = gentypehelper.IdMapElasticToPlainSingleOptional
 	case !f.TypeId.IsSingle(f.Opt) && !f.TypeId.IsOptional(f.Opt):
-		fnName = gentypehelper.IdMapElasticToPlainMultple
+		fnName = gentypehelper.IdMapElasticToPlainMultiple
 	case !f.TypeId.IsSingle(f.Opt) && f.TypeId.IsOptional(f.Opt):
-		fnName = gentypehelper.IdMapElasticToPlainMultpleOptinal
+		fnName = gentypehelper.IdMapElasticToPlainMultipleOptional
 	}
 
 	return jen.Qual(gentypehelperQual, fnName)
