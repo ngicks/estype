@@ -32,8 +32,7 @@ type GeneratorContext struct {
 }
 
 type globalState struct {
-	generatedTypes   map[string]mapping.Property // unused. future update may use this to dedup generated types.
-	bufPoolGenerated bool
+	generatedTypes map[string]mapping.Property // unused. future update may use this to dedup generated types.
 }
 
 type localState struct {

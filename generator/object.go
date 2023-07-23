@@ -17,7 +17,6 @@ const (
 	jsonfieldTypeQual     = "github.com/ngicks/und/jsonfield"
 	utilTypeQual          = "github.com/ngicks/estype/util"
 	additionalPropId      = "AdditionalProperties_"
-	bufPoolId             = "bufferPool"
 )
 
 var (
@@ -160,7 +159,6 @@ func genObjectLike(ctx *GeneratorContext, dryRun bool) (plain, raw TypeId) {
 	generateToRaw(ctx, plain, raw, declMap[plain.Id], declMap[raw.Id], strict)
 
 	if !strict {
-		generateBufPool(ctx)
 		generateAdditionalPropMarshalJSON(ctx, plain, declMap[plain.Id], false)
 		generateAdditionalPropUnmarshalJSON(ctx, plain, declMap[plain.Id])
 	}
@@ -176,7 +174,6 @@ func genObjectLike(ctx *GeneratorContext, dryRun bool) (plain, raw TypeId) {
 
 	generateToPlain(ctx, plain, raw, declMap[plain.Id], declMap[raw.Id], strict)
 	if !strict {
-		generateBufPool(ctx)
 		generateAdditionalPropMarshalJSON(ctx, raw, declMap[raw.Id], true)
 		generateAdditionalPropUnmarshalJSON(ctx, raw, declMap[raw.Id])
 	}

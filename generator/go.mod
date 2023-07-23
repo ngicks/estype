@@ -8,7 +8,7 @@ require (
 	github.com/go-spatial/geom v0.0.0-20220918193402-3cd2f5a9a082
 	github.com/google/go-cmp v0.5.9
 	github.com/ngicks/estype/fielddatatype v0.0.1-alpha1
-	github.com/ngicks/estype/gentypehelper v0.0.0-20230723042147-bfb466f69e4a
+	github.com/ngicks/estype/gentypehelper v0.0.0-20230723053102-76e7dbe53172
 	github.com/ngicks/estype/helper v0.0.1-alpha2
 	github.com/ngicks/estype/spec v0.0.1-alpha1
 	github.com/ngicks/generic v0.0.0-20230320024227-32842ed7ed0f

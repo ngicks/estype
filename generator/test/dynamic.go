@@ -10,7 +10,6 @@ import (
 	serde "github.com/ngicks/und/serde"
 	"io"
 	"sort"
-	"sync"
 )
 
 type Dynamic struct {
@@ -107,20 +106,14 @@ func (d DynamicNestedRuntimeNested) ToRaw() DynamicNestedRuntimeNestedRaw {
 	}
 }
 
-// bufferPool is pool of buffers. Implementations of MarshalJSON and UnmarshalJSON will use this.
-var bufferPool = &sync.Pool{New: func() any {
-	return new(bytes.Buffer)
-}}
-
 // MarshalJSON implements json.Marshaler
 // so that both known fields and additional properties are marshaled into a same JSON object.
 //
 // The presence of this implementation indicates the dynamic field for this object are
 // defined to be other than "strict" in its mapping.json.
 func (d DynamicNestedRuntimeNested) MarshalJSON() ([]byte, error) {
-	buf := bufferPool.Get().(*bytes.Buffer)
-	defer bufferPool.Put(buf)
-	buf.Reset()
+	buf := gentypehelper.GetBuf()
+	defer gentypehelper.PutBuf(buf)
 	var (
 		bin []byte
 		err error
@@ -234,9 +227,8 @@ func (d DynamicNestedRuntimeNestedRaw) ToPlain() DynamicNestedRuntimeNested {
 // The presence of this implementation indicates the dynamic field for this object are
 // defined to be other than "strict" in its mapping.json.
 func (d DynamicNestedRuntimeNestedRaw) MarshalJSON() ([]byte, error) {
-	buf := bufferPool.Get().(*bytes.Buffer)
-	defer bufferPool.Put(buf)
-	buf.Reset()
+	buf := gentypehelper.GetBuf()
+	defer gentypehelper.PutBuf(buf)
 	var (
 		bin []byte
 		err error
@@ -350,9 +342,8 @@ func (d DynamicNestedRuntimeNameObject) ToRaw() DynamicNestedRuntimeNameObjectRa
 // The presence of this implementation indicates the dynamic field for this object are
 // defined to be other than "strict" in its mapping.json.
 func (d DynamicNestedRuntimeNameObject) MarshalJSON() ([]byte, error) {
-	buf := bufferPool.Get().(*bytes.Buffer)
-	defer bufferPool.Put(buf)
-	buf.Reset()
+	buf := gentypehelper.GetBuf()
+	defer gentypehelper.PutBuf(buf)
 	var (
 		bin []byte
 		err error
@@ -466,9 +457,8 @@ func (d DynamicNestedRuntimeNameObjectRaw) ToPlain() DynamicNestedRuntimeNameObj
 // The presence of this implementation indicates the dynamic field for this object are
 // defined to be other than "strict" in its mapping.json.
 func (d DynamicNestedRuntimeNameObjectRaw) MarshalJSON() ([]byte, error) {
-	buf := bufferPool.Get().(*bytes.Buffer)
-	defer bufferPool.Put(buf)
-	buf.Reset()
+	buf := gentypehelper.GetBuf()
+	defer gentypehelper.PutBuf(buf)
 	var (
 		bin []byte
 		err error
@@ -630,9 +620,8 @@ func (d DynamicObjectFalseObject) ToRaw() DynamicObjectFalseObjectRaw {
 // The presence of this implementation indicates the dynamic field for this object are
 // defined to be other than "strict" in its mapping.json.
 func (d DynamicObjectFalseObject) MarshalJSON() ([]byte, error) {
-	buf := bufferPool.Get().(*bytes.Buffer)
-	defer bufferPool.Put(buf)
-	buf.Reset()
+	buf := gentypehelper.GetBuf()
+	defer gentypehelper.PutBuf(buf)
 	var (
 		bin []byte
 		err error
@@ -746,9 +735,8 @@ func (d DynamicObjectFalseObjectRaw) ToPlain() DynamicObjectFalseObject {
 // The presence of this implementation indicates the dynamic field for this object are
 // defined to be other than "strict" in its mapping.json.
 func (d DynamicObjectFalseObjectRaw) MarshalJSON() ([]byte, error) {
-	buf := bufferPool.Get().(*bytes.Buffer)
-	defer bufferPool.Put(buf)
-	buf.Reset()
+	buf := gentypehelper.GetBuf()
+	defer gentypehelper.PutBuf(buf)
 	var (
 		bin []byte
 		err error
@@ -862,9 +850,8 @@ func (d DynamicObjectFalseNameObject) ToRaw() DynamicObjectFalseNameObjectRaw {
 // The presence of this implementation indicates the dynamic field for this object are
 // defined to be other than "strict" in its mapping.json.
 func (d DynamicObjectFalseNameObject) MarshalJSON() ([]byte, error) {
-	buf := bufferPool.Get().(*bytes.Buffer)
-	defer bufferPool.Put(buf)
-	buf.Reset()
+	buf := gentypehelper.GetBuf()
+	defer gentypehelper.PutBuf(buf)
 	var (
 		bin []byte
 		err error
@@ -978,9 +965,8 @@ func (d DynamicObjectFalseNameObjectRaw) ToPlain() DynamicObjectFalseNameObject 
 // The presence of this implementation indicates the dynamic field for this object are
 // defined to be other than "strict" in its mapping.json.
 func (d DynamicObjectFalseNameObjectRaw) MarshalJSON() ([]byte, error) {
-	buf := bufferPool.Get().(*bytes.Buffer)
-	defer bufferPool.Put(buf)
-	buf.Reset()
+	buf := gentypehelper.GetBuf()
+	defer gentypehelper.PutBuf(buf)
 	var (
 		bin []byte
 		err error

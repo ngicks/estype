@@ -30,10 +30,8 @@ github.com/modern-go/reflect2 v1.0.2 h1:xBagoLtFs94CBntxluKeaWgTMpvLxC4ur3nMaC9G
 github.com/modern-go/reflect2 v1.0.2/go.mod h1:yWuevngMOJpCy52FWWMvUC8ws7m/LJsjYzDa0/r8luk=
 github.com/ngicks/estype/fielddatatype v0.0.1-alpha1 h1:9Fi+PyeQwtYhTLJL3HKPnrMECLMlOk3tqIbQTW77CcU=
 github.com/ngicks/estype/fielddatatype v0.0.1-alpha1/go.mod h1:Lq3xpmmhiRDK03jJ7QrgBjCQNfvqtPYGa5JfvUng5fk=
-github.com/ngicks/estype/gentypehelper v0.0.0-20230722161812-c6ed9fb0db8f h1:edOvKHpKbSkpJdgQrPEWbDx6AdXR0A0vDB7ZN4ys0L4=
-github.com/ngicks/estype/gentypehelper v0.0.0-20230722161812-c6ed9fb0db8f/go.mod h1:N8ZKtgnQa24LzIy+651/Qo/q+ECjcRnnNX5dEgxUhAw=
-github.com/ngicks/estype/gentypehelper v0.0.0-20230723042147-bfb466f69e4a h1://H8PcoU34t/k5rvQoAw1QhsdWwH067/2rBho1mRU3Y=
-github.com/ngicks/estype/gentypehelper v0.0.0-20230723042147-bfb466f69e4a/go.mod h1:N8ZKtgnQa24LzIy+651/Qo/q+ECjcRnnNX5dEgxUhAw=
+github.com/ngicks/estype/gentypehelper v0.0.0-20230723053102-76e7dbe53172 h1:JMhwzYSQ9d17ihNx2CUqqQ18CHtybgeOG7NoHM3xcD0=
+github.com/ngicks/estype/gentypehelper v0.0.0-20230723053102-76e7dbe53172/go.mod h1:N8ZKtgnQa24LzIy+651/Qo/q+ECjcRnnNX5dEgxUhAw=
 github.com/ngicks/estype/helper v0.0.1-alpha2 h1:e2zQWwG1TYyWQWENj462wizStJeS2Rm31R9sgxxyuj4=
 github.com/ngicks/estype/helper v0.0.1-alpha2/go.mod h1:xNRIVjpWZxAkPc0by+ru2UfnhJfNpThGMKIx/ZT43DI=
 github.com/ngicks/estype/spec v0.0.1-alpha1 h1:kqI8CBj1BTLXiQXDRRNPqe3npo60/uMrdzO/tCwdBuY=

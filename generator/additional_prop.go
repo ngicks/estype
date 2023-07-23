@@ -6,25 +6,12 @@ import (
 	"strings"
 
 	"github.com/dave/jennifer/jen"
+	"github.com/ngicks/estype/gentypehelper"
 )
 
 func nameFromTag(s string) string {
 	before, _, _ := strings.Cut(s, ",")
 	return before
-}
-
-func generateBufPool(ctx *GeneratorContext) {
-	if ctx.globalState.bufPoolGenerated {
-		return
-	}
-
-	ctx.globalState.bufPoolGenerated = true
-	ctx.file.Commentf("%s is pool of buffers. Implementations of MarshalJSON and UnmarshalJSON will use this.", bufPoolId)
-	ctx.file.Var().Id(bufPoolId).Op("=").Op("&").Qual("sync", "Pool").Values(
-		jen.Id("New").Op(":").Func().Params().Any().Block(
-			jen.Return().New(jen.Qual("bytes", "Buffer")),
-		),
-	)
 }
 
 func generateAdditionalPropMarshalJSON(ctx *GeneratorContext, typeId TypeId, fields []structField, isUndSerde bool) {
@@ -62,13 +49,9 @@ func generateAdditionalPropMarshalJSON(ctx *GeneratorContext, typeId TypeId, fie
 					jen.
 						Id("buf").
 						Op(":=").
-						Id(bufPoolId).
-						Dot("Get").
-						Call().
-						Op(".").
-						Parens(jen.Op("*").Qual("bytes", "Buffer")),
-					jen.Defer().Id(bufPoolId).Dot("Put").Call(jen.Id("buf")),
-					jen.Id("buf").Dot("Reset").Call(),
+						Qual(gentypehelperQual, gentypehelper.IdGetBuf).
+						Call(),
+					jen.Defer().Qual(gentypehelperQual, gentypehelper.IdPutBuf).Call(jen.Id("buf")),
 					jen.
 						Var().
 						Defs(
