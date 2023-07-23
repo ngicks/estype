@@ -14,7 +14,7 @@ func nameFromTag(s string) string {
 	return before
 }
 
-func generateAdditionalPropMarshalJSON(ctx *GeneratorContext, typeId TypeId, fields []structField, isUndSerde bool) {
+func generateAdditionalPropMarshalJSON(ctx *generatorContext, tyId typeId, fields []structField, isUndSerde bool) {
 	var marshalerStmt *jen.Statement
 	if !isUndSerde {
 		marshalerStmt = jen.Qual("encoding/json", "Marshal")
@@ -34,7 +34,7 @@ func generateAdditionalPropMarshalJSON(ctx *GeneratorContext, typeId TypeId, fie
 		Params(
 			jen.
 				Id("d").
-				Id(typeId.Id),
+				Id(tyId.Id),
 		).
 		Id("MarshalJSON").
 		Params().
@@ -123,7 +123,7 @@ func generateAdditionalPropMarshalJSON(ctx *GeneratorContext, typeId TypeId, fie
 		)
 }
 
-func generateAdditionalPropUnmarshalJSON(ctx *GeneratorContext, plain TypeId, plainFields []structField) {
+func generateAdditionalPropUnmarshalJSON(ctx *generatorContext, tyId typeId, fields []structField) {
 	ctx.file.
 		Commentf(
 			"// UnmarshalJSON implements json.Unmarshaler\n"+
@@ -140,7 +140,7 @@ func generateAdditionalPropUnmarshalJSON(ctx *GeneratorContext, plain TypeId, pl
 			jen.
 				Id("d").
 				Op("*").
-				Id(plain.Id),
+				Id(tyId.Id),
 		).
 		Id("UnmarshalJSON").
 		Params(jen.Id("data").Index().Byte()).
@@ -198,7 +198,7 @@ func generateAdditionalPropUnmarshalJSON(ctx *GeneratorContext, plain TypeId, pl
 							jen.Return(jen.Err()),
 						),
 						jen.Switch(jen.Id("token")).BlockFunc(func(g *jen.Group) {
-							for _, field := range plainFields {
+							for _, field := range fields {
 								g.Add(
 									jen.Case(
 										jen.Lit(nameFromTag(field.Tag["json"])),

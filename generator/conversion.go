@@ -9,7 +9,7 @@ const (
 	gentypehelperQual = "github.com/ngicks/estype/gentypehelper"
 )
 
-func generateToRaw(ctx *GeneratorContext, plain, raw TypeId, plainFields, rawFields []structField, strict bool) {
+func generateToRaw(ctx *generatorContext, plain, raw typeId, plainFields, rawFields []structField, strict bool) {
 	ctx.file.Func().
 		Params(jen.Id("d").Id(plain.Id)).
 		Id("ToRaw").
@@ -45,7 +45,7 @@ func generateToRaw(ctx *GeneratorContext, plain, raw TypeId, plainFields, rawFie
 	)
 }
 
-func generateToPlain(ctx *GeneratorContext, plain, raw TypeId, plainFields, rawFields []structField, strict bool) {
+func generateToPlain(ctx *generatorContext, plain, raw typeId, plainFields, rawFields []structField, strict bool) {
 	ctx.file.Func().
 		Params(jen.Id("d").Id(raw.Id)).
 		Id("ToPlain").
@@ -101,7 +101,7 @@ func toRawStmt(plain, raw structField) *jen.Statement {
 	case elasticTypeQual:
 		return jen.
 			Add(elasticMapper(plain)).
-			Index(raw.TypeId.TypeParam[0].Render(RenderOption(false, true))).
+			Index(raw.TypeId.TypeParam[0].Render(newSimpleRenderOption(false, true))).
 			Call(fieldNameId)
 	}
 	panic("unknown")
@@ -136,14 +136,14 @@ func toPlainStmt(plain, raw structField) *jen.Statement {
 			case !plain.TypeId.IsSingle(plain.Opt) && plain.TypeId.IsOptional(plain.Opt):
 				return jen.
 					Qual(gentypehelperQual, gentypehelper.IdMapElasticToMultipleValueOptional).
-					Index(plain.TypeId.Render(RenderOption(false, true))).
+					Index(plain.TypeId.Render(newSimpleRenderOption(false, true))).
 					Call(fieldNameId)
 			}
 			return fieldNameId.Dot(valueMethodName).Call()
 		} else {
 			return jen.
 				Add(plainMapper(plain)).
-				Index(plain.TypeId.Render(RenderOption(false, true))).
+				Index(plain.TypeId.Render(newSimpleRenderOption(false, true))).
 				Call(fieldNameId)
 		}
 	}

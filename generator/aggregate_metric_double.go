@@ -2,7 +2,7 @@ package generator
 
 import "github.com/ngicks/estype/spec/mapping"
 
-func genAggregateMetricDouble(prop mapping.AggregateMetricDoubleProperty) TypeId {
+func genAggregateMetricDouble(prop mapping.AggregateMetricDoubleProperty) typeId {
 	var min, max, sum, valueCount bool
 	for _, v := range prop.Metrics {
 		switch v {
@@ -34,7 +34,7 @@ func genAggregateMetricDouble(prop mapping.AggregateMetricDoubleProperty) TypeId
 		}
 	}
 
-	return TypeId{
+	return typeId{
 		Qualifier:    fielddatatypeQual,
 		Id:           "AggregateMetricDouble" + suffix,
 		AlwaysSingle: true,

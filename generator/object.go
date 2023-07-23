@@ -20,25 +20,25 @@ const (
 )
 
 var (
-	elasticTypeId       = TypeId{Id: "Elastic", Qualifier: elasticTypeQual}
-	undefinedableTypeId = TypeId{Id: "Undefinedable", Qualifier: undefinedableTypeQual}
-	jsonfieldTypeId     = TypeId{Id: "JsonField", Qualifier: jsonfieldTypeQual}
+	elasticTypeId       = typeId{Id: "Elastic", Qualifier: elasticTypeQual}
+	undefinedableTypeId = typeId{Id: "Undefinedable", Qualifier: undefinedableTypeQual}
+	jsonfieldTypeId     = typeId{Id: "JsonField", Qualifier: jsonfieldTypeQual}
 )
 
 type structField struct {
 	Name         string
 	IsObjectLike bool // nested or object field data type.
-	Opt          TypeIdRenderOption
+	Opt          typeIdRenderOption
 	Stmt         *jen.Statement
-	TypeId       TypeId
+	TypeId       typeId
 	Tag          map[string]string
 }
 
-func genObjectLike(ctx *GeneratorContext, dryRun bool) (plain, raw TypeId) {
-	plain = TypeId{
+func genObjectLike(ctx *generatorContext, dryRun bool) (plain, raw typeId) {
+	plain = typeId{
 		Id: ctx.getTypeName(),
 	}
-	raw = TypeId{
+	raw = typeId{
 		Id: plain.Id + "Raw",
 	}
 
@@ -71,37 +71,37 @@ func genObjectLike(ctx *GeneratorContext, dryRun bool) (plain, raw TypeId) {
 	declMap := map[string][]structField{}
 
 	type renderOpt struct {
-		Id                 TypeId
+		Id                 typeId
 		IsRaw              bool
-		TypeIdRenderOption func(ctx *GeneratorContext) TypeIdRenderOption
-		Mapper             func(i TypeId) TypeId
+		TypeIdRenderOption func(ctx *generatorContext) typeIdRenderOption
+		Mapper             func(i typeId) typeId
 	}
 
 	for _, opt := range []renderOpt{
 		{
 			Id:                 plain,
-			TypeIdRenderOption: func(ctx *GeneratorContext) TypeIdRenderOption { return ctx },
-			Mapper:             func(i TypeId) TypeId { return i },
+			TypeIdRenderOption: func(ctx *generatorContext) typeIdRenderOption { return ctx },
+			Mapper:             func(i typeId) typeId { return i },
 		},
 		{
 			Id:                 raw,
 			IsRaw:              true,
-			TypeIdRenderOption: func(_ *GeneratorContext) TypeIdRenderOption { return RenderOption(false, true) },
-			Mapper: func(i TypeId) TypeId {
-				var typeId TypeId
+			TypeIdRenderOption: func(_ *generatorContext) typeIdRenderOption { return newSimpleRenderOption(false, true) },
+			Mapper: func(i typeId) typeId {
+				var tyId typeId
 				if i.DisallowArray {
 					if i.DisallowNull {
-						typeId = undefinedableTypeId
+						tyId = undefinedableTypeId
 					} else {
-						typeId = jsonfieldTypeId
+						tyId = jsonfieldTypeId
 					}
 				} else {
 					// The type may only allow a single value
 					// however it may also allow an array containing only a single element.
-					typeId = elasticTypeId
+					tyId = elasticTypeId
 				}
-				typeId.TypeParam = []TypeId{i}
-				return typeId
+				tyId.TypeParam = []typeId{i}
+				return tyId
 			},
 		},
 	} {
@@ -113,7 +113,7 @@ func genObjectLike(ctx *GeneratorContext, dryRun bool) (plain, raw TypeId) {
 			propChild := next.Latter
 			nextCtx := ctx.next(propFieldName, propChild, dynamic)
 
-			var fieldTypeId TypeId
+			var fieldTypeId typeId
 			var isObjectLike bool
 			if mapping.IsObjectLike(propChild) {
 				isObjectLike = true

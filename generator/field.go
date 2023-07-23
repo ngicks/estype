@@ -15,7 +15,7 @@ const (
 
 // genField generates a type for input property.
 // Input prop must be one that can not be nested (other than Object or Nested types).
-func genField(ctx *GeneratorContext, dryRun bool) (typeName TypeId) {
+func genField(ctx *generatorContext, dryRun bool) (typeName typeId) {
 	if ty, ok := fieldTypeTable[mapping.GetTypeName(ctx.localState.prop)]; ok {
 		return ty
 	}
@@ -26,12 +26,12 @@ func genField(ctx *GeneratorContext, dryRun bool) (typeName TypeId) {
 		return gen
 	case mapping.BooleanProperty:
 		if ctx.PreferStringBoolean() {
-			return TypeId{
+			return typeId{
 				Qualifier: fielddatatypeQual,
 				Id:        "BooleanStr",
 			}
 		} else {
-			return TypeId{
+			return typeId{
 				Qualifier: fielddatatypeQual,
 				Id:        "Boolean",
 			}
@@ -46,10 +46,10 @@ func genField(ctx *GeneratorContext, dryRun bool) (typeName TypeId) {
 	}
 
 	// return any for unknown types.
-	return TypeId{Id: "any"}
+	return typeId{Id: "any"}
 }
 
-var fieldTypeTable = map[mapping.EsType]TypeId{
+var fieldTypeTable = map[mapping.EsType]typeId{
 	mapping.FieldAlias:      {NonWritable: true},
 	mapping.Binary:          {Id: "[]byte"},
 	mapping.Completion:      {Id: "string", DisallowNull: true},

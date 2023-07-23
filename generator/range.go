@@ -6,21 +6,21 @@ import (
 	"github.com/ngicks/estype/spec/mapping"
 )
 
-func genRange(ctx *GeneratorContext, dryRun bool) TypeId {
-	var param TypeId
+func genRange(ctx *generatorContext, dryRun bool) typeId {
+	var param typeId
 	switch ctx.localState.prop.Val.(type) {
 	case mapping.DateRangeProperty:
 		param = genDate(ctx, dryRun)
 	case mapping.DoubleRangeProperty:
-		param = TypeId{Id: "float64"}
+		param = typeId{Id: "float64"}
 	case mapping.FloatRangeProperty:
-		param = TypeId{Id: "float32"}
+		param = typeId{Id: "float32"}
 	case mapping.IntegerRangeProperty:
-		param = TypeId{Id: "int32"}
+		param = typeId{Id: "int32"}
 	case mapping.IpRangeProperty:
-		param = TypeId{Id: "Addr", Qualifier: "net/netip"}
+		param = typeId{Id: "Addr", Qualifier: "net/netip"}
 	case mapping.LongRangeProperty:
-		param = TypeId{Id: "int64"}
+		param = typeId{Id: "int64"}
 	default:
 		panic(
 			fmt.Errorf(
@@ -30,9 +30,9 @@ func genRange(ctx *GeneratorContext, dryRun bool) TypeId {
 		)
 	}
 
-	return TypeId{
+	return typeId{
 		Id:        "Range",
 		Qualifier: fielddatatypeQual,
-		TypeParam: []TypeId{param},
+		TypeParam: []typeId{param},
 	}
 }

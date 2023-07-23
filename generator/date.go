@@ -13,7 +13,7 @@ const (
 	builtinEsDateQual = "github.com/ngicks/estype/fielddatatype/estime/builtin"
 )
 
-func genDate(ctx *GeneratorContext, dryRun bool) TypeId {
+func genDate(ctx *generatorContext, dryRun bool) typeId {
 	var formats string
 	isNano := false
 	switch x := ctx.localState.prop.Val.(type) {
@@ -42,19 +42,19 @@ func genDate(ctx *GeneratorContext, dryRun bool) TypeId {
 		if isNano {
 			id += "Nano"
 		}
-		return TypeId{
+		return typeId{
 			Qualifier: builtinEsDateQual,
 			Id:        id,
 		}
 	}
 
 	stringFormats, numFormat := parseFormats(formats)
-	typeId, ok := pregeneratedDate(stringFormats, numFormat)
+	tyId, ok := pregeneratedDate(stringFormats, numFormat)
 	if ok {
-		return typeId
+		return tyId
 	}
 
-	typeId = TypeId{
+	tyId = typeId{
 		Id: ctx.getTypeName(),
 	}
 	// This is not great that FromJavaDateTimeLike is used to just parse + validation.
@@ -66,13 +66,13 @@ func genDate(ctx *GeneratorContext, dryRun bool) TypeId {
 	if !dryRun {
 		numParser := estime.NumParser(numFormat)
 		genestime.GeneratorDef{
-			TyName:          typeId.Id,
+			TyName:          tyId.Id,
 			MultiLayout:     estime.NewMultiLayoutUnsafe(layouts.Layout()),
 			NumParser:       numParser,
 			MarshalToNumber: ctx.PreferMarshalDateToNumber(),
 		}.Gen(ctx.file)
 	}
-	return typeId
+	return tyId
 }
 
 // parseFormats parses double-vertical-line (`||`) separated formats into stringFormats and number formats,
@@ -97,15 +97,15 @@ func parseFormats(formats string) (stringFormat []string, numFormat string) {
 	return
 }
 
-func pregeneratedDate(stringFormat []string, numFormat string) (TypeId, bool) {
+func pregeneratedDate(stringFormat []string, numFormat string) (typeId, bool) {
 	if len(numFormat) > 0 && len(stringFormat) == 0 {
-		return TypeId{Qualifier: builtinEsDateQual, Id: pascalCase(numFormat)}, true
+		return typeId{Qualifier: builtinEsDateQual, Id: pascalCase(numFormat)}, true
 	}
 	if numFormat == "" && len(stringFormat) == 1 {
 		_, ok := builtinlayouts.BuiltinLayouts[stringFormat[0]]
 		if ok {
-			return TypeId{Qualifier: builtinEsDateQual, Id: pascalCase(stringFormat[0])}, true
+			return typeId{Qualifier: builtinEsDateQual, Id: pascalCase(stringFormat[0])}, true
 		}
 	}
-	return TypeId{}, false
+	return typeId{}, false
 }

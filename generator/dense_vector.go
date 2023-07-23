@@ -6,8 +6,8 @@ import (
 	"github.com/ngicks/estype/spec/mapping"
 )
 
-func genDenseVector(prop mapping.DenseVectorProperty) TypeId {
-	return TypeId{
+func genDenseVector(prop mapping.DenseVectorProperty) typeId {
+	return typeId{
 		Id:            fmt.Sprintf("[%d]float64", prop.Dims),
 		AlwaysSingle:  true,
 		DisallowArray: true,

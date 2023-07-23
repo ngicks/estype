@@ -17,14 +17,15 @@ type GeneratorOption struct {
 	MappingOption    MappingOption
 }
 
-func (g GeneratorOption) NewContext(f *jen.File) *GeneratorContext {
-	return &GeneratorContext{
+func (g GeneratorOption) Gen(f *jen.File) {
+	ctx := &generatorContext{
 		generatorOption: g,
 		file:            f,
 	}
+	ctx.Gen()
 }
 
-type GeneratorContext struct {
+type generatorContext struct {
 	generatorOption GeneratorOption
 	file            *jen.File
 	globalState     *globalState
@@ -42,7 +43,7 @@ type localState struct {
 	dynamic   option.Option[mapping.DynamicMapping]
 }
 
-func (c *GeneratorContext) Gen() {
+func (c *generatorContext) Gen() {
 	newCtx := *c
 	newCtx.globalState = &globalState{
 		generatedTypes: make(map[string]mapping.Property),
@@ -68,7 +69,7 @@ func (c *GeneratorContext) Gen() {
 	genObjectLike(&newCtx, false)
 }
 
-func (c *GeneratorContext) getTypeName() string {
+func (c *generatorContext) getTypeName() string {
 	return c.localState.propOpt.GetTypeName(
 		func() string {
 			return c.generatorOption.GenerateTypeName(
@@ -80,12 +81,12 @@ func (c *GeneratorContext) getTypeName() string {
 }
 
 // next proceeds ctx one step deeper into properties of object like mapping.
-func (c *GeneratorContext) next(
+func (c *generatorContext) next(
 	fieldName string,
 	prop mapping.Property,
 	dynamic option.Option[mapping.DynamicMapping],
-) *GeneratorContext {
-	return &GeneratorContext{
+) *generatorContext {
+	return &generatorContext{
 		generatorOption: c.generatorOption,
 		file:            c.file,
 		globalState:     c.globalState,
@@ -98,20 +99,20 @@ func (c *GeneratorContext) next(
 	}
 }
 
-func (c *GeneratorContext) IsOptional() bool {
+func (c *generatorContext) IsOptional() bool {
 	return c.localState.propOpt.IsOptional.Or(c.generatorOption.DefaultOption.IsOptional).OrElse(func() option.Option[bool] {
 		return c.generatorOption.DefaultOption.PerTypDefault[mapping.GetTypeName(c.localState.prop)].IsOptional
 	}).Value()
 }
-func (c *GeneratorContext) IsSingle() bool {
+func (c *generatorContext) IsSingle() bool {
 	return c.localState.propOpt.IsSingle.Or(c.generatorOption.DefaultOption.IsSingle).OrElse(func() option.Option[bool] {
 		return c.generatorOption.DefaultOption.PerTypDefault[mapping.GetTypeName(c.localState.prop)].IsSingle
 	}).Value()
 }
-func (c *GeneratorContext) PreferStringBoolean() bool {
+func (c *generatorContext) PreferStringBoolean() bool {
 	return c.localState.propOpt.PreferStringBoolean.Or(c.generatorOption.DefaultOption.PreferStringBoolean).Value()
 }
-func (c *GeneratorContext) PreferMarshalDateToNumber() bool {
+func (c *generatorContext) PreferMarshalDateToNumber() bool {
 	return c.localState.propOpt.PreferMarshalDateToNumber.Or(c.generatorOption.DefaultOption.PreferMarshalDateToNumber).Value()
 }
 
