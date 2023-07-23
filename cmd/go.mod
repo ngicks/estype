@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/dave/jennifer v1.6.1
-	github.com/ngicks/estype/generator v0.0.1-alpha3
+	github.com/ngicks/estype/generator v0.0.1-alpha4
 	github.com/ngicks/estype/helper v0.0.1-alpha3
 )
 

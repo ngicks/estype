@@ -76,8 +76,7 @@ func main() {
 	printOption(generateOpt)
 
 	f := jen.NewFilePath(*packagePath)
-	ctx := generateOpt.NewContext(f)
-	ctx.Gen()
+	generateOpt.Gen(f)
 
 	if err := f.Render(out); err != nil {
 		panic(err)
