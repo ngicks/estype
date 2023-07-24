@@ -17,11 +17,7 @@ var (
 	outFile = flag.String(
 		"o",
 		"--",
-		"[optional]\n"+
-			"path to output generated code.\n"+
-			"More than 2 distinct mappings should not be generated to the same directory\n"+
-			"because it possibly creates helper functions / types depending on the config and the mapping.\n"+
-			"defaults to stdout.",
+		"[optional] path to output generated code.",
 	)
 	configFile = flag.String(
 		"c",
