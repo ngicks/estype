@@ -144,7 +144,7 @@ func (d DynamicNestedRuntimeNested) MarshalJSON() ([]byte, error) {
 			return nil, err
 		}
 		buf.WriteByte('"')
-		buf.WriteString(key)
+		json.HTMLEscape(buf, []byte(key))
 		buf.WriteString("\":")
 		buf.Write(bin)
 		buf.WriteByte(',')
@@ -259,7 +259,7 @@ func (d DynamicNestedRuntimeNestedRaw) MarshalJSON() ([]byte, error) {
 			return nil, err
 		}
 		buf.WriteByte('"')
-		buf.WriteString(key)
+		json.HTMLEscape(buf, []byte(key))
 		buf.WriteString("\":")
 		buf.Write(bin)
 		buf.WriteByte(',')
@@ -374,7 +374,7 @@ func (d DynamicNestedRuntimeNameObject) MarshalJSON() ([]byte, error) {
 			return nil, err
 		}
 		buf.WriteByte('"')
-		buf.WriteString(key)
+		json.HTMLEscape(buf, []byte(key))
 		buf.WriteString("\":")
 		buf.Write(bin)
 		buf.WriteByte(',')
@@ -489,7 +489,7 @@ func (d DynamicNestedRuntimeNameObjectRaw) MarshalJSON() ([]byte, error) {
 			return nil, err
 		}
 		buf.WriteByte('"')
-		buf.WriteString(key)
+		json.HTMLEscape(buf, []byte(key))
 		buf.WriteString("\":")
 		buf.Write(bin)
 		buf.WriteByte(',')
@@ -652,7 +652,7 @@ func (d DynamicObjectFalseObject) MarshalJSON() ([]byte, error) {
 			return nil, err
 		}
 		buf.WriteByte('"')
-		buf.WriteString(key)
+		json.HTMLEscape(buf, []byte(key))
 		buf.WriteString("\":")
 		buf.Write(bin)
 		buf.WriteByte(',')
@@ -767,7 +767,7 @@ func (d DynamicObjectFalseObjectRaw) MarshalJSON() ([]byte, error) {
 			return nil, err
 		}
 		buf.WriteByte('"')
-		buf.WriteString(key)
+		json.HTMLEscape(buf, []byte(key))
 		buf.WriteString("\":")
 		buf.Write(bin)
 		buf.WriteByte(',')
@@ -882,7 +882,7 @@ func (d DynamicObjectFalseNameObject) MarshalJSON() ([]byte, error) {
 			return nil, err
 		}
 		buf.WriteByte('"')
-		buf.WriteString(key)
+		json.HTMLEscape(buf, []byte(key))
 		buf.WriteString("\":")
 		buf.Write(bin)
 		buf.WriteByte(',')
@@ -997,7 +997,7 @@ func (d DynamicObjectFalseNameObjectRaw) MarshalJSON() ([]byte, error) {
 			return nil, err
 		}
 		buf.WriteByte('"')
-		buf.WriteString(key)
+		json.HTMLEscape(buf, []byte(key))
 		buf.WriteString("\":")
 		buf.Write(bin)
 		buf.WriteByte(',')

@@ -61,7 +61,7 @@ func generateAdditionalPropMarshalJSON(ctx *generatorContext, tyId typeId, field
 					jen.
 						Id("buf").
 						Dot("WriteByte").
-						Call(jen.Id(`'{'`)),
+						Call(jen.LitRune('{')),
 				}...)
 				buf := new(bytes.Buffer)
 				for _, field := range fields {
@@ -98,7 +98,7 @@ func generateAdditionalPropMarshalJSON(ctx *generatorContext, tyId typeId, field
 							jen.Return(jen.Nil(), jen.Err()),
 						),
 						jen.Id("buf").Dot("WriteByte").Call(jen.Id(`'"'`)),
-						jen.Id("buf").Dot("WriteString").Call(jen.Id("key")),
+						jen.Qual("encoding/json", "HTMLEscape").Call(jen.Id("buf"), jen.Index().Byte().Parens(jen.Id("key"))),
 						jen.Id("buf").Dot("WriteString").Call(jen.Lit(`":`)),
 						jen.Id("buf").Dot("Write").Call(jen.Id("bin")),
 						jen.Id("buf").Dot("WriteByte").Call(jen.Id(`','`)),
@@ -106,7 +106,7 @@ func generateAdditionalPropMarshalJSON(ctx *generatorContext, tyId typeId, field
 					jen.If(jen.Id("buf").Dot("Len").Call().Op(">").Lit(1)).Block(
 						jen.Id("buf").Dot("Truncate").Call(jen.Id("buf").Dot("Len").Call().Op("-").Lit(1)),
 					),
-					jen.Id("buf").Dot("WriteByte").Call(jen.Id(`'}'`)),
+					jen.Id("buf").Dot("WriteByte").Call(jen.LitRune('}')),
 					jen.Return(
 						jen.Append(
 							jen.Index().Byte().Values(),
@@ -167,7 +167,7 @@ func generateAdditionalPropUnmarshalJSON(ctx *generatorContext, tyId typeId, fie
 				jen.If(jen.Err().Op("!=").Nil()).Block(
 					jen.Return(jen.Err()),
 				),
-				jen.If(jen.Id("token").Op("!=").Qual("encoding/json", "Delim").Parens(jen.Id(`'{'`))).Block(
+				jen.If(jen.Id("token").Op("!=").Qual("encoding/json", "Delim").Parens(jen.LitRune('{'))).Block(
 					jen.Return(
 						jen.
 							Qual("fmt", "Errorf").
