@@ -18,6 +18,8 @@ type AddtionalPropEscape struct {
 	AdditionalProperties_ map[string]any
 }
 
+// ToRaw converts d into its plain equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d AddtionalPropEscape) ToRaw() AddtionalPropEscapeRaw {
 	return AddtionalPropEscapeRaw{
 		U003chmu003e:          gentypehelper.MapPlainToRawElastic[AddtionalPropEscapeU003chmu003eObjectRaw](d.U003chmu003e),
@@ -78,7 +80,7 @@ func (d AddtionalPropEscape) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements json.Unmarshaler
 // to add the special handling rule where
-// additional fields in the input JSON are stored into the AdditionalProperties_ field
+// additional fields in the input JSON object are stored into the AdditionalProperties_ field
 //
 // The presence of this implementation indicates the dynamic field for this object are
 // defined to be other than "strict" in its mapping.json.
@@ -133,6 +135,8 @@ type AddtionalPropEscapeRaw struct {
 	AdditionalProperties_ map[string]any
 }
 
+// ToPlain converts d into its raw equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d AddtionalPropEscapeRaw) ToPlain() AddtionalPropEscape {
 	return AddtionalPropEscape{
 		U003chmu003e:          gentypehelper.MapElasticToPlainSingle[AddtionalPropEscapeU003chmu003eObject](d.U003chmu003e),
@@ -193,7 +197,7 @@ func (d AddtionalPropEscapeRaw) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements json.Unmarshaler
 // to add the special handling rule where
-// additional fields in the input JSON are stored into the AdditionalProperties_ field
+// additional fields in the input JSON object are stored into the AdditionalProperties_ field
 //
 // The presence of this implementation indicates the dynamic field for this object are
 // defined to be other than "strict" in its mapping.json.
@@ -247,6 +251,8 @@ type AddtionalPropEscapeU003chmu003eObject struct {
 	AdditionalProperties_ map[string]any
 }
 
+// ToRaw converts d into its plain equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d AddtionalPropEscapeU003chmu003eObject) ToRaw() AddtionalPropEscapeU003chmu003eObjectRaw {
 	return AddtionalPropEscapeU003chmu003eObjectRaw{
 		U0026mahu0026:         gentypehelper.MapSingleValueToElastic[string](d.U0026mahu0026),
@@ -299,7 +305,7 @@ func (d AddtionalPropEscapeU003chmu003eObject) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements json.Unmarshaler
 // to add the special handling rule where
-// additional fields in the input JSON are stored into the AdditionalProperties_ field
+// additional fields in the input JSON object are stored into the AdditionalProperties_ field
 //
 // The presence of this implementation indicates the dynamic field for this object are
 // defined to be other than "strict" in its mapping.json.
@@ -351,6 +357,8 @@ type AddtionalPropEscapeU003chmu003eObjectRaw struct {
 	AdditionalProperties_ map[string]any
 }
 
+// ToPlain converts d into its raw equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d AddtionalPropEscapeU003chmu003eObjectRaw) ToPlain() AddtionalPropEscapeU003chmu003eObject {
 	return AddtionalPropEscapeU003chmu003eObject{
 		U0026mahu0026:         d.U0026mahu0026.ValueSingle(),
@@ -403,7 +411,7 @@ func (d AddtionalPropEscapeU003chmu003eObjectRaw) MarshalJSON() ([]byte, error) 
 
 // UnmarshalJSON implements json.Unmarshaler
 // to add the special handling rule where
-// additional fields in the input JSON are stored into the AdditionalProperties_ field
+// additional fields in the input JSON object are stored into the AdditionalProperties_ field
 //
 // The presence of this implementation indicates the dynamic field for this object are
 // defined to be other than "strict" in its mapping.json.
@@ -455,6 +463,8 @@ type AddtionalPropEscapeUe29ca8Object struct {
 	AdditionalProperties_ map[string]any
 }
 
+// ToRaw converts d into its plain equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d AddtionalPropEscapeUe29ca8Object) ToRaw() AddtionalPropEscapeUe29ca8ObjectRaw {
 	return AddtionalPropEscapeUe29ca8ObjectRaw{
 		Yay:                   gentypehelper.MapSingleValueToElastic[string](d.Yay),
@@ -507,7 +517,7 @@ func (d AddtionalPropEscapeUe29ca8Object) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements json.Unmarshaler
 // to add the special handling rule where
-// additional fields in the input JSON are stored into the AdditionalProperties_ field
+// additional fields in the input JSON object are stored into the AdditionalProperties_ field
 //
 // The presence of this implementation indicates the dynamic field for this object are
 // defined to be other than "strict" in its mapping.json.
@@ -559,6 +569,8 @@ type AddtionalPropEscapeUe29ca8ObjectRaw struct {
 	AdditionalProperties_ map[string]any
 }
 
+// ToPlain converts d into its raw equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d AddtionalPropEscapeUe29ca8ObjectRaw) ToPlain() AddtionalPropEscapeUe29ca8Object {
 	return AddtionalPropEscapeUe29ca8Object{
 		Yay:                   d.Yay.ValueSingle(),
@@ -611,7 +623,7 @@ func (d AddtionalPropEscapeUe29ca8ObjectRaw) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements json.Unmarshaler
 // to add the special handling rule where
-// additional fields in the input JSON are stored into the AdditionalProperties_ field
+// additional fields in the input JSON object are stored into the AdditionalProperties_ field
 //
 // The presence of this implementation indicates the dynamic field for this object are
 // defined to be other than "strict" in its mapping.json.

@@ -19,6 +19,8 @@ type Dynamic struct {
 	ObjectFalse   DynamicObjectFalseObject   `json:"object_false"`
 }
 
+// ToRaw converts d into its plain equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d Dynamic) ToRaw() DynamicRaw {
 	return DynamicRaw{
 		NestedInherit: gentypehelper.MapPlainToRawElastic[DynamicNestedInheritNestedRaw](d.NestedInherit),
@@ -35,6 +37,8 @@ type DynamicRaw struct {
 	ObjectFalse   elastic.Elastic[DynamicObjectFalseObjectRaw]   `json:"object_false"`
 }
 
+// ToPlain converts d into its raw equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d DynamicRaw) ToPlain() Dynamic {
 	return Dynamic{
 		NestedInherit: gentypehelper.MapElasticToPlainSingle[DynamicNestedInheritNested](d.NestedInherit),
@@ -49,6 +53,8 @@ type DynamicNestedInheritNested struct {
 	Name DynamicNestedInheritNameObject `json:"name"`
 }
 
+// ToRaw converts d into its plain equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d DynamicNestedInheritNested) ToRaw() DynamicNestedInheritNestedRaw {
 	return DynamicNestedInheritNestedRaw{
 		Age:  gentypehelper.MapSingleValueToElastic[int32](d.Age),
@@ -61,6 +67,8 @@ type DynamicNestedInheritNestedRaw struct {
 	Name elastic.Elastic[DynamicNestedInheritNameObjectRaw] `json:"name"`
 }
 
+// ToPlain converts d into its raw equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d DynamicNestedInheritNestedRaw) ToPlain() DynamicNestedInheritNested {
 	return DynamicNestedInheritNested{
 		Age:  d.Age.ValueSingle(),
@@ -73,6 +81,8 @@ type DynamicNestedInheritNameObject struct {
 	Last  string `json:"last"`
 }
 
+// ToRaw converts d into its plain equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d DynamicNestedInheritNameObject) ToRaw() DynamicNestedInheritNameObjectRaw {
 	return DynamicNestedInheritNameObjectRaw{
 		First: gentypehelper.MapSingleValueToElastic[string](d.First),
@@ -85,6 +95,8 @@ type DynamicNestedInheritNameObjectRaw struct {
 	Last  elastic.Elastic[string] `json:"last"`
 }
 
+// ToPlain converts d into its raw equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d DynamicNestedInheritNameObjectRaw) ToPlain() DynamicNestedInheritNameObject {
 	return DynamicNestedInheritNameObject{
 		First: d.First.ValueSingle(),
@@ -98,6 +110,8 @@ type DynamicNestedRuntimeNested struct {
 	AdditionalProperties_ map[string]any
 }
 
+// ToRaw converts d into its plain equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d DynamicNestedRuntimeNested) ToRaw() DynamicNestedRuntimeNestedRaw {
 	return DynamicNestedRuntimeNestedRaw{
 		Age:                   gentypehelper.MapSingleValueToElastic[int32](d.Age),
@@ -158,7 +172,7 @@ func (d DynamicNestedRuntimeNested) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements json.Unmarshaler
 // to add the special handling rule where
-// additional fields in the input JSON are stored into the AdditionalProperties_ field
+// additional fields in the input JSON object are stored into the AdditionalProperties_ field
 //
 // The presence of this implementation indicates the dynamic field for this object are
 // defined to be other than "strict" in its mapping.json.
@@ -213,6 +227,8 @@ type DynamicNestedRuntimeNestedRaw struct {
 	AdditionalProperties_ map[string]any
 }
 
+// ToPlain converts d into its raw equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d DynamicNestedRuntimeNestedRaw) ToPlain() DynamicNestedRuntimeNested {
 	return DynamicNestedRuntimeNested{
 		Age:                   d.Age.ValueSingle(),
@@ -273,7 +289,7 @@ func (d DynamicNestedRuntimeNestedRaw) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements json.Unmarshaler
 // to add the special handling rule where
-// additional fields in the input JSON are stored into the AdditionalProperties_ field
+// additional fields in the input JSON object are stored into the AdditionalProperties_ field
 //
 // The presence of this implementation indicates the dynamic field for this object are
 // defined to be other than "strict" in its mapping.json.
@@ -328,6 +344,8 @@ type DynamicNestedRuntimeNameObject struct {
 	AdditionalProperties_ map[string]any
 }
 
+// ToRaw converts d into its plain equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d DynamicNestedRuntimeNameObject) ToRaw() DynamicNestedRuntimeNameObjectRaw {
 	return DynamicNestedRuntimeNameObjectRaw{
 		First:                 gentypehelper.MapSingleValueToElastic[string](d.First),
@@ -388,7 +406,7 @@ func (d DynamicNestedRuntimeNameObject) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements json.Unmarshaler
 // to add the special handling rule where
-// additional fields in the input JSON are stored into the AdditionalProperties_ field
+// additional fields in the input JSON object are stored into the AdditionalProperties_ field
 //
 // The presence of this implementation indicates the dynamic field for this object are
 // defined to be other than "strict" in its mapping.json.
@@ -443,6 +461,8 @@ type DynamicNestedRuntimeNameObjectRaw struct {
 	AdditionalProperties_ map[string]any
 }
 
+// ToPlain converts d into its raw equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d DynamicNestedRuntimeNameObjectRaw) ToPlain() DynamicNestedRuntimeNameObject {
 	return DynamicNestedRuntimeNameObject{
 		First:                 d.First.ValueSingle(),
@@ -503,7 +523,7 @@ func (d DynamicNestedRuntimeNameObjectRaw) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements json.Unmarshaler
 // to add the special handling rule where
-// additional fields in the input JSON are stored into the AdditionalProperties_ field
+// additional fields in the input JSON object are stored into the AdditionalProperties_ field
 //
 // The presence of this implementation indicates the dynamic field for this object are
 // defined to be other than "strict" in its mapping.json.
@@ -557,6 +577,8 @@ type DynamicNestedStrictNested struct {
 	Name DynamicNestedStrictNameObject `json:"name"`
 }
 
+// ToRaw converts d into its plain equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d DynamicNestedStrictNested) ToRaw() DynamicNestedStrictNestedRaw {
 	return DynamicNestedStrictNestedRaw{
 		Age:  gentypehelper.MapSingleValueToElastic[int32](d.Age),
@@ -569,6 +591,8 @@ type DynamicNestedStrictNestedRaw struct {
 	Name elastic.Elastic[DynamicNestedStrictNameObjectRaw] `json:"name"`
 }
 
+// ToPlain converts d into its raw equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d DynamicNestedStrictNestedRaw) ToPlain() DynamicNestedStrictNested {
 	return DynamicNestedStrictNested{
 		Age:  d.Age.ValueSingle(),
@@ -581,6 +605,8 @@ type DynamicNestedStrictNameObject struct {
 	Last  string `json:"last"`
 }
 
+// ToRaw converts d into its plain equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d DynamicNestedStrictNameObject) ToRaw() DynamicNestedStrictNameObjectRaw {
 	return DynamicNestedStrictNameObjectRaw{
 		First: gentypehelper.MapSingleValueToElastic[string](d.First),
@@ -593,6 +619,8 @@ type DynamicNestedStrictNameObjectRaw struct {
 	Last  elastic.Elastic[string] `json:"last"`
 }
 
+// ToPlain converts d into its raw equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d DynamicNestedStrictNameObjectRaw) ToPlain() DynamicNestedStrictNameObject {
 	return DynamicNestedStrictNameObject{
 		First: d.First.ValueSingle(),
@@ -606,6 +634,8 @@ type DynamicObjectFalseObject struct {
 	AdditionalProperties_ map[string]any
 }
 
+// ToRaw converts d into its plain equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d DynamicObjectFalseObject) ToRaw() DynamicObjectFalseObjectRaw {
 	return DynamicObjectFalseObjectRaw{
 		Age:                   gentypehelper.MapSingleValueToElastic[int32](d.Age),
@@ -666,7 +696,7 @@ func (d DynamicObjectFalseObject) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements json.Unmarshaler
 // to add the special handling rule where
-// additional fields in the input JSON are stored into the AdditionalProperties_ field
+// additional fields in the input JSON object are stored into the AdditionalProperties_ field
 //
 // The presence of this implementation indicates the dynamic field for this object are
 // defined to be other than "strict" in its mapping.json.
@@ -721,6 +751,8 @@ type DynamicObjectFalseObjectRaw struct {
 	AdditionalProperties_ map[string]any
 }
 
+// ToPlain converts d into its raw equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d DynamicObjectFalseObjectRaw) ToPlain() DynamicObjectFalseObject {
 	return DynamicObjectFalseObject{
 		Age:                   d.Age.ValueSingle(),
@@ -781,7 +813,7 @@ func (d DynamicObjectFalseObjectRaw) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements json.Unmarshaler
 // to add the special handling rule where
-// additional fields in the input JSON are stored into the AdditionalProperties_ field
+// additional fields in the input JSON object are stored into the AdditionalProperties_ field
 //
 // The presence of this implementation indicates the dynamic field for this object are
 // defined to be other than "strict" in its mapping.json.
@@ -836,6 +868,8 @@ type DynamicObjectFalseNameObject struct {
 	AdditionalProperties_ map[string]any
 }
 
+// ToRaw converts d into its plain equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d DynamicObjectFalseNameObject) ToRaw() DynamicObjectFalseNameObjectRaw {
 	return DynamicObjectFalseNameObjectRaw{
 		First:                 gentypehelper.MapSingleValueToElastic[string](d.First),
@@ -896,7 +930,7 @@ func (d DynamicObjectFalseNameObject) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements json.Unmarshaler
 // to add the special handling rule where
-// additional fields in the input JSON are stored into the AdditionalProperties_ field
+// additional fields in the input JSON object are stored into the AdditionalProperties_ field
 //
 // The presence of this implementation indicates the dynamic field for this object are
 // defined to be other than "strict" in its mapping.json.
@@ -951,6 +985,8 @@ type DynamicObjectFalseNameObjectRaw struct {
 	AdditionalProperties_ map[string]any
 }
 
+// ToPlain converts d into its raw equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d DynamicObjectFalseNameObjectRaw) ToPlain() DynamicObjectFalseNameObject {
 	return DynamicObjectFalseNameObject{
 		First:                 d.First.ValueSingle(),
@@ -1011,7 +1047,7 @@ func (d DynamicObjectFalseNameObjectRaw) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements json.Unmarshaler
 // to add the special handling rule where
-// additional fields in the input JSON are stored into the AdditionalProperties_ field
+// additional fields in the input JSON object are stored into the AdditionalProperties_ field
 //
 // The presence of this implementation indicates the dynamic field for this object are
 // defined to be other than "strict" in its mapping.json.

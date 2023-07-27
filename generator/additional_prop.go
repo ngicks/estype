@@ -128,7 +128,7 @@ func generateAdditionalPropUnmarshalJSON(ctx *generatorContext, tyId typeId, fie
 		Commentf(
 			"// UnmarshalJSON implements json.Unmarshaler\n"+
 				"// to add the special handling rule where\n"+
-				"// additional fields in the input JSON are stored into the %s field\n"+
+				"// additional fields in the input JSON object are stored into the %s field\n"+
 				"//\n"+
 				"// The presence of this implementation indicates the dynamic field for this object are\n"+
 				"// defined to be other than \"strict\" in its mapping.json.",

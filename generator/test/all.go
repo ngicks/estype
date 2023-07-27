@@ -57,6 +57,8 @@ type All struct {
 	Wildcard        string                               `json:"wildcard"`
 }
 
+// ToRaw converts d into its plain equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d All) ToRaw() AllRaw {
 	return AllRaw{
 		Agg:             gentypehelper.MapSingleValueToElastic[fielddatatype.AggregateMetricDouble](d.Agg),
@@ -150,6 +152,8 @@ type AllRaw struct {
 	Wildcard        elastic.Elastic[string]                               `json:"wildcard"`
 }
 
+// ToPlain converts d into its raw equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d AllRaw) ToPlain() All {
 	return All{
 		Agg:             d.Agg.ValueSingle(),
@@ -207,8 +211,8 @@ func (d AllRaw) ToPlain() All {
 //   - 2006-01-02
 //   - int as epoch_millis
 //
-// It also implements json.Marshaler. As JSON representation it will be marshaled into
-// 2006-01-02 15:04:05
+// It also implements json.Marshaler. It will be marshaled into
+// string formatted in 2006-01-02 15:04:05 layout
 type AllDateDate time.Time
 
 var parserAllDateDate = estime.FromGoTimeLayoutUnsafe(
@@ -252,8 +256,8 @@ func (t *AllDateDate) UnmarshalJSON(data []byte) error {
 //   - 2006-01-02
 //   - int as epoch_second
 //
-// It also implements json.Marshaler. As JSON representation it will be marshaled into
-// 2006-01-02T15:04:05.000000000Z0700
+// It also implements json.Marshaler. It will be marshaled into
+// string formatted in 2006-01-02T15:04:05.000000000Z0700 layout
 type AllDateNanoDate time.Time
 
 var parserAllDateNanoDate = estime.FromGoTimeLayoutUnsafe(
@@ -292,6 +296,8 @@ type AllNestedObject struct {
 	Name AllNestedNameObject `json:"name"`
 }
 
+// ToRaw converts d into its plain equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d AllNestedObject) ToRaw() AllNestedObjectRaw {
 	return AllNestedObjectRaw{
 		Age:  gentypehelper.MapSingleValueToElastic[int32](d.Age),
@@ -304,6 +310,8 @@ type AllNestedObjectRaw struct {
 	Name elastic.Elastic[AllNestedNameObjectRaw] `json:"name"`
 }
 
+// ToPlain converts d into its raw equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d AllNestedObjectRaw) ToPlain() AllNestedObject {
 	return AllNestedObject{
 		Age:  d.Age.ValueSingle(),
@@ -316,6 +324,8 @@ type AllNestedNameObject struct {
 	Last  string `json:"last"`
 }
 
+// ToRaw converts d into its plain equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d AllNestedNameObject) ToRaw() AllNestedNameObjectRaw {
 	return AllNestedNameObjectRaw{
 		First: gentypehelper.MapSingleValueToElastic[string](d.First),
@@ -328,6 +338,8 @@ type AllNestedNameObjectRaw struct {
 	Last  elastic.Elastic[string] `json:"last"`
 }
 
+// ToPlain converts d into its raw equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d AllNestedNameObjectRaw) ToPlain() AllNestedNameObject {
 	return AllNestedNameObject{
 		First: d.First.ValueSingle(),
@@ -340,6 +352,8 @@ type AllObjectObject struct {
 	Name AllObjectNameObject `json:"name"`
 }
 
+// ToRaw converts d into its plain equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d AllObjectObject) ToRaw() AllObjectObjectRaw {
 	return AllObjectObjectRaw{
 		Age:  gentypehelper.MapSingleValueToElastic[int32](d.Age),
@@ -352,6 +366,8 @@ type AllObjectObjectRaw struct {
 	Name elastic.Elastic[AllObjectNameObjectRaw] `json:"name"`
 }
 
+// ToPlain converts d into its raw equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d AllObjectObjectRaw) ToPlain() AllObjectObject {
 	return AllObjectObject{
 		Age:  d.Age.ValueSingle(),
@@ -364,6 +380,8 @@ type AllObjectNameObject struct {
 	Last  string `json:"last"`
 }
 
+// ToRaw converts d into its plain equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d AllObjectNameObject) ToRaw() AllObjectNameObjectRaw {
 	return AllObjectNameObjectRaw{
 		First: gentypehelper.MapSingleValueToElastic[string](d.First),
@@ -376,6 +394,8 @@ type AllObjectNameObjectRaw struct {
 	Last  elastic.Elastic[string] `json:"last"`
 }
 
+// ToPlain converts d into its raw equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d AllObjectNameObjectRaw) ToPlain() AllObjectNameObject {
 	return AllObjectNameObject{
 		First: d.First.ValueSingle(),

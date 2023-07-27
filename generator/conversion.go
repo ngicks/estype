@@ -10,6 +10,8 @@ const (
 )
 
 func generateToRaw(ctx *generatorContext, plain, raw typeId, plainFields, rawFields []structField, strict bool) {
+	ctx.file.Commentf("// ToRaw converts d into its plain equivalent.")
+	ctx.file.Commentf("// It avoids copying data where it is possilbe. Mutation to fields is not advised.")
 	ctx.file.Func().
 		Params(jen.Id("d").Id(plain.Id)).
 		Id("ToRaw").
@@ -46,6 +48,8 @@ func generateToRaw(ctx *generatorContext, plain, raw typeId, plainFields, rawFie
 }
 
 func generateToPlain(ctx *generatorContext, plain, raw typeId, plainFields, rawFields []structField, strict bool) {
+	ctx.file.Commentf("// ToPlain converts d into its raw equivalent.")
+	ctx.file.Commentf("// It avoids copying data where it is possilbe. Mutation to fields is not advised.")
 	ctx.file.Func().
 		Params(jen.Id("d").Id(raw.Id)).
 		Id("ToPlain").

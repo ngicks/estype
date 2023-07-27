@@ -41,11 +41,11 @@ func (d GeneratorDef) Gen(f *jen.File) {
 			f.Commentf("//  - int as %s", d.NumParser)
 		}
 		f.Comment("//")
-		f.Comment("// It also implements json.Marshaler. As JSON representation it will be marshaled into")
+		f.Comment("// It also implements json.Marshaler. It will be marshaled into")
 		if d.MarshalToNumber {
 			f.Commentf("int which represents %s.", string(d.NumParser))
 		} else {
-			f.Commentf("%s", d.MultiLayout.Clone()[d.MarshalLayoutIndex])
+			f.Commentf("string formatted in %s layout.", d.MultiLayout.Clone()[d.MarshalLayoutIndex])
 		}
 	}
 

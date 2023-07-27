@@ -57,6 +57,8 @@ type AllOptional struct {
 	Wildcard        *[]string                               `json:"wildcard"`
 }
 
+// ToRaw converts d into its plain equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d AllOptional) ToRaw() AllOptionalRaw {
 	return AllOptionalRaw{
 		Agg:             gentypehelper.MapSingleOptionalValueToElastic[fielddatatype.AggregateMetricDouble](d.Agg),
@@ -150,6 +152,8 @@ type AllOptionalRaw struct {
 	Wildcard        elastic.Elastic[string]                               `json:"wildcard"`
 }
 
+// ToPlain converts d into its raw equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d AllOptionalRaw) ToPlain() AllOptional {
 	return AllOptional{
 		Agg:             d.Agg.PlainSingle(),
@@ -207,8 +211,8 @@ func (d AllOptionalRaw) ToPlain() AllOptional {
 //   - 2006-01-02
 //   - int as epoch_millis
 //
-// It also implements json.Marshaler. As JSON representation it will be marshaled into
-// 2006-01-02 15:04:05
+// It also implements json.Marshaler. It will be marshaled into
+// string formatted in 2006-01-02 15:04:05 layout
 type AllOptionalDateDate time.Time
 
 var parserAllOptionalDateDate = estime.FromGoTimeLayoutUnsafe(
@@ -252,8 +256,8 @@ func (t *AllOptionalDateDate) UnmarshalJSON(data []byte) error {
 //   - 2006-01-02
 //   - int as epoch_second
 //
-// It also implements json.Marshaler. As JSON representation it will be marshaled into
-// 2006-01-02T15:04:05.000000000Z0700
+// It also implements json.Marshaler. It will be marshaled into
+// string formatted in 2006-01-02T15:04:05.000000000Z0700 layout
 type AllOptionalDateNanoDate time.Time
 
 var parserAllOptionalDateNanoDate = estime.FromGoTimeLayoutUnsafe(
@@ -292,6 +296,8 @@ type AllOptionalNestedObject struct {
 	Name *[]AllOptionalNestedNameObject `json:"name"`
 }
 
+// ToRaw converts d into its plain equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d AllOptionalNestedObject) ToRaw() AllOptionalNestedObjectRaw {
 	return AllOptionalNestedObjectRaw{
 		Age:  gentypehelper.MapMultipleOptionalValueToElastic[int32](d.Age),
@@ -304,6 +310,8 @@ type AllOptionalNestedObjectRaw struct {
 	Name elastic.Elastic[AllOptionalNestedNameObjectRaw] `json:"name"`
 }
 
+// ToPlain converts d into its raw equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d AllOptionalNestedObjectRaw) ToPlain() AllOptionalNestedObject {
 	return AllOptionalNestedObject{
 		Age:  gentypehelper.MapElasticToMultipleValueOptional[int32](d.Age),
@@ -316,6 +324,8 @@ type AllOptionalNestedNameObject struct {
 	Last  *[]string `json:"last"`
 }
 
+// ToRaw converts d into its plain equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d AllOptionalNestedNameObject) ToRaw() AllOptionalNestedNameObjectRaw {
 	return AllOptionalNestedNameObjectRaw{
 		First: gentypehelper.MapMultipleOptionalValueToElastic[string](d.First),
@@ -328,6 +338,8 @@ type AllOptionalNestedNameObjectRaw struct {
 	Last  elastic.Elastic[string] `json:"last"`
 }
 
+// ToPlain converts d into its raw equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d AllOptionalNestedNameObjectRaw) ToPlain() AllOptionalNestedNameObject {
 	return AllOptionalNestedNameObject{
 		First: gentypehelper.MapElasticToMultipleValueOptional[string](d.First),
@@ -340,6 +352,8 @@ type AllOptionalObjectObject struct {
 	Name *[]AllOptionalObjectNameObject `json:"name"`
 }
 
+// ToRaw converts d into its plain equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d AllOptionalObjectObject) ToRaw() AllOptionalObjectObjectRaw {
 	return AllOptionalObjectObjectRaw{
 		Age:  gentypehelper.MapMultipleOptionalValueToElastic[int32](d.Age),
@@ -352,6 +366,8 @@ type AllOptionalObjectObjectRaw struct {
 	Name elastic.Elastic[AllOptionalObjectNameObjectRaw] `json:"name"`
 }
 
+// ToPlain converts d into its raw equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d AllOptionalObjectObjectRaw) ToPlain() AllOptionalObjectObject {
 	return AllOptionalObjectObject{
 		Age:  gentypehelper.MapElasticToMultipleValueOptional[int32](d.Age),
@@ -364,6 +380,8 @@ type AllOptionalObjectNameObject struct {
 	Last  *[]string `json:"last"`
 }
 
+// ToRaw converts d into its plain equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d AllOptionalObjectNameObject) ToRaw() AllOptionalObjectNameObjectRaw {
 	return AllOptionalObjectNameObjectRaw{
 		First: gentypehelper.MapMultipleOptionalValueToElastic[string](d.First),
@@ -376,6 +394,8 @@ type AllOptionalObjectNameObjectRaw struct {
 	Last  elastic.Elastic[string] `json:"last"`
 }
 
+// ToPlain converts d into its raw equivalent.
+// It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d AllOptionalObjectNameObjectRaw) ToPlain() AllOptionalObjectNameObject {
 	return AllOptionalObjectNameObject{
 		First: gentypehelper.MapElasticToMultipleValueOptional[string](d.First),
