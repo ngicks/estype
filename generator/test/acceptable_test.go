@@ -33,6 +33,8 @@ var (
 	conversionMapping []byte
 	//go:embed testdata/dynamic.json
 	dynamicMapping []byte
+	//go:embed testdata/additional_prop_escape.json
+	additionalPropEscapeMapping []byte
 )
 
 type settings struct {
@@ -91,6 +93,10 @@ func TestElasticsearchAcceptance(t *testing.T) {
 			mappings:    dynamicMapping,
 			sampleInput: sampleDynamic,
 			toRaw:       toRaw[Dynamic, DynamicRaw],
+		}, {
+			mappings:    additionalPropEscapeMapping,
+			sampleInput: sampleAddtionalPropEscape,
+			toRaw:       toRaw[AddtionalPropEscape, AddtionalPropEscapeRaw],
 		},
 	} {
 		var mapping map[string]indexstate.IndexState

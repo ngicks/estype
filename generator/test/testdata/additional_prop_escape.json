@@ -1,0 +1,22 @@
+{
+  "additional_prop": {
+    "mappings": {
+      "properties": {
+        "<hm>": {
+          "properties": {
+            "&mah&": {
+              "type": "keyword"
+            }
+          }
+        },
+        "✨": {
+          "properties": {
+            "yay": {
+              "type": "keyword"
+            }
+          }
+        }
+      }
+    }
+  }
+}

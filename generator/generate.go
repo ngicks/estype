@@ -1,7 +1,10 @@
 package generator
 
 import (
+	"encoding/hex"
 	"strings"
+	"unicode"
+	"unicode/utf8"
 
 	"github.com/dave/jennifer/jen"
 
@@ -49,7 +52,7 @@ func (c *generatorContext) Gen() {
 		generatedTypes: make(map[string]mapping.Property),
 	}
 	newCtx.localState = localState{
-		fieldName: append(c.localState.fieldName, pascalCase(c.generatorOption.RootTypeName)),
+		fieldName: append(c.localState.fieldName, c.generatorOption.RootTypeName),
 		prop: mapping.Property{
 			Val: mapping.ObjectProperty{
 				CorePropertyBase: mapping.CorePropertyBase{
@@ -60,7 +63,7 @@ func (c *generatorContext) Gen() {
 			},
 		},
 		propOpt: PropertyOption{
-			TypeName: pascalCase(c.generatorOption.RootTypeName),
+			TypeName: pascalCase(escapeNonId(c.generatorOption.RootTypeName)),
 			Children: c.generatorOption.MappingOption,
 		},
 		dynamic: c.generatorOption.Mapping.Dynamic.Option,
@@ -116,9 +119,58 @@ func (c *generatorContext) PreferMarshalDateToNumber() bool {
 	return c.localState.propOpt.PreferMarshalDateToNumber.Or(c.generatorOption.DefaultOption.PreferMarshalDateToNumber).Value()
 }
 
+var goOps = []string{
+	">>=", "<<=", "...", "&^=", "||", "|=", "^=",
+	">>", ">=", "==", "<=", "<<", "<-", ":=",
+	"/=", "-=", "--", "+=", "++", "*=", "&^",
+	"&=", "&&", "%=", "!=", "~", "}", "|",
+	"{", "^", "]", "[", ">", "=", "<",
+	";", ":", "/", ".", "-", ",", "+",
+	"*", ")", "(", "&", "%", "!",
+}
+
+func escapeNonId(v string) string {
+	builder := strings.Builder{}
+	builder.Grow(len(v))
+	var i int
+LOOP:
+	for i < len(v) {
+		// As per the Go programming specification,
+		// operators are listed as goOps.
+		// https://go.dev/ref/spec#Operators_and_punctuation
+		for _, op := range goOps {
+			if strings.HasPrefix(v[i:], op) {
+				builder.WriteByte('u')
+				for _, letter := range []byte(op) {
+					builder.WriteString("00")
+					builder.WriteString(hex.EncodeToString([]byte{letter}))
+				}
+				i += len(op)
+				continue LOOP
+			}
+		}
+		r, size := utf8.DecodeRuneInString(v[i:])
+		i += size
+		// As per Go programming specification.
+		// identifier = letter { letter | unicode_digit }.
+		// https://go.dev/ref/spec#Identifiers
+		if !(i == 0 && (unicode.IsDigit(r) || r == '_')) && (unicode.IsLetter(r) || r == '_' || unicode.IsDigit(r)) {
+			builder.WriteRune(r)
+		} else {
+			builder.WriteByte('u')
+			builder.WriteString(hex.EncodeToString([]byte(string(r))))
+		}
+	}
+
+	return builder.String()
+}
+
 func pascalCase(snakeCase string) string {
 	out := ""
 	for _, part := range strings.Split(snakeCase, "_") {
+		if len(part) == 0 {
+			continue
+		}
 		out += strings.ToUpper(part[:1]) + part[1:]
 	}
 	return out

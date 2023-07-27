@@ -26,12 +26,17 @@ var (
 )
 
 type structField struct {
-	Name         string
-	IsObjectLike bool // nested or object field data type.
-	Opt          typeIdRenderOption
-	Stmt         *jen.Statement
-	TypeId       typeId
-	Tag          map[string]string
+	Name string
+	// raw name for this field.
+	// This would not be same as Name field wehen the field contains non-ident string.
+	// Suffixing field name with `Raw` should be avoided in this struct since it may confuse people
+	// as they assume Raw is related to Raw variant of generated code.
+	NameUnprocessed string
+	IsObjectLike    bool // nested or object field data type.
+	Opt             typeIdRenderOption
+	Stmt            *jen.Statement
+	TypeId          typeId
+	Tag             map[string]string
 }
 
 func genObjectLike(ctx *generatorContext, dryRun bool) (plain, raw typeId) {
@@ -135,12 +140,13 @@ func genObjectLike(ctx *generatorContext, dryRun bool) (plain, raw typeId) {
 			}
 
 			fields = append(fields, structField{
-				Name:         pascalCase(propFieldName),
-				IsObjectLike: isObjectLike,
-				Opt:          opt.TypeIdRenderOption(nextCtx),
-				Stmt:         mappedFieldTypeId.Render(opt.TypeIdRenderOption(nextCtx)),
-				TypeId:       mappedFieldTypeId,
-				Tag:          map[string]string{"json": propFieldName + omitemptyOpt},
+				Name:            pascalCase(escapeNonId(propFieldName)),
+				NameUnprocessed: pascalCase(propFieldName),
+				IsObjectLike:    isObjectLike,
+				Opt:             opt.TypeIdRenderOption(nextCtx),
+				Stmt:            mappedFieldTypeId.Render(opt.TypeIdRenderOption(nextCtx)),
+				TypeId:          mappedFieldTypeId,
+				Tag:             map[string]string{"json": propFieldName + omitemptyOpt},
 			})
 		}
 

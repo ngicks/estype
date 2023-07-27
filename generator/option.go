@@ -13,7 +13,7 @@ var (
 	ChainFieldName GenerateTypeName = func(fieldNames []string, typeName mapping.EsType) string {
 		names := make([]string, len(fieldNames)+1)
 		for idx, v := range fieldNames {
-			names[idx] = pascalCase(v)
+			names[idx] = pascalCase(escapeNonId(v))
 		}
 		names[len(names)-1] = pascalCase(string(typeName))
 		return strings.Join(names, "")

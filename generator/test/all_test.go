@@ -62,6 +62,12 @@ func TestLosslessConversion(t *testing.T) {
 			backConvert:        backConvert[Dynamic, DynamicRaw],
 			toPlain:            toPlain[Dynamic, *DynamicRaw],
 		},
+		{
+			inputPlain:         sampleAddtionalPropEscape,
+			unmarshalTargetRaw: &AddtionalPropEscapeRaw{},
+			backConvert:        backConvert[AddtionalPropEscape, AddtionalPropEscapeRaw],
+			toPlain:            toPlain[AddtionalPropEscape, *AddtionalPropEscapeRaw],
+		},
 	} {
 		marshaled1st, err := json.Marshal(tc.inputPlain)
 		require.NoError(err)
