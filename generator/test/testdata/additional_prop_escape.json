@@ -6,6 +6,9 @@
           "properties": {
             "&mah&": {
               "type": "keyword"
+            },
+            "__foo_bar": {
+              "type": "keyword"
             }
           }
         },

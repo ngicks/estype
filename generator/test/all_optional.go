@@ -212,7 +212,7 @@ func (d AllOptionalRaw) ToPlain() AllOptional {
 //   - int as epoch_millis
 //
 // It also implements json.Marshaler. It will be marshaled into
-// string formatted in 2006-01-02 15:04:05 layout
+// string formatted in 2006-01-02 15:04:05 layout.
 type AllOptionalDateDate time.Time
 
 var parserAllOptionalDateDate = estime.FromGoTimeLayoutUnsafe(
@@ -257,7 +257,7 @@ func (t *AllOptionalDateDate) UnmarshalJSON(data []byte) error {
 //   - int as epoch_second
 //
 // It also implements json.Marshaler. It will be marshaled into
-// string formatted in 2006-01-02T15:04:05.000000000Z0700 layout
+// string formatted in 2006-01-02T15:04:05.000000000Z0700 layout.
 type AllOptionalDateNanoDate time.Time
 
 var parserAllOptionalDateNanoDate = estime.FromGoTimeLayoutUnsafe(

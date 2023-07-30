@@ -14,7 +14,7 @@ import (
 
 type AddtionalPropEscape struct {
 	U003chmu003e          AddtionalPropEscapeU003chmu003eObject `json:"<hm>"`
-	Ue29ca8               AddtionalPropEscapeUe29ca8Object      `json:"✨"`
+	U2728                 AddtionalPropEscapeU2728Object        `json:"✨"`
 	AdditionalProperties_ map[string]any
 }
 
@@ -23,7 +23,7 @@ type AddtionalPropEscape struct {
 func (d AddtionalPropEscape) ToRaw() AddtionalPropEscapeRaw {
 	return AddtionalPropEscapeRaw{
 		U003chmu003e:          gentypehelper.MapPlainToRawElastic[AddtionalPropEscapeU003chmu003eObjectRaw](d.U003chmu003e),
-		Ue29ca8:               gentypehelper.MapPlainToRawElastic[AddtionalPropEscapeUe29ca8ObjectRaw](d.Ue29ca8),
+		U2728:                 gentypehelper.MapPlainToRawElastic[AddtionalPropEscapeU2728ObjectRaw](d.U2728),
 		AdditionalProperties_: d.AdditionalProperties_,
 	}
 }
@@ -49,7 +49,7 @@ func (d AddtionalPropEscape) MarshalJSON() ([]byte, error) {
 	buf.Write(bin)
 	buf.WriteByte(',')
 	buf.WriteString("\"✨\":")
-	bin, err = json.Marshal(d.Ue29ca8)
+	bin, err = json.Marshal(d.U2728)
 	if err != nil {
 		return nil, err
 	}
@@ -106,7 +106,7 @@ func (d *AddtionalPropEscape) UnmarshalJSON(data []byte) error {
 		case "<hm>":
 			err = dec.Decode(&d.U003chmu003e)
 		case "✨":
-			err = dec.Decode(&d.Ue29ca8)
+			err = dec.Decode(&d.U2728)
 		default:
 			if key, ok := token.(string); ok {
 				var o any
@@ -131,7 +131,7 @@ func (d *AddtionalPropEscape) UnmarshalJSON(data []byte) error {
 
 type AddtionalPropEscapeRaw struct {
 	U003chmu003e          elastic.Elastic[AddtionalPropEscapeU003chmu003eObjectRaw] `json:"<hm>"`
-	Ue29ca8               elastic.Elastic[AddtionalPropEscapeUe29ca8ObjectRaw]      `json:"✨"`
+	U2728                 elastic.Elastic[AddtionalPropEscapeU2728ObjectRaw]        `json:"✨"`
 	AdditionalProperties_ map[string]any
 }
 
@@ -140,7 +140,7 @@ type AddtionalPropEscapeRaw struct {
 func (d AddtionalPropEscapeRaw) ToPlain() AddtionalPropEscape {
 	return AddtionalPropEscape{
 		U003chmu003e:          gentypehelper.MapElasticToPlainSingle[AddtionalPropEscapeU003chmu003eObject](d.U003chmu003e),
-		Ue29ca8:               gentypehelper.MapElasticToPlainSingle[AddtionalPropEscapeUe29ca8Object](d.Ue29ca8),
+		U2728:                 gentypehelper.MapElasticToPlainSingle[AddtionalPropEscapeU2728Object](d.U2728),
 		AdditionalProperties_: d.AdditionalProperties_,
 	}
 }
@@ -166,7 +166,7 @@ func (d AddtionalPropEscapeRaw) MarshalJSON() ([]byte, error) {
 	buf.Write(bin)
 	buf.WriteByte(',')
 	buf.WriteString("\"✨\":")
-	bin, err = serde.Marshal(d.Ue29ca8)
+	bin, err = serde.Marshal(d.U2728)
 	if err != nil {
 		return nil, err
 	}
@@ -223,7 +223,7 @@ func (d *AddtionalPropEscapeRaw) UnmarshalJSON(data []byte) error {
 		case "<hm>":
 			err = dec.Decode(&d.U003chmu003e)
 		case "✨":
-			err = dec.Decode(&d.Ue29ca8)
+			err = dec.Decode(&d.U2728)
 		default:
 			if key, ok := token.(string); ok {
 				var o any
@@ -248,6 +248,7 @@ func (d *AddtionalPropEscapeRaw) UnmarshalJSON(data []byte) error {
 
 type AddtionalPropEscapeU003chmu003eObject struct {
 	U0026mahu0026         string `json:"&mah&"`
+	FooBar__              string `json:"__foo_bar"`
 	AdditionalProperties_ map[string]any
 }
 
@@ -256,6 +257,7 @@ type AddtionalPropEscapeU003chmu003eObject struct {
 func (d AddtionalPropEscapeU003chmu003eObject) ToRaw() AddtionalPropEscapeU003chmu003eObjectRaw {
 	return AddtionalPropEscapeU003chmu003eObjectRaw{
 		U0026mahu0026:         gentypehelper.MapSingleValueToElastic[string](d.U0026mahu0026),
+		FooBar__:              gentypehelper.MapSingleValueToElastic[string](d.FooBar__),
 		AdditionalProperties_: d.AdditionalProperties_,
 	}
 }
@@ -275,6 +277,13 @@ func (d AddtionalPropEscapeU003chmu003eObject) MarshalJSON() ([]byte, error) {
 	buf.WriteByte('{')
 	buf.WriteString("\"\\u0026mah\\u0026\":")
 	bin, err = json.Marshal(d.U0026mahu0026)
+	if err != nil {
+		return nil, err
+	}
+	buf.Write(bin)
+	buf.WriteByte(',')
+	buf.WriteString("\"__foo_bar\":")
+	bin, err = json.Marshal(d.FooBar__)
 	if err != nil {
 		return nil, err
 	}
@@ -330,6 +339,8 @@ func (d *AddtionalPropEscapeU003chmu003eObject) UnmarshalJSON(data []byte) error
 		switch token {
 		case "&mah&":
 			err = dec.Decode(&d.U0026mahu0026)
+		case "__foo_bar":
+			err = dec.Decode(&d.FooBar__)
 		default:
 			if key, ok := token.(string); ok {
 				var o any
@@ -354,6 +365,7 @@ func (d *AddtionalPropEscapeU003chmu003eObject) UnmarshalJSON(data []byte) error
 
 type AddtionalPropEscapeU003chmu003eObjectRaw struct {
 	U0026mahu0026         elastic.Elastic[string] `json:"&mah&"`
+	FooBar__              elastic.Elastic[string] `json:"__foo_bar"`
 	AdditionalProperties_ map[string]any
 }
 
@@ -362,6 +374,7 @@ type AddtionalPropEscapeU003chmu003eObjectRaw struct {
 func (d AddtionalPropEscapeU003chmu003eObjectRaw) ToPlain() AddtionalPropEscapeU003chmu003eObject {
 	return AddtionalPropEscapeU003chmu003eObject{
 		U0026mahu0026:         d.U0026mahu0026.ValueSingle(),
+		FooBar__:              d.FooBar__.ValueSingle(),
 		AdditionalProperties_: d.AdditionalProperties_,
 	}
 }
@@ -381,6 +394,13 @@ func (d AddtionalPropEscapeU003chmu003eObjectRaw) MarshalJSON() ([]byte, error) 
 	buf.WriteByte('{')
 	buf.WriteString("\"\\u0026mah\\u0026\":")
 	bin, err = serde.Marshal(d.U0026mahu0026)
+	if err != nil {
+		return nil, err
+	}
+	buf.Write(bin)
+	buf.WriteByte(',')
+	buf.WriteString("\"__foo_bar\":")
+	bin, err = serde.Marshal(d.FooBar__)
 	if err != nil {
 		return nil, err
 	}
@@ -436,6 +456,8 @@ func (d *AddtionalPropEscapeU003chmu003eObjectRaw) UnmarshalJSON(data []byte) er
 		switch token {
 		case "&mah&":
 			err = dec.Decode(&d.U0026mahu0026)
+		case "__foo_bar":
+			err = dec.Decode(&d.FooBar__)
 		default:
 			if key, ok := token.(string); ok {
 				var o any
@@ -458,15 +480,15 @@ func (d *AddtionalPropEscapeU003chmu003eObjectRaw) UnmarshalJSON(data []byte) er
 	return nil
 }
 
-type AddtionalPropEscapeUe29ca8Object struct {
+type AddtionalPropEscapeU2728Object struct {
 	Yay                   string `json:"yay"`
 	AdditionalProperties_ map[string]any
 }
 
 // ToRaw converts d into its plain equivalent.
 // It avoids copying data where it is possilbe. Mutation to fields is not advised.
-func (d AddtionalPropEscapeUe29ca8Object) ToRaw() AddtionalPropEscapeUe29ca8ObjectRaw {
-	return AddtionalPropEscapeUe29ca8ObjectRaw{
+func (d AddtionalPropEscapeU2728Object) ToRaw() AddtionalPropEscapeU2728ObjectRaw {
+	return AddtionalPropEscapeU2728ObjectRaw{
 		Yay:                   gentypehelper.MapSingleValueToElastic[string](d.Yay),
 		AdditionalProperties_: d.AdditionalProperties_,
 	}
@@ -477,7 +499,7 @@ func (d AddtionalPropEscapeUe29ca8Object) ToRaw() AddtionalPropEscapeUe29ca8Obje
 //
 // The presence of this implementation indicates the dynamic field for this object are
 // defined to be other than "strict" in its mapping.json.
-func (d AddtionalPropEscapeUe29ca8Object) MarshalJSON() ([]byte, error) {
+func (d AddtionalPropEscapeU2728Object) MarshalJSON() ([]byte, error) {
 	buf := gentypehelper.GetBuf()
 	defer gentypehelper.PutBuf(buf)
 	var (
@@ -521,7 +543,7 @@ func (d AddtionalPropEscapeUe29ca8Object) MarshalJSON() ([]byte, error) {
 //
 // The presence of this implementation indicates the dynamic field for this object are
 // defined to be other than "strict" in its mapping.json.
-func (d *AddtionalPropEscapeUe29ca8Object) UnmarshalJSON(data []byte) error {
+func (d *AddtionalPropEscapeU2728Object) UnmarshalJSON(data []byte) error {
 	dec := json.NewDecoder(bytes.NewBuffer(data))
 	token, err := dec.Token()
 	if err != nil {
@@ -564,15 +586,15 @@ func (d *AddtionalPropEscapeUe29ca8Object) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-type AddtionalPropEscapeUe29ca8ObjectRaw struct {
+type AddtionalPropEscapeU2728ObjectRaw struct {
 	Yay                   elastic.Elastic[string] `json:"yay"`
 	AdditionalProperties_ map[string]any
 }
 
 // ToPlain converts d into its raw equivalent.
 // It avoids copying data where it is possilbe. Mutation to fields is not advised.
-func (d AddtionalPropEscapeUe29ca8ObjectRaw) ToPlain() AddtionalPropEscapeUe29ca8Object {
-	return AddtionalPropEscapeUe29ca8Object{
+func (d AddtionalPropEscapeU2728ObjectRaw) ToPlain() AddtionalPropEscapeU2728Object {
+	return AddtionalPropEscapeU2728Object{
 		Yay:                   d.Yay.ValueSingle(),
 		AdditionalProperties_: d.AdditionalProperties_,
 	}
@@ -583,7 +605,7 @@ func (d AddtionalPropEscapeUe29ca8ObjectRaw) ToPlain() AddtionalPropEscapeUe29ca
 //
 // The presence of this implementation indicates the dynamic field for this object are
 // defined to be other than "strict" in its mapping.json.
-func (d AddtionalPropEscapeUe29ca8ObjectRaw) MarshalJSON() ([]byte, error) {
+func (d AddtionalPropEscapeU2728ObjectRaw) MarshalJSON() ([]byte, error) {
 	buf := gentypehelper.GetBuf()
 	defer gentypehelper.PutBuf(buf)
 	var (
@@ -627,7 +649,7 @@ func (d AddtionalPropEscapeUe29ca8ObjectRaw) MarshalJSON() ([]byte, error) {
 //
 // The presence of this implementation indicates the dynamic field for this object are
 // defined to be other than "strict" in its mapping.json.
-func (d *AddtionalPropEscapeUe29ca8ObjectRaw) UnmarshalJSON(data []byte) error {
+func (d *AddtionalPropEscapeU2728ObjectRaw) UnmarshalJSON(data []byte) error {
 	dec := json.NewDecoder(bytes.NewBuffer(data))
 	token, err := dec.Token()
 	if err != nil {

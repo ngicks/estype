@@ -140,8 +140,8 @@ func genObjectLike(ctx *generatorContext, dryRun bool) (plain, raw typeId) {
 			}
 
 			fields = append(fields, structField{
-				Name:            pascalCase(escapeNonId(propFieldName)),
-				NameUnprocessed: pascalCase(propFieldName),
+				Name:            pascalCase(exportName(escapeNonId(propFieldName))),
+				NameUnprocessed: pascalCase(exportName(propFieldName)),
 				IsObjectLike:    isObjectLike,
 				Opt:             opt.TypeIdRenderOption(nextCtx),
 				Stmt:            mappedFieldTypeId.Render(opt.TypeIdRenderOption(nextCtx)),

@@ -63,7 +63,7 @@ func (c *generatorContext) Gen() {
 			},
 		},
 		propOpt: PropertyOption{
-			TypeName: pascalCase(escapeNonId(c.generatorOption.RootTypeName)),
+			TypeName: pascalCase(exportName(escapeNonId(c.generatorOption.RootTypeName))),
 			Children: c.generatorOption.MappingOption,
 		},
 		dynamic: c.generatorOption.Mapping.Dynamic.Option,
@@ -119,6 +119,8 @@ func (c *generatorContext) PreferMarshalDateToNumber() bool {
 	return c.localState.propOpt.PreferMarshalDateToNumber.Or(c.generatorOption.DefaultOption.PreferMarshalDateToNumber).Value()
 }
 
+const lowerhex string = "0123456789abcdef"
+
 var goOps = []string{
 	">>=", "<<=", "...", "&^=", "||", "|=", "^=",
 	">>", ">=", "==", "<=", "<<", "<-", ":=",
@@ -154,24 +156,67 @@ LOOP:
 		// As per Go programming specification.
 		// identifier = letter { letter | unicode_digit }.
 		// https://go.dev/ref/spec#Identifiers
-		if !(i == 0 && (unicode.IsDigit(r) || r == '_')) && (unicode.IsLetter(r) || r == '_' || unicode.IsDigit(r)) {
+		if !(i == 0 && unicode.IsDigit(r)) && (unicode.IsLetter(r) || r == '_' || unicode.IsDigit(r)) {
 			builder.WriteRune(r)
 		} else {
 			builder.WriteByte('u')
-			builder.WriteString(hex.EncodeToString([]byte(string(r))))
+			var start int
+			if r < 0x10000 {
+				start = 12
+			} else {
+				start = 28
+			}
+			for s := start; s >= 0; s -= 4 {
+				builder.WriteByte(lowerhex[r>>uint(s)&0xF])
+			}
 		}
 	}
 
 	return builder.String()
 }
 
+func exportName(v string) string {
+	var count int
+	for _, b := range []byte(v) {
+		if b == '_' {
+			count += 1
+		} else {
+			break
+		}
+	}
+
+	v = v[count:]
+	for i := 0; i < count; i++ {
+		v += "_"
+	}
+
+	return strings.ToUpper(v[:1]) + v[1:]
+}
+
 func pascalCase(snakeCase string) string {
 	out := ""
+
+	// ignore suffixing '_'
+	var count int
+	for i := len(snakeCase) - 1; i >= 0; i-- {
+		if snakeCase[i] == '_' {
+			count += 1
+			snakeCase = snakeCase[:i]
+		} else {
+			break
+		}
+	}
+
 	for _, part := range strings.Split(snakeCase, "_") {
 		if len(part) == 0 {
 			continue
 		}
 		out += strings.ToUpper(part[:1]) + part[1:]
 	}
+
+	for i := 0; i < count; i++ {
+		out += "_"
+	}
+
 	return out
 }

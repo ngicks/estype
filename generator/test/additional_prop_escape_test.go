@@ -5,7 +5,7 @@ var sampleAddtionalPropEscape = AddtionalPropEscape{
 		U0026mahu0026:         "<not now>",
 		AdditionalProperties_: map[string]any{"foo": "bar"},
 	},
-	Ue29ca8: AddtionalPropEscapeUe29ca8Object{
+	U2728: AddtionalPropEscapeU2728Object{
 		Yay:                   "yay",
 		AdditionalProperties_: map[string]any{"baz": "quux"},
 	},
