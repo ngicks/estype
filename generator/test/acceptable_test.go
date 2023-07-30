@@ -148,6 +148,7 @@ func getMapping(m map[string]indexstate.IndexState) mapping.TypeMapping {
 }
 
 func printJson(t *testing.T, v any) {
+	t.Helper()
 	bin, err := serde.Marshal(v)
 	if err != nil {
 		panic(err)

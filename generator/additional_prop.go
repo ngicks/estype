@@ -14,6 +14,24 @@ func nameFromTag(s string) string {
 	return before
 }
 
+func optHasOmitempty(s string) bool {
+	_, after, found := strings.Cut(s, ",")
+	if !found {
+		// tag is empty "".
+		return false
+	}
+
+	var str string = after
+	for len(str) > 0 {
+		before, after, _ := strings.Cut(after, ",")
+		str = after
+		if before == "omitempty" {
+			return true
+		}
+	}
+	return false
+}
+
 func generateAdditionalPropMarshalJSON(ctx *generatorContext, tyId typeId, fields []structField, isUndSerde bool) {
 	var marshalerStmt *jen.Statement
 	if !isUndSerde {
@@ -69,6 +87,34 @@ func generateAdditionalPropMarshalJSON(ctx *generatorContext, tyId typeId, field
 					escapedName := buf.String()
 					buf.Reset()
 					stmts = append(stmts, []*jen.Statement{
+						jen.Do(func(s *jen.Statement) {
+							// plain and tagged with omitempty
+							if optHasOmitempty(field.Tag["json"]) {
+								s.
+									Comment("// This field is tagged with \",omitempty\".").
+									Line().
+									If(
+										jen.
+											Op("!").
+											Qual("reflect", "ValueOf").
+											Call(jen.Id("d").Dot(field.Name)).
+											Dot("IsZero").
+											Call(),
+									).
+									Op("{")
+							}
+
+							// raw
+							if tyId.Qualifier == elasticTypeQual {
+								s.
+									If(
+										jen.Op("!").
+											Id("d").Dot(field.Name).
+											Dot("IsUndefined").Call(),
+									).
+									Op("{")
+							}
+						}),
 						jen.
 							Id("buf").
 							Dot("WriteString").
@@ -84,6 +130,11 @@ func generateAdditionalPropMarshalJSON(ctx *generatorContext, tyId typeId, field
 						),
 						jen.Id("buf").Dot("Write").Call(jen.Id("bin")),
 						jen.Id("buf").Dot("WriteByte").Call(jen.Id(`','`)),
+						jen.Do(func(s *jen.Statement) {
+							if optHasOmitempty(field.Tag["json"]) || tyId.Qualifier == elasticTypeQual {
+								s.Op("}")
+							}
+						}),
 					}...)
 				}
 				stmts = append(stmts, []*jen.Statement{

@@ -9,6 +9,7 @@ import (
 	elastic "github.com/ngicks/und/elastic"
 	serde "github.com/ngicks/und/serde"
 	"io"
+	"reflect"
 	"sort"
 )
 
@@ -247,8 +248,8 @@ func (d *AddtionalPropEscapeRaw) UnmarshalJSON(data []byte) error {
 }
 
 type AddtionalPropEscapeU003chmu003eObject struct {
-	U0026mahu0026         string `json:"&mah&"`
-	FooBar__              string `json:"__foo_bar"`
+	U0026mahu0026         string    `json:"&mah&"`
+	FooBar__              *struct{} `json:"__foo_bar,omitempty"`
 	AdditionalProperties_ map[string]any
 }
 
@@ -257,7 +258,6 @@ type AddtionalPropEscapeU003chmu003eObject struct {
 func (d AddtionalPropEscapeU003chmu003eObject) ToRaw() AddtionalPropEscapeU003chmu003eObjectRaw {
 	return AddtionalPropEscapeU003chmu003eObjectRaw{
 		U0026mahu0026:         gentypehelper.MapSingleValueToElastic[string](d.U0026mahu0026),
-		FooBar__:              gentypehelper.MapSingleValueToElastic[string](d.FooBar__),
 		AdditionalProperties_: d.AdditionalProperties_,
 	}
 }
@@ -282,13 +282,16 @@ func (d AddtionalPropEscapeU003chmu003eObject) MarshalJSON() ([]byte, error) {
 	}
 	buf.Write(bin)
 	buf.WriteByte(',')
-	buf.WriteString("\"__foo_bar\":")
-	bin, err = json.Marshal(d.FooBar__)
-	if err != nil {
-		return nil, err
+	// This field is tagged with ",omitempty".
+	if !reflect.ValueOf(d.FooBar__).IsZero() {
+		buf.WriteString("\"__foo_bar\":")
+		bin, err = json.Marshal(d.FooBar__)
+		if err != nil {
+			return nil, err
+		}
+		buf.Write(bin)
+		buf.WriteByte(',')
 	}
-	buf.Write(bin)
-	buf.WriteByte(',')
 	keys := make([]string, 0, len(d.AdditionalProperties_))
 	for k := range d.AdditionalProperties_ {
 		keys = append(keys, k)
@@ -364,8 +367,8 @@ func (d *AddtionalPropEscapeU003chmu003eObject) UnmarshalJSON(data []byte) error
 }
 
 type AddtionalPropEscapeU003chmu003eObjectRaw struct {
-	U0026mahu0026         elastic.Elastic[string] `json:"&mah&"`
-	FooBar__              elastic.Elastic[string] `json:"__foo_bar"`
+	U0026mahu0026         elastic.Elastic[string]    `json:"&mah&"`
+	FooBar__              elastic.Elastic[*struct{}] `json:"__foo_bar"`
 	AdditionalProperties_ map[string]any
 }
 
@@ -374,7 +377,6 @@ type AddtionalPropEscapeU003chmu003eObjectRaw struct {
 func (d AddtionalPropEscapeU003chmu003eObjectRaw) ToPlain() AddtionalPropEscapeU003chmu003eObject {
 	return AddtionalPropEscapeU003chmu003eObject{
 		U0026mahu0026:         d.U0026mahu0026.ValueSingle(),
-		FooBar__:              d.FooBar__.ValueSingle(),
 		AdditionalProperties_: d.AdditionalProperties_,
 	}
 }
