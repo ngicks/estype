@@ -1,7 +1,6 @@
 package generator
 
 import (
-	"encoding/hex"
 	"strings"
 	"unicode"
 	"unicode/utf8"
@@ -142,10 +141,8 @@ LOOP:
 		// https://go.dev/ref/spec#Operators_and_punctuation
 		for _, op := range goOps {
 			if strings.HasPrefix(v[i:], op) {
-				builder.WriteByte('u')
-				for _, letter := range []byte(op) {
-					builder.WriteString("00")
-					builder.WriteString(hex.EncodeToString([]byte{letter}))
+				for _, letter := range op {
+					unicodeEscape(&builder, letter)
 				}
 				i += len(op)
 				continue LOOP
@@ -159,20 +156,24 @@ LOOP:
 		if !(i == 0 && unicode.IsDigit(r)) && (unicode.IsLetter(r) || r == '_' || unicode.IsDigit(r)) {
 			builder.WriteRune(r)
 		} else {
-			builder.WriteByte('u')
-			var start int
-			if r < 0x10000 {
-				start = 12
-			} else {
-				start = 28
-			}
-			for s := start; s >= 0; s -= 4 {
-				builder.WriteByte(lowerhex[r>>uint(s)&0xF])
-			}
+			unicodeEscape(&builder, r)
 		}
 	}
 
 	return builder.String()
+}
+
+func unicodeEscape(builder *strings.Builder, r rune) {
+	builder.WriteByte('u')
+	var start int
+	if r < 0x10000 {
+		start = 12
+	} else {
+		start = 28
+	}
+	for s := start; s >= 0; s -= 4 {
+		builder.WriteByte(lowerhex[r>>uint(s)&0xF])
+	}
 }
 
 func exportName(v string) string {
