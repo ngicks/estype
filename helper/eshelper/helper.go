@@ -10,7 +10,6 @@ import (
 	"io"
 
 	"github.com/elastic/go-elasticsearch/v8"
-	"github.com/ngicks/und/serde"
 )
 
 type Helper struct {
@@ -88,7 +87,7 @@ func (h *Helper) IsHealthy(ctx context.Context) (bool, error) {
 }
 
 func (h *IndexHelper) PostDoc(doc any) (docId string, err error) {
-	bin, err := serde.Marshal(doc)
+	bin, err := json.Marshal(doc)
 	if err != nil {
 		return "", err
 	}

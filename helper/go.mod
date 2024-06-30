@@ -1,16 +1,16 @@
 module github.com/ngicks/estype/helper
 
-go 1.20
+go 1.22
+
+toolchain go1.22.0
 
 require (
 	github.com/elastic/go-elasticsearch/v8 v8.8.2
-	github.com/ngicks/estype/spec v0.0.1-alpha1
-	github.com/ngicks/und v0.0.0-20230723110635-fd0b45653fa9
+	github.com/ngicks/estype/spec v0.1.0
 )
 
 require (
 	github.com/elastic/elastic-transport-go/v8 v8.3.0 // indirect
-	github.com/json-iterator/go v1.1.12 // indirect
-	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
-	github.com/modern-go/reflect2 v1.0.2 // indirect
+	github.com/go-json-experiment/json v0.0.0-20240524174822-2d9f40f7385b // indirect
+	github.com/ngicks/und v1.0.0-alpha1 // indirect
 )
