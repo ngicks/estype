@@ -22,27 +22,27 @@ package mapping
 import (
 	esspec "github.com/ngicks/estype/spec"
 	runtimefieldtype "github.com/ngicks/estype/spec/mapping/runtime_field_type"
-	"github.com/ngicks/und/undefinedable"
+	"github.com/ngicks/und/sliceund"
 )
 
 type RuntimeFields map[string]RuntimeField
 
 type RuntimeField struct {
 	/** For type `lookup` */
-	FetchFields undefinedable.Undefinedable[[]RuntimeFieldFetchFields] `json:"fetch_fields"`
-	Format      undefinedable.Undefinedable[string]                    `json:"format"`
+	FetchFields sliceund.Und[[]RuntimeFieldFetchFields] `json:"fetch_fields,omitempty"`
+	Format      sliceund.Und[string]                    `json:"format,omitempty"`
 	/** For type `lookup` */
-	InputField undefinedable.Undefinedable[string] `json:"input_field"`
+	InputField sliceund.Und[string] `json:"input_field,omitempty"`
 	/** For type `lookup` */
-	TargetField undefinedable.Undefinedable[string] `json:"target_field"`
+	TargetField sliceund.Und[string] `json:"target_field,omitempty"`
 	/** For type `lookup` */
-	TargetIndex undefinedable.Undefinedable[string]        `json:"target_index"`
-	Script      undefinedable.Undefinedable[esspec.Script] `json:"script"`
-	Type        runtimefieldtype.RuntimeFieldType          `json:"type"`
+	TargetIndex sliceund.Und[string]              `json:"target_index,omitempty"`
+	Script      sliceund.Und[esspec.Script]       `json:"script,omitempty"`
+	Type        runtimefieldtype.RuntimeFieldType `json:"type"`
 }
 
 /** @shortcut_property field */
 type RuntimeFieldFetchFields struct {
-	Field  string                              `json:"field"`
-	Format undefinedable.Undefinedable[string] `json:"format"`
+	Field  string               `json:"field"`
+	Format sliceund.Und[string] `json:"format,omitempty"`
 }

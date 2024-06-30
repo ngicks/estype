@@ -23,20 +23,20 @@ import (
 	"github.com/ngicks/estype/spec"
 	"github.com/ngicks/estype/spec/indices"
 	timeseriesmetrictype "github.com/ngicks/estype/spec/mapping/TimeSeriesMetricType"
-	"github.com/ngicks/und/elastic"
-	"github.com/ngicks/und/undefinedable"
+	"github.com/ngicks/und/sliceund"
+	"github.com/ngicks/und/sliceund/elastic"
 )
 
 type CorePropertyBase struct {
 	PropertyBase
-	CopyTo     elastic.Elastic[string]             `json:"copy_to"`
-	Similarity undefinedable.Undefinedable[string] `json:"similarity"`
-	Store      undefinedable.Undefinedable[bool]   `json:"store"`
+	CopyTo     elastic.Elastic[string] `json:"copy_to,omitempty"`
+	Similarity sliceund.Und[string]    `json:"similarity,omitempty"`
+	Store      sliceund.Und[bool]      `json:"store,omitempty"`
 }
 
 type DocValuesPropertyBase struct {
 	CorePropertyBase
-	DocValues undefinedable.Undefinedable[bool] `json:"doc_values"`
+	DocValues sliceund.Und[bool] `json:"doc_values,omitempty"`
 }
 
 type BinaryProperty struct {
@@ -46,91 +46,91 @@ type BinaryProperty struct {
 
 type BooleanProperty struct {
 	DocValuesPropertyBase
-	Boost     undefinedable.Undefinedable[float64]                  `json:"boost"`
-	Fielddata undefinedable.Undefinedable[indices.NumericFielddata] `json:"fielddata"`
-	Index     undefinedable.Undefinedable[bool]                     `json:"index"`
-	NullValue undefinedable.Undefinedable[bool]                     `json:"null_value"`
-	Type      EsType                                                `json:"type"`
+	Boost     sliceund.Und[float64]                  `json:"boost,omitempty"`
+	Fielddata sliceund.Und[indices.NumericFielddata] `json:"fielddata,omitempty"`
+	Index     sliceund.Und[bool]                     `json:"index,omitempty"`
+	NullValue sliceund.Und[bool]                     `json:"null_value,omitempty"`
+	Type      EsType                                 `json:"type"`
 }
 
 type DateProperty struct {
 	DocValuesPropertyBase
 
-	Boost undefinedable.Undefinedable[float64] `json:"boost"`
+	Boost sliceund.Und[float64] `json:"boost,omitempty"`
 
-	Fielddata undefinedable.Undefinedable[indices.NumericFielddata] `json:"fielddata"`
+	Fielddata sliceund.Und[indices.NumericFielddata] `json:"fielddata,omitempty"`
 
-	Format          undefinedable.Undefinedable[string] `json:"format"`
-	IgnoreMalformed undefinedable.Undefinedable[bool]   `json:"ignore_malformed"`
-	Index           undefinedable.Undefinedable[bool]   `json:"index"`
-	NullValue       undefinedable.Undefinedable[any]    `json:"null_value"` // date string formatted as ones specified in format field or epoch millis int
-	PrecisionStep   undefinedable.Undefinedable[int]    `json:"precision_step"`
-	Locale          undefinedable.Undefinedable[string] `json:"locale"`
-	Type            EsType                              `json:"type"`
+	Format          sliceund.Und[string] `json:"format,omitempty"`
+	IgnoreMalformed sliceund.Und[bool]   `json:"ignore_malformed,omitempty"`
+	Index           sliceund.Und[bool]   `json:"index,omitempty"`
+	NullValue       sliceund.Und[any]    `json:"null_value,omitempty"` // date string formatted as ones specified in format field or epoch millis int
+	PrecisionStep   sliceund.Und[int]    `json:"precision_step,omitempty"`
+	Locale          sliceund.Und[string] `json:"locale,omitempty"`
+	Type            EsType               `json:"type"`
 }
 
 type DateNanosProperty struct {
 	DocValuesPropertyBase
 
-	Boost           undefinedable.Undefinedable[float64] `json:"boost"`
-	Format          undefinedable.Undefinedable[string]  `json:"format"`
-	IgnoreMalformed undefinedable.Undefinedable[bool]    `json:"ignore_malformed"`
-	Index           undefinedable.Undefinedable[bool]    `json:"index"`
-	NullValue       undefinedable.Undefinedable[any]     `json:"null_value"` // date string formatted as ones specified in format field or epoch millis int
-	PrecisionStep   undefinedable.Undefinedable[int]     `json:"precision_step"`
-	Type            EsType                               `json:"type"`
+	Boost           sliceund.Und[float64] `json:"boost,omitempty"`
+	Format          sliceund.Und[string]  `json:"format,omitempty"`
+	IgnoreMalformed sliceund.Und[bool]    `json:"ignore_malformed,omitempty"`
+	Index           sliceund.Und[bool]    `json:"index,omitempty"`
+	NullValue       sliceund.Und[any]     `json:"null_value,omitempty"` // date string formatted as ones specified in format field or epoch millis int
+	PrecisionStep   sliceund.Und[int]     `json:"precision_step,omitempty"`
+	Type            EsType                `json:"type"`
 }
 
 type JoinProperty struct {
 	PropertyBase
 
-	Relations           undefinedable.Undefinedable[map[string]elastic.Elastic[string]] `json:"relations"`
-	EagerGlobalOrdinals undefinedable.Undefinedable[bool]                               `json:"eager_global_ordinals"`
-	Type                EsType                                                          `json:"type"`
+	Relations           sliceund.Und[map[string]elastic.Elastic[string]] `json:"relations,omitempty,omitempty"`
+	EagerGlobalOrdinals sliceund.Und[bool]                               `json:"eager_global_ordinals,omitempty"`
+	Type                EsType                                           `json:"type"`
 }
 
 type KeywordProperty struct {
 	DocValuesPropertyBase
 
-	Boost                    undefinedable.Undefinedable[float64]      `json:"boost"`
-	EagerGlobalOrdinals      undefinedable.Undefinedable[bool]         `json:"eager_global_ordinals"`
-	Index                    undefinedable.Undefinedable[bool]         `json:"index"`
-	IndexOptions             undefinedable.Undefinedable[IndexOptions] `json:"index_options"`
-	Normalizer               undefinedable.Undefinedable[string]       `json:"normalizer"`
-	Norms                    undefinedable.Undefinedable[bool]         `json:"norms"`
-	NullValue                undefinedable.Undefinedable[string]       `json:"null_value"`
-	SplitQueriesOnWhitespace undefinedable.Undefinedable[bool]         `json:"split_queries_on_whitespace"`
+	Boost                    sliceund.Und[float64]      `json:"boost,omitempty"`
+	EagerGlobalOrdinals      sliceund.Und[bool]         `json:"eager_global_ordinals,omitempty"`
+	Index                    sliceund.Und[bool]         `json:"index,omitempty"`
+	IndexOptions             sliceund.Und[IndexOptions] `json:"index_options,omitempty"`
+	Normalizer               sliceund.Und[string]       `json:"normalizer,omitempty"`
+	Norms                    sliceund.Und[bool]         `json:"norms,omitempty"`
+	NullValue                sliceund.Und[string]       `json:"null_value,omitempty"`
+	SplitQueriesOnWhitespace sliceund.Und[bool]         `json:"split_queries_on_whitespace,omitempty"`
 	/**
 	 * For internal use by Elastic only. Marks the field as a time series dimension. Defaults to false.
 	 * @availability stack stability=experimental
 	 * @availability serverless stability=experimental
 	 */
-	TimeSeriesDimension undefinedable.Undefinedable[bool] `json:"time_series_dimension"`
-	Type                EsType                            `json:"type"`
+	TimeSeriesDimension sliceund.Und[bool] `json:"time_series_dimension,omitempty"`
+	Type                EsType             `json:"type"`
 }
 
 type NumberPropertyBase struct {
 	DocValuesPropertyBase
 
-	Boost           undefinedable.Undefinedable[float64]       `json:"boost"`
-	Coerce          undefinedable.Undefinedable[bool]          `json:"coerce"`
-	IgnoreMalformed undefinedable.Undefinedable[bool]          `json:"ignore_malformed"`
-	Index           undefinedable.Undefinedable[bool]          `json:"index"`
-	OnScriptError   undefinedable.Undefinedable[OnScriptError] `json:"on_script_error"`
-	Script          undefinedable.Undefinedable[spec.Script]   `json:"script"`
+	Boost           sliceund.Und[float64]       `json:"boost,omitempty"`
+	Coerce          sliceund.Und[bool]          `json:"coerce,omitempty"`
+	IgnoreMalformed sliceund.Und[bool]          `json:"ignore_malformed,omitempty"`
+	Index           sliceund.Und[bool]          `json:"index,omitempty"`
+	OnScriptError   sliceund.Und[OnScriptError] `json:"on_script_error,omitempty"`
+	Script          sliceund.Und[spec.Script]   `json:"script,omitempty"`
 	/**
 	 * For internal use by Elastic only. Marks the field as a time series dimension. Defaults to false.
 	 * @availability stack stability=experimental
 	 * @availability serverless stability=experimental
 	 */
-	TimeSeriesMetric undefinedable.Undefinedable[timeseriesmetrictype.TimeSeriesMetricType] `json:"time_series_metric"`
+	TimeSeriesMetric sliceund.Und[timeseriesmetrictype.TimeSeriesMetricType] `json:"time_series_metric,omitempty"`
 	/**
 	 * For internal use by Elastic only. Marks the field as a time series dimension. Defaults to false.
 	 * @server_default false
 	 * @availability stack stability=experimental
 	 * @availability serverless stability=experimental
 	 */
-	TimeSeriesDimension undefinedable.Undefinedable[bool] `json:"time_series_dimension"`
+	TimeSeriesDimension sliceund.Und[bool] `json:"time_series_dimension,omitempty"`
 }
 
 type OnScriptError string
@@ -143,65 +143,65 @@ const (
 type FloatNumberProperty struct {
 	NumberPropertyBase
 
-	Type      EsType                               `json:"type"`
-	NullValue undefinedable.Undefinedable[float32] `json:"null_value"`
+	Type      EsType                `json:"type"`
+	NullValue sliceund.Und[float32] `json:"null_value,omitempty"`
 }
 
 type HalfFloatNumberProperty struct {
 	NumberPropertyBase
 
-	Type      EsType                               `json:"type"`
-	NullValue undefinedable.Undefinedable[float32] `json:"null_value"` // TODO: use float16 package?
+	Type      EsType                `json:"type"`
+	NullValue sliceund.Und[float32] `json:"null_value,omitempty"` // TODO: use float16 package?
 }
 
 type DoubleNumberProperty struct {
 	NumberPropertyBase
 
-	Type      EsType                               `json:"type"`
-	NullValue undefinedable.Undefinedable[float64] `json:"null_value"`
+	Type      EsType                `json:"type"`
+	NullValue sliceund.Und[float64] `json:"null_value,omitempty"`
 }
 
 type IntegerNumberProperty struct {
 	NumberPropertyBase
 
-	Type      EsType                             `json:"type"`
-	NullValue undefinedable.Undefinedable[int32] `json:"null_value"`
+	Type      EsType              `json:"type"`
+	NullValue sliceund.Und[int32] `json:"null_value,omitempty"`
 }
 
 type LongNumberProperty struct {
 	NumberPropertyBase
 
-	Type      EsType                             `json:"type"`
-	NullValue undefinedable.Undefinedable[int64] `json:"null_value"`
+	Type      EsType              `json:"type"`
+	NullValue sliceund.Und[int64] `json:"null_value,omitempty"`
 }
 
 type ShortNumberProperty struct {
 	NumberPropertyBase
 
-	Type      EsType                             `json:"type"`
-	NullValue undefinedable.Undefinedable[int16] `json:"null_value"`
+	Type      EsType              `json:"type"`
+	NullValue sliceund.Und[int16] `json:"null_value,omitempty"`
 }
 
 type ByteNumberProperty struct {
 	NumberPropertyBase
 
-	Type      EsType                            `json:"type"`
-	NullValue undefinedable.Undefinedable[int8] `json:"null_value"`
+	Type      EsType             `json:"type"`
+	NullValue sliceund.Und[int8] `json:"null_value,omitempty"`
 }
 
 type UnsignedLongNumberProperty struct {
 	NumberPropertyBase
 
-	Type      EsType                              `json:"type"`
-	NullValue undefinedable.Undefinedable[uint64] `json:"null_value"`
+	Type      EsType               `json:"type"`
+	NullValue sliceund.Und[uint64] `json:"null_value,omitempty"`
 }
 
 type ScaledFloatNumberProperty struct {
 	NumberPropertyBase
 
-	Type          EsType                               `json:"type"`
-	NullValue     undefinedable.Undefinedable[float64] `json:"null_value"`
-	ScalingFactor undefinedable.Undefinedable[float64] `json:"scaling_factor"`
+	Type          EsType                `json:"type"`
+	NullValue     sliceund.Und[float64] `json:"null_value,omitempty"`
+	ScalingFactor sliceund.Und[float64] `json:"scaling_factor,omitempty"`
 }
 
 type PercolatorProperty struct {
@@ -213,8 +213,8 @@ type PercolatorProperty struct {
 type RankFeatureProperty struct {
 	PropertyBase
 
-	PositiveScoreImpact undefinedable.Undefinedable[bool] `json:"positive_score_impact"`
-	Type                EsType                            `json:"type"`
+	PositiveScoreImpact sliceund.Und[bool] `json:"positive_score_impact,omitempty"`
+	Type                EsType             `json:"type"`
 }
 
 type RankFeaturesProperty struct {
@@ -226,15 +226,15 @@ type RankFeaturesProperty struct {
 type SearchAsYouTypeProperty struct {
 	CorePropertyBase
 
-	Analyzer            undefinedable.Undefinedable[string]           `json:"analyzer"`
-	Index               undefinedable.Undefinedable[bool]             `json:"index"`
-	IndexOptions        undefinedable.Undefinedable[IndexOptions]     `json:"index_options"`
-	MaxShingleSize      undefinedable.Undefinedable[int]              `json:"max_shingle_size"`
-	Norms               undefinedable.Undefinedable[bool]             `json:"norms"`
-	SearchAnalyzer      undefinedable.Undefinedable[string]           `json:"search_analyzer"`
-	SearchQuoteAnalyzer undefinedable.Undefinedable[string]           `json:"search_quote_analyzer"`
-	TermVector          undefinedable.Undefinedable[TermVectorOption] `json:"term_vector"`
-	Type                EsType                                        `json:"type"`
+	Analyzer            sliceund.Und[string]           `json:"analyzer,omitempty"`
+	Index               sliceund.Und[bool]             `json:"index,omitempty"`
+	IndexOptions        sliceund.Und[IndexOptions]     `json:"index_options,omitempty"`
+	MaxShingleSize      sliceund.Und[int]              `json:"max_shingle_size,omitempty"`
+	Norms               sliceund.Und[bool]             `json:"norms,omitempty"`
+	SearchAnalyzer      sliceund.Und[string]           `json:"search_analyzer,omitempty"`
+	SearchQuoteAnalyzer sliceund.Und[string]           `json:"search_quote_analyzer,omitempty"`
+	TermVector          sliceund.Und[TermVectorOption] `json:"term_vector,omitempty"`
+	Type                EsType                         `json:"type"`
 }
 
 // MatchOnlyTextProperty is an example of a property which does not derive from PropertyBase.
@@ -257,17 +257,17 @@ type MatchOnlyTextProperty struct {
 	 * field for search and a multi-field for sorting and aggregations, or the same string value analyzed by different analyzers.
 	 * @doc_id multi-fields
 	 */
-	Fields undefinedable.Undefinedable[map[string]Property] `json:"fields"`
+	Fields sliceund.Und[map[string]Property] `json:"fields,omitempty"`
 	/**
 	 * Metadata about the field.
 	 * @doc_id mapping-meta-field
 	 */
-	Meta undefinedable.Undefinedable[map[string]string] `json:"meta"`
+	Meta sliceund.Und[map[string]string] `json:"meta,omitempty"`
 	/**
 	 * Allows you to copy the values of multiple fields into a group
 	 * field, which can then be queried as a single field.
 	 */
-	CopyTo elastic.Elastic[string] `json:"copy_to"`
+	CopyTo elastic.Elastic[string] `json:"copy_to,omitempty"`
 }
 
 type IndexOptions string
@@ -287,21 +287,21 @@ type TextIndexPrefixes struct {
 type TextProperty struct {
 	CorePropertyBase
 
-	Analyzer                 undefinedable.Undefinedable[string]                           `json:"analyzer"`
-	Boost                    undefinedable.Undefinedable[float64]                          `json:"boost"`
-	EagerGlobalOrdinals      undefinedable.Undefinedable[bool]                             `json:"eager_global_ordinals"`
-	Fielddata                undefinedable.Undefinedable[bool]                             `json:"fielddata"`
-	FielddataFrequencyFilter undefinedable.Undefinedable[indices.FielddataFrequencyFilter] `json:"fielddata_frequency_filter"`
-	Index                    undefinedable.Undefinedable[bool]                             `json:"index"`
-	IndexOptions             undefinedable.Undefinedable[IndexOptions]                     `json:"index_options"`
-	IndexPhrases             undefinedable.Undefinedable[bool]                             `json:"index_phrases"`
-	IndexPrefixes            undefinedable.Undefinedable[TextIndexPrefixes]                `json:"index_prefixes"`
-	Norms                    undefinedable.Undefinedable[bool]                             `json:"norms"`
-	PositionIncrementGap     undefinedable.Undefinedable[int]                              `json:"position_increment_gap"`
-	SearchAnalyzer           undefinedable.Undefinedable[string]                           `json:"search_analyzer"`
-	SearchQuoteAnalyzer      undefinedable.Undefinedable[string]                           `json:"search_quote_analyzer"`
-	TermVector               undefinedable.Undefinedable[TermVectorOption]                 `json:"term_vector"`
-	Type                     EsType                                                        `json:"type"`
+	Analyzer                 sliceund.Und[string]                           `json:"analyzer,omitempty"`
+	Boost                    sliceund.Und[float64]                          `json:"boost,omitempty"`
+	EagerGlobalOrdinals      sliceund.Und[bool]                             `json:"eager_global_ordinals,omitempty"`
+	Fielddata                sliceund.Und[bool]                             `json:"fielddata,omitempty"`
+	FielddataFrequencyFilter sliceund.Und[indices.FielddataFrequencyFilter] `json:"fielddata_frequency_filter,omitempty"`
+	Index                    sliceund.Und[bool]                             `json:"index,omitempty"`
+	IndexOptions             sliceund.Und[IndexOptions]                     `json:"index_options,omitempty"`
+	IndexPhrases             sliceund.Und[bool]                             `json:"index_phrases,omitempty"`
+	IndexPrefixes            sliceund.Und[TextIndexPrefixes]                `json:"index_prefixes,omitempty"`
+	Norms                    sliceund.Und[bool]                             `json:"norms,omitempty"`
+	PositionIncrementGap     sliceund.Und[int]                              `json:"position_increment_gap,omitempty"`
+	SearchAnalyzer           sliceund.Und[string]                           `json:"search_analyzer,omitempty"`
+	SearchQuoteAnalyzer      sliceund.Und[string]                           `json:"search_quote_analyzer,omitempty"`
+	TermVector               sliceund.Und[TermVectorOption]                 `json:"term_vector,omitempty"`
+	Type                     EsType                                         `json:"type"`
 }
 
 type VersionProperty struct {
@@ -318,7 +318,7 @@ type WildcardProperty struct {
 	 * @availability stack since=7.15.0
 	 * @availability serverless
 	 */
-	NullValue undefinedable.Undefinedable[string] `json:"null_value"`
+	NullValue sliceund.Und[string] `json:"null_value,omitempty"`
 }
 
 type DynamicProperty struct {
@@ -326,32 +326,32 @@ type DynamicProperty struct {
 
 	Type EsType `json:"type"`
 
-	Enabled   undefinedable.Undefinedable[bool]    `json:"enabled"`
-	NullValue undefinedable.Undefinedable[any]     `json:"null_value"` // long | double | string | boolean | null | UserDefinedValue
-	Boost     undefinedable.Undefinedable[float64] `json:"boost"`
+	Enabled   sliceund.Und[bool]    `json:"enabled,omitempty"`
+	NullValue sliceund.Und[any]     `json:"null_value,omitempty"` // long | double | string | boolean | null | UserDefinedValue
+	Boost     sliceund.Und[float64] `json:"boost,omitempty"`
 
 	// NumberPropertyBase & long, double
-	Coerce           undefinedable.Undefinedable[bool]                                      `json:"coerce"`
-	Script           undefinedable.Undefinedable[spec.Script]                               `json:"script"`
-	OnScriptError    undefinedable.Undefinedable[OnScriptError]                             `json:"on_script_error"`
-	IgnoreMalformed  undefinedable.Undefinedable[bool]                                      `json:"ignore_malformed"`
-	TimeSeriesMetric undefinedable.Undefinedable[timeseriesmetrictype.TimeSeriesMetricType] `json:"time_series_metric"`
+	Coerce           sliceund.Und[bool]                                      `json:"coerce,omitempty"`
+	Script           sliceund.Und[spec.Script]                               `json:"script,omitempty"`
+	OnScriptError    sliceund.Und[OnScriptError]                             `json:"on_script_error,omitempty"`
+	IgnoreMalformed  sliceund.Und[bool]                                      `json:"ignore_malformed,omitempty"`
+	TimeSeriesMetric sliceund.Und[timeseriesmetrictype.TimeSeriesMetricType] `json:"time_series_metric,omitempty"`
 
 	// string
-	Analyzer             undefinedable.Undefinedable[string]            `json:"analyzer"`
-	EagerGlobalOrdinals  undefinedable.Undefinedable[bool]              `json:"eager_global_ordinals"`
-	Index                undefinedable.Undefinedable[bool]              `json:"index"`
-	IndexOptions         undefinedable.Undefinedable[IndexOptions]      `json:"index_options"`
-	IndexPhrases         undefinedable.Undefinedable[bool]              `json:"index_phrases"`
-	IndexPrefixes        undefinedable.Undefinedable[TextIndexPrefixes] `json:"index_prefixes"`
-	Norms                undefinedable.Undefinedable[bool]              `json:"norms"`
-	PositionIncrementGap undefinedable.Undefinedable[int]               `json:"position_increment_gap"`
-	SearchAnalyzer       undefinedable.Undefinedable[string]            `json:"search_analyzer"`
-	SearchQuoteAnalyzer  undefinedable.Undefinedable[string]            `json:"search_quote_analyzer"`
-	TermVector           undefinedable.Undefinedable[TermVectorOption]  `json:"term_vector"`
+	Analyzer             sliceund.Und[string]            `json:"analyzer,omitempty"`
+	EagerGlobalOrdinals  sliceund.Und[bool]              `json:"eager_global_ordinals,omitempty"`
+	Index                sliceund.Und[bool]              `json:"index,omitempty"`
+	IndexOptions         sliceund.Und[IndexOptions]      `json:"index_options,omitempty"`
+	IndexPhrases         sliceund.Und[bool]              `json:"index_phrases,omitempty"`
+	IndexPrefixes        sliceund.Und[TextIndexPrefixes] `json:"index_prefixes,omitempty"`
+	Norms                sliceund.Und[bool]              `json:"norms,omitempty"`
+	PositionIncrementGap sliceund.Und[int]               `json:"position_increment_gap,omitempty"`
+	SearchAnalyzer       sliceund.Und[string]            `json:"search_analyzer,omitempty"`
+	SearchQuoteAnalyzer  sliceund.Und[string]            `json:"search_quote_analyzer,omitempty"`
+	TermVector           sliceund.Und[TermVectorOption]  `json:"term_vector,omitempty"`
 
 	// date
-	Format        undefinedable.Undefinedable[string] `json:"format"`
-	PrecisionStep undefinedable.Undefinedable[int]    `json:"precision_step"`
-	Locale        undefinedable.Undefinedable[string] `json:"locale"`
+	Format        sliceund.Und[string] `json:"format,omitempty"`
+	PrecisionStep sliceund.Und[int]    `json:"precision_step,omitempty"`
+	Locale        sliceund.Und[string] `json:"locale,omitempty"`
 }

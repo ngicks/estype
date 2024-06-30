@@ -21,50 +21,50 @@ package mapping
 
 import (
 	timeseriesmetrictype "github.com/ngicks/estype/spec/mapping/TimeSeriesMetricType"
-	"github.com/ngicks/und/undefinedable"
+	"github.com/ngicks/und/sliceund"
 )
 
 type FlattenedProperty struct {
 	PropertyBase
-	Boost                    undefinedable.Undefinedable[float64]      `json:"boost"`
-	DepthLimit               undefinedable.Undefinedable[int]          `json:"depth_limit"`
-	DocValues                undefinedable.Undefinedable[bool]         `json:"doc_values"`
-	EagerGlobalOrdinals      undefinedable.Undefinedable[bool]         `json:"eager_global_ordinals"`
-	Index                    undefinedable.Undefinedable[bool]         `json:"index"`
-	IndexOptions             undefinedable.Undefinedable[IndexOptions] `json:"index_options"`
-	NullValue                undefinedable.Undefinedable[string]       `json:"null_value"`
-	Similarity               undefinedable.Undefinedable[string]       `json:"similarity"`
-	SplitQueriesOnWhitespace undefinedable.Undefinedable[bool]         `json:"split_queries_on_whitespace"`
-	Type                     EsType                                    `json:"type"`
+	Boost                    sliceund.Und[float64]      `json:"boost,omitempty"`
+	DepthLimit               sliceund.Und[int]          `json:"depth_limit,omitempty"`
+	DocValues                sliceund.Und[bool]         `json:"doc_values,omitempty"`
+	EagerGlobalOrdinals      sliceund.Und[bool]         `json:"eager_global_ordinals,omitempty"`
+	Index                    sliceund.Und[bool]         `json:"index,omitempty"`
+	IndexOptions             sliceund.Und[IndexOptions] `json:"index_options,omitempty"`
+	NullValue                sliceund.Und[string]       `json:"null_value,omitempty"`
+	Similarity               sliceund.Und[string]       `json:"similarity,omitempty"`
+	SplitQueriesOnWhitespace sliceund.Und[bool]         `json:"split_queries_on_whitespace,omitempty"`
+	Type                     EsType                     `json:"type"`
 }
 
 type NestedProperty struct {
 	CorePropertyBase
-	Enabled         undefinedable.Undefinedable[bool] `json:"enabled"`
-	IncludeInParent undefinedable.Undefinedable[bool] `json:"include_in_parent"`
-	IncludeInRoot   undefinedable.Undefinedable[bool] `json:"include_in_root"`
-	Type            EsType                            `json:"type"`
+	Enabled         sliceund.Und[bool] `json:"enabled,omitempty"`
+	IncludeInParent sliceund.Und[bool] `json:"include_in_parent,omitempty"`
+	IncludeInRoot   sliceund.Und[bool] `json:"include_in_root,omitempty"`
+	Type            EsType             `json:"type"`
 }
 
 type ObjectProperty struct {
 	CorePropertyBase
-	Enabled undefinedable.Undefinedable[bool]   `json:"enabled"`
-	Type    undefinedable.Undefinedable[EsType] `json:"type"`
+	Enabled sliceund.Und[bool]   `json:"enabled,omitempty"`
+	Type    sliceund.Und[EsType] `json:"type,omitempty"`
 }
 
 type DenseVectorProperty struct {
 	PropertyBase
-	Type         EsType                                               `json:"type"`
-	Dims         int                                                  `json:"dims"`
-	Similarity   undefinedable.Undefinedable[string]                  `json:"similarity"`
-	Index        undefinedable.Undefinedable[bool]                    `json:"index"`
-	IndexOptions undefinedable.Undefinedable[DenseVectorIndexOptions] `json:"index_options"`
+	Type         EsType                                `json:"type"`
+	Dims         int                                   `json:"dims"`
+	Similarity   sliceund.Und[string]                  `json:"similarity,omitempty"`
+	Index        sliceund.Und[bool]                    `json:"index,omitempty"`
+	IndexOptions sliceund.Und[DenseVectorIndexOptions] `json:"index_options,omitempty"`
 }
 
 type AggregateMetricDoubleProperty struct {
 	PropertyBase
-	Type             EsType                                                                 `json:"type"`
-	DefaultMetric    string                                                                 `json:"default_metric"`
-	Metrics          []string                                                               `json:"metrics"`
-	TimeSeriesMetric undefinedable.Undefinedable[timeseriesmetrictype.TimeSeriesMetricType] `json:"time_series_metric"`
+	Type             EsType                                                  `json:"type"`
+	DefaultMetric    string                                                  `json:"default_metric"`
+	Metrics          []string                                                `json:"metrics"`
+	TimeSeriesMetric sliceund.Und[timeseriesmetrictype.TimeSeriesMetricType] `json:"time_series_metric,omitempty"`
 }

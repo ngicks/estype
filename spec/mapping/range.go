@@ -19,19 +19,19 @@
  */
 package mapping
 
-import "github.com/ngicks/und/undefinedable"
+import "github.com/ngicks/und/sliceund"
 
 type RangePropertyBase struct {
 	DocValuesPropertyBase
-	Boost  undefinedable.Undefinedable[float64] `json:" boost"`
-	Coerce undefinedable.Undefinedable[bool]    `json:" coerce"`
-	Index  undefinedable.Undefinedable[bool]    `json:" index"`
+	Boost  sliceund.Und[float64] `json:" boost,omitempty"`
+	Coerce sliceund.Und[bool]    `json:" coerce,omitempty"`
+	Index  sliceund.Und[bool]    `json:" index,omitempty"`
 }
 
 type DateRangeProperty struct {
 	RangePropertyBase
-	Format undefinedable.Undefinedable[string] `json:" format"`
-	Type   EsType                              `json:"type"`
+	Format sliceund.Und[string] `json:" format,omitempty"`
+	Type   EsType               `json:"type"`
 }
 
 type DoubleRangeProperty struct {

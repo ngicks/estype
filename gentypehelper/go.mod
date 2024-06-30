@@ -1,11 +1,9 @@
 module github.com/ngicks/estype/gentypehelper
 
-go 1.20
+go 1.22
 
-require github.com/ngicks/und v0.0.0-20230723110635-fd0b45653fa9
+toolchain go1.22.0
 
-require (
-	github.com/json-iterator/go v1.1.12 // indirect
-	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
-	github.com/modern-go/reflect2 v1.0.2 // indirect
-)
+require github.com/ngicks/und v1.0.0-alpha1
+
+require github.com/go-json-experiment/json v0.0.0-20240524174822-2d9f40f7385b // indirect

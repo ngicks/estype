@@ -1,6 +1,6 @@
 package gentypehelper
 
-import "github.com/ngicks/und/elastic"
+import "github.com/ngicks/und/sliceund/elastic"
 
 const (
 	IdMapPlainPointerToUndefinedElastic         = "MapPlainPointerToUndefinedElastic"
@@ -24,41 +24,44 @@ func MapPlainPointerToUndefinedElastic[T any](v *T) elastic.Elastic[T] {
 	if v == nil {
 		return elastic.Undefined[T]()
 	}
-	return elastic.FromSingle(*v)
+	return elastic.FromValue(*v)
 }
 
 func MapPlainMultiplePointerToUndefinedElastic[T any](v *[]T) elastic.Elastic[T] {
 	if v == nil {
 		return elastic.Undefined[T]()
 	}
-	return elastic.FromMultiple(*v)
+	return elastic.FromValues(*v)
 }
 
 func MapSingleValueToElastic[T any](v T) elastic.Elastic[T] {
-	return elastic.FromSingle[T](v)
+	return elastic.FromValue[T](v)
 }
 
 func MapSingleOptionalValueToElastic[T any](v *T) elastic.Elastic[T] {
-	return elastic.FromSinglePointer[T](v)
+	return elastic.FromPointer[T](v)
 }
 
 func MapMultipleValueToElastic[T any](v []T) elastic.Elastic[T] {
-	return elastic.FromMultiple[T](v)
+	return elastic.FromValues[T](v)
 }
 
 func MapMultipleOptionalValueToElastic[T any](v *[]T) elastic.Elastic[T] {
-	return elastic.FromMultiplePointer[T](v)
+	if v == nil {
+		return elastic.FromValues[T]([]T{})
+	}
+	return elastic.FromValues[T](*v)
 }
 
 func MapPlainToRawElastic[T any, U interface{ ToRaw() T }](v U) elastic.Elastic[T] {
-	return elastic.FromSingle[T](v.ToRaw())
+	return elastic.FromValue[T](v.ToRaw())
 }
 
 func MapPlainOptionalToRawElastic[T any, U interface{ ToRaw() T }](v *U) elastic.Elastic[T] {
 	if v == nil {
 		return elastic.Null[T]()
 	}
-	return elastic.FromSingle[T]((*v).ToRaw())
+	return elastic.FromValue[T]((*v).ToRaw())
 }
 
 func MapPlainMultipleToRawElastic[T any, U interface{ ToRaw() T }](v []U) elastic.Elastic[T] {
@@ -66,7 +69,7 @@ func MapPlainMultipleToRawElastic[T any, U interface{ ToRaw() T }](v []U) elasti
 	for idx, vv := range v {
 		out[idx] = vv.ToRaw()
 	}
-	return elastic.FromMultiple[T](out)
+	return elastic.FromValues[T](out)
 }
 
 func MapPlainMultipleOptionalToRawElastic[T any, U interface{ ToRaw() T }](v *[]U) elastic.Elastic[T] {
@@ -77,7 +80,7 @@ func MapPlainMultipleOptionalToRawElastic[T any, U interface{ ToRaw() T }](v *[]
 }
 
 func MapElasticToPlainSingle[T any, U interface{ ToPlain() T }](v elastic.Elastic[U]) T {
-	return v.ValueSingle().ToPlain()
+	return v.Value().ToPlain()
 }
 
 func MapElasticToPlainSingleOptional[T any, U interface{ ToPlain() T }](v elastic.Elastic[U]) *T {
@@ -89,7 +92,7 @@ func MapElasticToPlainSingleOptional[T any, U interface{ ToPlain() T }](v elasti
 }
 
 func MapElasticToPlainMultiple[T any, U interface{ ToPlain() T }](v elastic.Elastic[U]) []T {
-	values := v.ValueMultiple()
+	values := v.Values()
 	out := make([]T, len(values))
 	for idx, vv := range values {
 		out[idx] = vv.ToPlain()
@@ -109,6 +112,6 @@ func MapElasticToMultipleValueOptional[T any](v elastic.Elastic[T]) *[]T {
 	if v.IsUndefined() || v.IsNull() {
 		return nil
 	}
-	p := v.ValueMultiple()
+	p := v.Values()
 	return &p
 }

@@ -19,7 +19,7 @@
  */
 package spec
 
-import "github.com/ngicks/und/undefinedable"
+import "github.com/ngicks/und/sliceund"
 
 type ScriptLanguage string
 
@@ -31,21 +31,21 @@ const (
 )
 
 type StoredScript struct {
-	Lang    ScriptLanguage                                 `json:"lang"`
-	Options undefinedable.Undefinedable[map[string]string] `json:"options"`
-	Source  string                                         `json:"source"`
+	Lang    ScriptLanguage                  `json:"lang"`
+	Options sliceund.Und[map[string]string] `json:"options,omitempty"`
+	Source  string                          `json:"source"`
 }
 
 type ScriptBase struct {
-	Params undefinedable.Undefinedable[map[string]any] `json:"params"`
+	Params sliceund.Und[map[string]any] `json:"params,omitempty"`
 }
 
 /** @shortcut_property source */
 type InlineScript struct {
 	ScriptBase
-	Lang    undefinedable.Undefinedable[ScriptLanguage]    `json:"lang"`
-	Options undefinedable.Undefinedable[map[string]string] `json:"options"`
-	Source  string                                         `json:"source"`
+	Lang    sliceund.Und[ScriptLanguage]    `json:"lang,omitempty"`
+	Options sliceund.Und[map[string]string] `json:"options,omitempty"`
+	Source  string                          `json:"source"`
 }
 
 type StoredScriptId struct {
@@ -56,10 +56,10 @@ type StoredScriptId struct {
 // Script = InlineScript | StoredScriptId
 type Script struct {
 	ScriptBase
-	Lang    undefinedable.Undefinedable[ScriptLanguage]    `json:"lang"`
-	Options undefinedable.Undefinedable[map[string]string] `json:"options"`
-	Source  undefinedable.Undefinedable[string]            `json:"source"`
-	Id      undefinedable.Undefinedable[string]            `json:"id"`
+	Lang    sliceund.Und[ScriptLanguage]    `json:"lang,omitempty"`
+	Options sliceund.Und[map[string]string] `json:"options,omitempty"`
+	Source  sliceund.Und[string]            `json:"source,omitempty"`
+	Id      sliceund.Und[string]            `json:"id,omitempty"`
 }
 
 func (s Script) IsInlineScript() bool {
@@ -87,6 +87,6 @@ func (s Script) StoredScriptId() StoredScriptId {
 }
 
 type ScriptField struct {
-	Script        Script                            `json:"script"`
-	IgnoreFailure undefinedable.Undefinedable[bool] `json:"ignore_failure"`
+	Script        Script             `json:"script"`
+	IgnoreFailure sliceund.Und[bool] `json:"ignore_failure,omitempty"`
 }

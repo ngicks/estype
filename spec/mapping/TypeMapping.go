@@ -19,27 +19,27 @@
  */
 package mapping
 
-import "github.com/ngicks/und/undefinedable"
+import "github.com/ngicks/und/sliceund"
 
 type TypeMapping struct {
-	AllField           undefinedable.Undefinedable[AllField]                     `json:"all_field"`
-	DateDetection      undefinedable.Undefinedable[bool]                         `json:"date_detection"`
-	Dynamic            undefinedable.Undefinedable[DynamicMapping]               `json:"dynamic"`
-	DynamicDateFormats undefinedable.Undefinedable[[]string]                     `json:"dynamic_date_formats"`
-	DynamicTemplates   undefinedable.Undefinedable[[]map[string]DynamicTemplate] `json:"dynamic_templates"`
-	FieldNames_        undefinedable.Undefinedable[FieldNamesField]              `json:"_field_names"`
-	IndexField         undefinedable.Undefinedable[IndexField]                   `json:"index_field"`
+	AllField           sliceund.Und[AllField]                     `json:"all_field,omitempty"`
+	DateDetection      sliceund.Und[bool]                         `json:"date_detection,omitempty"`
+	Dynamic            sliceund.Und[DynamicMapping]               `json:"dynamic,omitempty"`
+	DynamicDateFormats sliceund.Und[[]string]                     `json:"dynamic_date_formats,omitempty"`
+	DynamicTemplates   sliceund.Und[[]map[string]DynamicTemplate] `json:"dynamic_templates,omitempty"`
+	FieldNames_        sliceund.Und[FieldNamesField]              `json:"_field_names,omitempty"`
+	IndexField         sliceund.Und[IndexField]                   `json:"index_field,omitempty"`
 	/** @doc_id mapping-meta-field */
-	Meta             undefinedable.Undefinedable[map[string]any]          `json:"_meta"`
-	NumericDetection undefinedable.Undefinedable[bool]                    `json:"numeric_detection"`
-	Properties       undefinedable.Undefinedable[map[string]Property]     `json:"properties"`
-	Routing          undefinedable.Undefinedable[RoutingField]            `json:"_routing"`
-	Size             undefinedable.Undefinedable[SizeField]               `json:"_size"`
-	Source           undefinedable.Undefinedable[SourceField]             `json:"_source"`
-	Runtime          undefinedable.Undefinedable[map[string]RuntimeField] `json:"runtime"`
-	Enabled          undefinedable.Undefinedable[bool]                    `json:"enabled"`
+	Meta             sliceund.Und[map[string]any]          `json:"_meta,omitempty"`
+	NumericDetection sliceund.Und[bool]                    `json:"numeric_detection,omitempty"`
+	Properties       sliceund.Und[map[string]Property]     `json:"properties,omitempty"`
+	Routing          sliceund.Und[RoutingField]            `json:"_routing,omitempty"`
+	Size             sliceund.Und[SizeField]               `json:"_size,omitempty"`
+	Source           sliceund.Und[SourceField]             `json:"_source,omitempty"`
+	Runtime          sliceund.Und[map[string]RuntimeField] `json:"runtime,omitempty"`
+	Enabled          sliceund.Und[bool]                    `json:"enabled,omitempty"`
 	/** @since 7.16.0 */
-	DataStreamTimestamp undefinedable.Undefinedable[DataStreamTimestamp] `json:"_data_stream_timestamp"`
+	DataStreamTimestamp sliceund.Und[DataStreamTimestamp] `json:"_data_stream_timestamp,omitempty"`
 }
 
 type DataStreamTimestamp struct {

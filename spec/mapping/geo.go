@@ -19,16 +19,14 @@
  */
 package mapping
 
-import (
-	"github.com/ngicks/und/undefinedable"
-)
+import "github.com/ngicks/und/sliceund"
 
 type GeoPointProperty struct {
 	DocValuesPropertyBase
-	IgnoreMalformed undefinedable.Undefinedable[bool] `json:" ignore_malformed"`
-	IgnoreZValue    undefinedable.Undefinedable[bool] `json:" ignore_z_value"`
-	NullValue       undefinedable.Undefinedable[any]  `json:" null_value"`
-	Type            EsType                            `json:"type"`
+	IgnoreMalformed sliceund.Und[bool] `json:" ignore_malformed,omitempty"`
+	IgnoreZValue    sliceund.Und[bool] `json:" ignore_z_value,omitempty"`
+	NullValue       sliceund.Und[any]  `json:" null_value,omitempty"`
+	Type            EsType             `json:"type"`
 }
 
 type GeoOrientation string
@@ -48,12 +46,12 @@ const (
  */
 type GeoShapeProperty struct {
 	DocValuesPropertyBase
-	Coerce          undefinedable.Undefinedable[bool]           `json:" coerce"`
-	IgnoreMalformed undefinedable.Undefinedable[bool]           `json:" ignore_malformed"`
-	IgnoreZValue    undefinedable.Undefinedable[bool]           `json:" ignore_z_value"`
-	Orientation     undefinedable.Undefinedable[GeoOrientation] `json:" orientation"`
-	Strategy        undefinedable.Undefinedable[GeoStrategy]    `json:" strategy"`
-	Type            EsType                                      `json:"type"`
+	Coerce          sliceund.Und[bool]           `json:" coerce,omitempty"`
+	IgnoreMalformed sliceund.Und[bool]           `json:" ignore_malformed,omitempty"`
+	IgnoreZValue    sliceund.Und[bool]           `json:" ignore_z_value,omitempty"`
+	Orientation     sliceund.Und[GeoOrientation] `json:" orientation,omitempty"`
+	Strategy        sliceund.Und[GeoStrategy]    `json:" strategy,omitempty"`
+	Type            EsType                       `json:"type"`
 }
 
 type GeoStrategy string
@@ -72,10 +70,10 @@ const (
 
 type PointProperty struct {
 	DocValuesPropertyBase
-	IgnoreMalformed undefinedable.Undefinedable[bool]   `json:" ignore_malformed"`
-	IgnoreZValue    undefinedable.Undefinedable[bool]   `json:" ignore_z_value"`
-	NullValue       undefinedable.Undefinedable[string] `json:" null_value"`
-	Type            EsType                              `json:"type"`
+	IgnoreMalformed sliceund.Und[bool]   `json:" ignore_malformed,omitempty"`
+	IgnoreZValue    sliceund.Und[bool]   `json:" ignore_z_value,omitempty"`
+	NullValue       sliceund.Und[string] `json:" null_value,omitempty"`
+	Type            EsType               `json:"type"`
 }
 
 /**
@@ -86,9 +84,9 @@ type PointProperty struct {
  */
 type ShapeProperty struct {
 	DocValuesPropertyBase
-	Coerce          undefinedable.Undefinedable[bool]           `json:" coerce"`
-	IgnoreMalformed undefinedable.Undefinedable[bool]           `json:" ignore_malformed"`
-	IgnoreZValue    undefinedable.Undefinedable[bool]           `json:" ignore_z_value"`
-	Orientation     undefinedable.Undefinedable[GeoOrientation] `json:" orientation"`
-	Type            EsType                                      `json:"type"`
+	Coerce          sliceund.Und[bool]           `json:" coerce,omitempty"`
+	IgnoreMalformed sliceund.Und[bool]           `json:" ignore_malformed,omitempty"`
+	IgnoreZValue    sliceund.Und[bool]           `json:" ignore_z_value,omitempty"`
+	Orientation     sliceund.Und[GeoOrientation] `json:" orientation,omitempty"`
+	Type            EsType                       `json:"type"`
 }

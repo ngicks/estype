@@ -23,8 +23,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/ngicks/und/serde"
-	"github.com/ngicks/und/undefinedable"
+	"github.com/ngicks/und/sliceund"
 )
 
 // Property is enum for mapping field type.
@@ -81,12 +80,12 @@ type Property struct {
 }
 
 func (p Property) MarshalJSON() ([]byte, error) {
-	return serde.Marshal(p.Val)
+	return json.Marshal(p.Val)
 }
 
 func (p *Property) UnmarshalJSON(data []byte) error {
 	type prop struct {
-		Type undefinedable.Undefinedable[EsType] `json:"type"`
+		Type sliceund.Und[EsType] `json:"type,omitempty"`
 	}
 	var inner prop
 
@@ -435,9 +434,9 @@ func (p *Property) UnmarshalJSON(data []byte) error {
 }
 
 type PropertyBase struct {
-	Meta        undefinedable.Undefinedable[map[string]string]   `json:"meta,omitempty"`
-	Properties  undefinedable.Undefinedable[map[string]Property] `json:"properties,omitempty"`
-	IgnoreAbove undefinedable.Undefinedable[int]                 `json:"ignore_above,omitempty"`
-	Dynamic     undefinedable.Undefinedable[DynamicMapping]      `json:"dynamic,omitempty"`
-	Fields      undefinedable.Undefinedable[map[string]Property] `json:"fields,omitempty"`
+	Meta        sliceund.Und[map[string]string]   `json:"meta,omitempty,omitempty"`
+	Properties  sliceund.Und[map[string]Property] `json:"properties,omitempty,omitempty"`
+	IgnoreAbove sliceund.Und[int]                 `json:"ignore_above,omitempty,omitempty"`
+	Dynamic     sliceund.Und[DynamicMapping]      `json:"dynamic,omitempty,omitempty"`
+	Fields      sliceund.Und[map[string]Property] `json:"fields,omitempty,omitempty"`
 }

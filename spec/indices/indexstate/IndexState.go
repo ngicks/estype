@@ -21,9 +21,9 @@ package indexstate
 
 import (
 	"github.com/ngicks/estype/spec/mapping"
-	"github.com/ngicks/und/undefinedable"
+	"github.com/ngicks/und/sliceund"
 )
 
 type IndexState struct {
-	Mappings undefinedable.Undefinedable[mapping.TypeMapping] `json:"mappings"`
+	Mappings sliceund.Und[mapping.TypeMapping] `json:"mappings,omitempty"`
 }

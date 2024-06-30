@@ -22,17 +22,17 @@ package mapping
 import (
 	"fmt"
 
-	"github.com/ngicks/und/undefinedable"
+	"github.com/ngicks/und/sliceund"
 )
 
 type DynamicTemplate struct {
-	Mapping          undefinedable.Undefinedable[Property]  `json:"mapping"`
-	Match            undefinedable.Undefinedable[string]    `json:"match"`
-	MatchMappingType undefinedable.Undefinedable[string]    `json:"match_mapping_type"`
-	MatchPattern     undefinedable.Undefinedable[MatchType] `json:"match_pattern"`
-	PathMatch        undefinedable.Undefinedable[string]    `json:"path_match"`
-	PathUnmatch      undefinedable.Undefinedable[string]    `json:"path_unmatch"`
-	Unmatch          undefinedable.Undefinedable[string]    `json:"unmatch"`
+	Mapping          sliceund.Und[Property]  `json:"mapping,omitempty"`
+	Match            sliceund.Und[string]    `json:"match,omitempty"`
+	MatchMappingType sliceund.Und[string]    `json:"match_mapping_type,omitempty"`
+	MatchPattern     sliceund.Und[MatchType] `json:"match_pattern,omitempty"`
+	PathMatch        sliceund.Und[string]    `json:"path_match,omitempty"`
+	PathUnmatch      sliceund.Und[string]    `json:"path_unmatch,omitempty"`
+	Unmatch          sliceund.Und[string]    `json:"unmatch,omitempty"`
 }
 
 type MatchType string

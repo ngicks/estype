@@ -19,7 +19,7 @@
  */
 package mapping
 
-import "github.com/ngicks/und/undefinedable"
+import "github.com/ngicks/und/sliceund"
 
 type FieldMapping struct {
 	FullName string              `json:"full_name"`
@@ -56,12 +56,12 @@ type SizeField struct {
 }
 
 type SourceField struct {
-	Compress          undefinedable.Undefinedable[bool]            `json:"compress"`
-	CompressThreshold undefinedable.Undefinedable[string]          `json:"compress_threshold"`
-	Enabled           undefinedable.Undefinedable[bool]            `json:"enabled"`
-	Excludes          undefinedable.Undefinedable[[]string]        `json:"excludes"`
-	Includes          undefinedable.Undefinedable[[]string]        `json:"includes"`
-	Mode              undefinedable.Undefinedable[SourceFieldMode] `json:"mode"`
+	Compress          sliceund.Und[bool]            `json:"compress,omitempty"`
+	CompressThreshold sliceund.Und[string]          `json:"compress_threshold,omitempty"`
+	Enabled           sliceund.Und[bool]            `json:"enabled,omitempty"`
+	Excludes          sliceund.Und[[]string]        `json:"excludes,omitempty"`
+	Includes          sliceund.Und[[]string]        `json:"includes,omitempty"`
+	Mode              sliceund.Und[SourceFieldMode] `json:"mode,omitempty"`
 }
 
 type SourceFieldMode string

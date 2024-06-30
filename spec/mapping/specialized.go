@@ -21,65 +21,65 @@ package mapping
 
 import (
 	mappingdef "github.com/ngicks/estype/spec"
-	"github.com/ngicks/und/undefinedable"
+	"github.com/ngicks/und/sliceund"
 )
 
 type CompletionProperty struct {
 	DocValuesPropertyBase
 
-	Analyzer                   undefinedable.Undefinedable[string]           `json:"analyzer"`
-	Contexts                   undefinedable.Undefinedable[[]SuggestContext] `json:"contexts"`
-	MaxInputLength             undefinedable.Undefinedable[int]              `json:"max_input_length"`
-	PreservePositionIncrements undefinedable.Undefinedable[bool]             `json:"preserve_position_increments"`
-	PreserveSeparators         undefinedable.Undefinedable[bool]             `json:"preserve_separators"`
-	SearchAnalyzer             undefinedable.Undefinedable[string]           `json:"search_analyzer"`
-	Type                       EsType                                        `json:"type"`
+	Analyzer                   sliceund.Und[string]           `json:"analyzer,omitempty"`
+	Contexts                   sliceund.Und[[]SuggestContext] `json:"contexts,omitempty"`
+	MaxInputLength             sliceund.Und[int]              `json:"max_input_length,omitempty"`
+	PreservePositionIncrements sliceund.Und[bool]             `json:"preserve_position_increments,omitempty"`
+	PreserveSeparators         sliceund.Und[bool]             `json:"preserve_separators,omitempty"`
+	SearchAnalyzer             sliceund.Und[string]           `json:"search_analyzer,omitempty"`
+	Type                       EsType                         `json:"type"`
 }
 
 type SuggestContext struct {
-	Name      string                              `json:"name"`
-	Path      undefinedable.Undefinedable[string] `json:"path"`
-	Type      string                              `json:"type"`
-	Precision undefinedable.Undefinedable[any]    `json:"precision"` // int or string
+	Name      string               `json:"name"`
+	Path      sliceund.Und[string] `json:"path,omitempty"`
+	Type      string               `json:"type"`
+	Precision sliceund.Und[any]    `json:"precision,omitempty"` // int or string
 }
 
 type ConstantKeywordProperty struct {
 	PropertyBase
 
-	Value undefinedable.Undefinedable[any] `json:"value"`
-	Type  EsType                           `json:"type"`
+	Value sliceund.Und[any] `json:"value,omitempty"`
+	Type  EsType            `json:"type"`
 }
 
 type FieldAliasProperty struct {
 	PropertyBase
 
-	Path undefinedable.Undefinedable[string] `json:"path"`
-	Type EsType                              `json:"type"`
+	Path sliceund.Und[string] `json:"path,omitempty"`
+	Type EsType               `json:"type"`
 }
 
 type HistogramProperty struct {
 	PropertyBase
 
-	IgnoreMalformed undefinedable.Undefinedable[bool] `json:"ignore_malformed"`
-	Type            EsType                            `json:"type"`
+	IgnoreMalformed sliceund.Und[bool] `json:"ignore_malformed,omitempty"`
+	Type            EsType             `json:"type"`
 }
 
 type IpProperty struct {
 	DocValuesPropertyBase
 
-	Boost           undefinedable.Undefinedable[float64]           `json:"boost"`
-	Index           undefinedable.Undefinedable[bool]              `json:"index"`
-	IgnoreMalformed undefinedable.Undefinedable[bool]              `json:"ignore_malformed"`
-	NullValue       undefinedable.Undefinedable[string]            `json:"null_value"`
-	OnScriptError   undefinedable.Undefinedable[OnScriptError]     `json:"on_script_error"`
-	Script          undefinedable.Undefinedable[mappingdef.Script] `json:"script"`
+	Boost           sliceund.Und[float64]           `json:"boost,omitempty"`
+	Index           sliceund.Und[bool]              `json:"index,omitempty"`
+	IgnoreMalformed sliceund.Und[bool]              `json:"ignore_malformed,omitempty"`
+	NullValue       sliceund.Und[string]            `json:"null_value,omitempty"`
+	OnScriptError   sliceund.Und[OnScriptError]     `json:"on_script_error,omitempty"`
+	Script          sliceund.Und[mappingdef.Script] `json:"script,omitempty"`
 	/**
 	 * For internal use by Elastic only. Marks the field as a time series dimension. Defaults to false.
 	 * @availability stack stability=experimental
 	 * @availability serverless stability=experimental
 	 */
-	TimeSeriesDimension undefinedable.Undefinedable[bool] `json:"time_series_dimension"`
-	Type                EsType                            `json:"type"`
+	TimeSeriesDimension sliceund.Und[bool] `json:"time_series_dimension,omitempty"`
+	Type                EsType             `json:"type"`
 }
 
 type Murmur3HashProperty struct {
@@ -90,10 +90,10 @@ type Murmur3HashProperty struct {
 
 type TokenCountProperty struct {
 	DocValuesPropertyBase
-	Analyzer                 undefinedable.Undefinedable[string]  `json:"analyzer"`
-	Boost                    undefinedable.Undefinedable[float64] `json:"boost"`
-	Index                    undefinedable.Undefinedable[bool]    `json:"index"`
-	NullValue                undefinedable.Undefinedable[float64] `json:"null_value"`
-	EnablePositionIncrements undefinedable.Undefinedable[bool]    `json:"enable_position_increments"`
-	Type                     EsType                               `json:"type"`
+	Analyzer                 sliceund.Und[string]  `json:"analyzer,omitempty"`
+	Boost                    sliceund.Und[float64] `json:"boost,omitempty"`
+	Index                    sliceund.Und[bool]    `json:"index,omitempty"`
+	NullValue                sliceund.Und[float64] `json:"null_value,omitempty"`
+	EnablePositionIncrements sliceund.Und[bool]    `json:"enable_position_increments,omitempty"`
+	Type                     EsType                `json:"type"`
 }
