@@ -65,7 +65,7 @@ func (c *generatorContext) Gen() {
 			TypeName: pascalCase(exportName(escapeNonId(c.generatorOption.RootTypeName))),
 			Children: c.generatorOption.MappingOption,
 		},
-		dynamic: c.generatorOption.Mapping.Dynamic.Option,
+		dynamic: option.FlattenOption(c.generatorOption.Mapping.Dynamic.Unwrap()),
 	}
 
 	genObjectLike(&newCtx, false)

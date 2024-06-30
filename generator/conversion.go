@@ -88,13 +88,13 @@ func generateToPlain(ctx *generatorContext, plain, raw typeId, plainFields, rawF
 func toRawStmt(plain, raw structField) *jen.Statement {
 	fieldNameId := jen.Id("d").Dot(plain.Name)
 	switch raw.TypeId.Qualifier {
-	case jsonfieldTypeQual:
-		// must be single at this point.
-		if plain.TypeId.IsOptional(plain.Opt) {
-			return jen.Qual(jsonfieldTypeQual, "FromPointer").Call(fieldNameId)
-		} else {
-			return jen.Qual(jsonfieldTypeQual, "Defined").Call(fieldNameId)
-		}
+	// case jsonfieldTypeQual:
+	// 	// must be single at this point.
+	// 	if plain.TypeId.IsOptional(plain.Opt) {
+	// 		return jen.Qual(jsonfieldTypeQual, "FromPointer").Call(fieldNameId)
+	// 	} else {
+	// 		return jen.Qual(jsonfieldTypeQual, "Defined").Call(fieldNameId)
+	// 	}
 	case undefinedableTypeQual:
 		// must single and null is not acceptable.
 		if plain.TypeId.IsOptional(plain.Opt) {
@@ -115,15 +115,15 @@ func toPlainStmt(plain, raw structField) *jen.Statement {
 	fieldNameId := jen.Id("d").Dot(raw.Name)
 
 	switch raw.TypeId.Qualifier {
-	case jsonfieldTypeQual:
-		if plain.TypeId.IsOptional(plain.Opt) {
-			return fieldNameId.Dot("Undefinedable").Dot("Value").Call().Dot("Plain").Call()
-		} else {
-			return fieldNameId.Dot("Value").Call()
-		}
+	// case jsonfieldTypeQual:
+	// 	if plain.TypeId.IsOptional(plain.Opt) {
+	// 		return fieldNameId.Dot("Undefinedable").Dot("Value").Call().Dot("Pointer").Call()
+	// 	} else {
+	// 		return fieldNameId.Dot("Value").Call()
+	// 	}
 	case undefinedableTypeQual:
 		if plain.TypeId.IsOptional(plain.Opt) {
-			return fieldNameId.Dot("Plain").Call()
+			return fieldNameId.Dot("Pointer").Call()
 		} else {
 			return fieldNameId.Dot("Value").Call()
 		}
@@ -132,11 +132,11 @@ func toPlainStmt(plain, raw structField) *jen.Statement {
 			var valueMethodName string
 			switch {
 			case plain.TypeId.IsSingle(plain.Opt) && !plain.TypeId.IsOptional(plain.Opt):
-				valueMethodName = "ValueSingle"
+				valueMethodName = "Value"
 			case plain.TypeId.IsSingle(plain.Opt) && plain.TypeId.IsOptional(plain.Opt):
-				valueMethodName = "PlainSingle"
+				valueMethodName = "Pointer"
 			case !plain.TypeId.IsSingle(plain.Opt) && !plain.TypeId.IsOptional(plain.Opt):
-				valueMethodName = "ValueMultiple"
+				valueMethodName = "Values"
 			case !plain.TypeId.IsSingle(plain.Opt) && plain.TypeId.IsOptional(plain.Opt):
 				return jen.
 					Qual(gentypehelperQual, gentypehelper.IdMapElasticToMultipleValueOptional).

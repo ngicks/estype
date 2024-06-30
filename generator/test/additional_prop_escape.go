@@ -6,25 +6,24 @@ import (
 	"errors"
 	"fmt"
 	gentypehelper "github.com/ngicks/estype/gentypehelper"
-	elastic "github.com/ngicks/und/elastic"
-	serde "github.com/ngicks/und/serde"
+	elastic "github.com/ngicks/und/sliceund/elastic"
 	"io"
 	"reflect"
 	"sort"
 )
 
-type AddtionalPropEscape struct {
-	U003chmu003e          AddtionalPropEscapeU003chmu003eObject `json:"<hm>"`
-	U2728                 AddtionalPropEscapeU2728Object        `json:"✨"`
+type AdditionalPropEscape struct {
+	U003chmu003e          AdditionalPropEscapeU003chmu003eObject `json:"<hm>"`
+	U2728                 AdditionalPropEscapeU2728Object        `json:"✨"`
 	AdditionalProperties_ map[string]any
 }
 
 // ToRaw converts d into its plain equivalent.
 // It avoids copying data where it is possilbe. Mutation to fields is not advised.
-func (d AddtionalPropEscape) ToRaw() AddtionalPropEscapeRaw {
-	return AddtionalPropEscapeRaw{
-		U003chmu003e:          gentypehelper.MapPlainToRawElastic[AddtionalPropEscapeU003chmu003eObjectRaw](d.U003chmu003e),
-		U2728:                 gentypehelper.MapPlainToRawElastic[AddtionalPropEscapeU2728ObjectRaw](d.U2728),
+func (d AdditionalPropEscape) ToRaw() AdditionalPropEscapeRaw {
+	return AdditionalPropEscapeRaw{
+		U003chmu003e:          gentypehelper.MapPlainToRawElastic[AdditionalPropEscapeU003chmu003eObjectRaw](d.U003chmu003e),
+		U2728:                 gentypehelper.MapPlainToRawElastic[AdditionalPropEscapeU2728ObjectRaw](d.U2728),
 		AdditionalProperties_: d.AdditionalProperties_,
 	}
 }
@@ -34,7 +33,7 @@ func (d AddtionalPropEscape) ToRaw() AddtionalPropEscapeRaw {
 //
 // The presence of this implementation indicates the dynamic field for this object are
 // defined to be other than "strict" in its mapping.json.
-func (d AddtionalPropEscape) MarshalJSON() ([]byte, error) {
+func (d AdditionalPropEscape) MarshalJSON() ([]byte, error) {
 	buf := gentypehelper.GetBuf()
 	defer gentypehelper.PutBuf(buf)
 	var (
@@ -85,7 +84,7 @@ func (d AddtionalPropEscape) MarshalJSON() ([]byte, error) {
 //
 // The presence of this implementation indicates the dynamic field for this object are
 // defined to be other than "strict" in its mapping.json.
-func (d *AddtionalPropEscape) UnmarshalJSON(data []byte) error {
+func (d *AdditionalPropEscape) UnmarshalJSON(data []byte) error {
 	dec := json.NewDecoder(bytes.NewBuffer(data))
 	token, err := dec.Token()
 	if err != nil {
@@ -130,18 +129,18 @@ func (d *AddtionalPropEscape) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-type AddtionalPropEscapeRaw struct {
-	U003chmu003e          elastic.Elastic[AddtionalPropEscapeU003chmu003eObjectRaw] `json:"<hm>"`
-	U2728                 elastic.Elastic[AddtionalPropEscapeU2728ObjectRaw]        `json:"✨"`
+type AdditionalPropEscapeRaw struct {
+	U003chmu003e          elastic.Elastic[AdditionalPropEscapeU003chmu003eObjectRaw] `json:"<hm>,omitempty"`
+	U2728                 elastic.Elastic[AdditionalPropEscapeU2728ObjectRaw]        `json:"✨,omitempty"`
 	AdditionalProperties_ map[string]any
 }
 
 // ToPlain converts d into its raw equivalent.
 // It avoids copying data where it is possilbe. Mutation to fields is not advised.
-func (d AddtionalPropEscapeRaw) ToPlain() AddtionalPropEscape {
-	return AddtionalPropEscape{
-		U003chmu003e:          gentypehelper.MapElasticToPlainSingle[AddtionalPropEscapeU003chmu003eObject](d.U003chmu003e),
-		U2728:                 gentypehelper.MapElasticToPlainSingle[AddtionalPropEscapeU2728Object](d.U2728),
+func (d AdditionalPropEscapeRaw) ToPlain() AdditionalPropEscape {
+	return AdditionalPropEscape{
+		U003chmu003e:          gentypehelper.MapElasticToPlainSingle[AdditionalPropEscapeU003chmu003eObject](d.U003chmu003e),
+		U2728:                 gentypehelper.MapElasticToPlainSingle[AdditionalPropEscapeU2728Object](d.U2728),
 		AdditionalProperties_: d.AdditionalProperties_,
 	}
 }
@@ -151,7 +150,7 @@ func (d AddtionalPropEscapeRaw) ToPlain() AddtionalPropEscape {
 //
 // The presence of this implementation indicates the dynamic field for this object are
 // defined to be other than "strict" in its mapping.json.
-func (d AddtionalPropEscapeRaw) MarshalJSON() ([]byte, error) {
+func (d AdditionalPropEscapeRaw) MarshalJSON() ([]byte, error) {
 	buf := gentypehelper.GetBuf()
 	defer gentypehelper.PutBuf(buf)
 	var (
@@ -159,27 +158,33 @@ func (d AddtionalPropEscapeRaw) MarshalJSON() ([]byte, error) {
 		err error
 	)
 	buf.WriteByte('{')
-	buf.WriteString("\"\\u003chm\\u003e\":")
-	bin, err = serde.Marshal(d.U003chmu003e)
-	if err != nil {
-		return nil, err
+	// This field is tagged with ",omitempty".
+	if !reflect.ValueOf(d.U003chmu003e).IsZero() {
+		buf.WriteString("\"\\u003chm\\u003e\":")
+		bin, err = json.Marshal(d.U003chmu003e)
+		if err != nil {
+			return nil, err
+		}
+		buf.Write(bin)
+		buf.WriteByte(',')
 	}
-	buf.Write(bin)
-	buf.WriteByte(',')
-	buf.WriteString("\"✨\":")
-	bin, err = serde.Marshal(d.U2728)
-	if err != nil {
-		return nil, err
+	// This field is tagged with ",omitempty".
+	if !reflect.ValueOf(d.U2728).IsZero() {
+		buf.WriteString("\"✨\":")
+		bin, err = json.Marshal(d.U2728)
+		if err != nil {
+			return nil, err
+		}
+		buf.Write(bin)
+		buf.WriteByte(',')
 	}
-	buf.Write(bin)
-	buf.WriteByte(',')
 	keys := make([]string, 0, len(d.AdditionalProperties_))
 	for k := range d.AdditionalProperties_ {
 		keys = append(keys, k)
 	}
 	sort.Strings(keys)
 	for _, key := range keys {
-		bin, err = serde.Marshal(d.AdditionalProperties_[key])
+		bin, err = json.Marshal(d.AdditionalProperties_[key])
 		if err != nil {
 			return nil, err
 		}
@@ -202,7 +207,7 @@ func (d AddtionalPropEscapeRaw) MarshalJSON() ([]byte, error) {
 //
 // The presence of this implementation indicates the dynamic field for this object are
 // defined to be other than "strict" in its mapping.json.
-func (d *AddtionalPropEscapeRaw) UnmarshalJSON(data []byte) error {
+func (d *AdditionalPropEscapeRaw) UnmarshalJSON(data []byte) error {
 	dec := json.NewDecoder(bytes.NewBuffer(data))
 	token, err := dec.Token()
 	if err != nil {
@@ -247,7 +252,7 @@ func (d *AddtionalPropEscapeRaw) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-type AddtionalPropEscapeU003chmu003eObject struct {
+type AdditionalPropEscapeU003chmu003eObject struct {
 	U0026mahu0026         string    `json:"&mah&"`
 	FooBar__              *struct{} `json:"__foo_bar,omitempty"`
 	AdditionalProperties_ map[string]any
@@ -255,8 +260,8 @@ type AddtionalPropEscapeU003chmu003eObject struct {
 
 // ToRaw converts d into its plain equivalent.
 // It avoids copying data where it is possilbe. Mutation to fields is not advised.
-func (d AddtionalPropEscapeU003chmu003eObject) ToRaw() AddtionalPropEscapeU003chmu003eObjectRaw {
-	return AddtionalPropEscapeU003chmu003eObjectRaw{
+func (d AdditionalPropEscapeU003chmu003eObject) ToRaw() AdditionalPropEscapeU003chmu003eObjectRaw {
+	return AdditionalPropEscapeU003chmu003eObjectRaw{
 		U0026mahu0026:         gentypehelper.MapSingleValueToElastic[string](d.U0026mahu0026),
 		AdditionalProperties_: d.AdditionalProperties_,
 	}
@@ -267,7 +272,7 @@ func (d AddtionalPropEscapeU003chmu003eObject) ToRaw() AddtionalPropEscapeU003ch
 //
 // The presence of this implementation indicates the dynamic field for this object are
 // defined to be other than "strict" in its mapping.json.
-func (d AddtionalPropEscapeU003chmu003eObject) MarshalJSON() ([]byte, error) {
+func (d AdditionalPropEscapeU003chmu003eObject) MarshalJSON() ([]byte, error) {
 	buf := gentypehelper.GetBuf()
 	defer gentypehelper.PutBuf(buf)
 	var (
@@ -321,7 +326,7 @@ func (d AddtionalPropEscapeU003chmu003eObject) MarshalJSON() ([]byte, error) {
 //
 // The presence of this implementation indicates the dynamic field for this object are
 // defined to be other than "strict" in its mapping.json.
-func (d *AddtionalPropEscapeU003chmu003eObject) UnmarshalJSON(data []byte) error {
+func (d *AdditionalPropEscapeU003chmu003eObject) UnmarshalJSON(data []byte) error {
 	dec := json.NewDecoder(bytes.NewBuffer(data))
 	token, err := dec.Token()
 	if err != nil {
@@ -366,17 +371,17 @@ func (d *AddtionalPropEscapeU003chmu003eObject) UnmarshalJSON(data []byte) error
 	return nil
 }
 
-type AddtionalPropEscapeU003chmu003eObjectRaw struct {
-	U0026mahu0026         elastic.Elastic[string]    `json:"&mah&"`
-	FooBar__              elastic.Elastic[*struct{}] `json:"__foo_bar"`
+type AdditionalPropEscapeU003chmu003eObjectRaw struct {
+	U0026mahu0026         elastic.Elastic[string]    `json:"&mah&,omitempty"`
+	FooBar__              elastic.Elastic[*struct{}] `json:"__foo_bar,omitempty"`
 	AdditionalProperties_ map[string]any
 }
 
 // ToPlain converts d into its raw equivalent.
 // It avoids copying data where it is possilbe. Mutation to fields is not advised.
-func (d AddtionalPropEscapeU003chmu003eObjectRaw) ToPlain() AddtionalPropEscapeU003chmu003eObject {
-	return AddtionalPropEscapeU003chmu003eObject{
-		U0026mahu0026:         d.U0026mahu0026.ValueSingle(),
+func (d AdditionalPropEscapeU003chmu003eObjectRaw) ToPlain() AdditionalPropEscapeU003chmu003eObject {
+	return AdditionalPropEscapeU003chmu003eObject{
+		U0026mahu0026:         d.U0026mahu0026.Value(),
 		AdditionalProperties_: d.AdditionalProperties_,
 	}
 }
@@ -386,7 +391,7 @@ func (d AddtionalPropEscapeU003chmu003eObjectRaw) ToPlain() AddtionalPropEscapeU
 //
 // The presence of this implementation indicates the dynamic field for this object are
 // defined to be other than "strict" in its mapping.json.
-func (d AddtionalPropEscapeU003chmu003eObjectRaw) MarshalJSON() ([]byte, error) {
+func (d AdditionalPropEscapeU003chmu003eObjectRaw) MarshalJSON() ([]byte, error) {
 	buf := gentypehelper.GetBuf()
 	defer gentypehelper.PutBuf(buf)
 	var (
@@ -394,27 +399,33 @@ func (d AddtionalPropEscapeU003chmu003eObjectRaw) MarshalJSON() ([]byte, error) 
 		err error
 	)
 	buf.WriteByte('{')
-	buf.WriteString("\"\\u0026mah\\u0026\":")
-	bin, err = serde.Marshal(d.U0026mahu0026)
-	if err != nil {
-		return nil, err
+	// This field is tagged with ",omitempty".
+	if !reflect.ValueOf(d.U0026mahu0026).IsZero() {
+		buf.WriteString("\"\\u0026mah\\u0026\":")
+		bin, err = json.Marshal(d.U0026mahu0026)
+		if err != nil {
+			return nil, err
+		}
+		buf.Write(bin)
+		buf.WriteByte(',')
 	}
-	buf.Write(bin)
-	buf.WriteByte(',')
-	buf.WriteString("\"__foo_bar\":")
-	bin, err = serde.Marshal(d.FooBar__)
-	if err != nil {
-		return nil, err
+	// This field is tagged with ",omitempty".
+	if !reflect.ValueOf(d.FooBar__).IsZero() {
+		buf.WriteString("\"__foo_bar\":")
+		bin, err = json.Marshal(d.FooBar__)
+		if err != nil {
+			return nil, err
+		}
+		buf.Write(bin)
+		buf.WriteByte(',')
 	}
-	buf.Write(bin)
-	buf.WriteByte(',')
 	keys := make([]string, 0, len(d.AdditionalProperties_))
 	for k := range d.AdditionalProperties_ {
 		keys = append(keys, k)
 	}
 	sort.Strings(keys)
 	for _, key := range keys {
-		bin, err = serde.Marshal(d.AdditionalProperties_[key])
+		bin, err = json.Marshal(d.AdditionalProperties_[key])
 		if err != nil {
 			return nil, err
 		}
@@ -437,7 +448,7 @@ func (d AddtionalPropEscapeU003chmu003eObjectRaw) MarshalJSON() ([]byte, error) 
 //
 // The presence of this implementation indicates the dynamic field for this object are
 // defined to be other than "strict" in its mapping.json.
-func (d *AddtionalPropEscapeU003chmu003eObjectRaw) UnmarshalJSON(data []byte) error {
+func (d *AdditionalPropEscapeU003chmu003eObjectRaw) UnmarshalJSON(data []byte) error {
 	dec := json.NewDecoder(bytes.NewBuffer(data))
 	token, err := dec.Token()
 	if err != nil {
@@ -482,15 +493,15 @@ func (d *AddtionalPropEscapeU003chmu003eObjectRaw) UnmarshalJSON(data []byte) er
 	return nil
 }
 
-type AddtionalPropEscapeU2728Object struct {
+type AdditionalPropEscapeU2728Object struct {
 	Yay                   string `json:"yay"`
 	AdditionalProperties_ map[string]any
 }
 
 // ToRaw converts d into its plain equivalent.
 // It avoids copying data where it is possilbe. Mutation to fields is not advised.
-func (d AddtionalPropEscapeU2728Object) ToRaw() AddtionalPropEscapeU2728ObjectRaw {
-	return AddtionalPropEscapeU2728ObjectRaw{
+func (d AdditionalPropEscapeU2728Object) ToRaw() AdditionalPropEscapeU2728ObjectRaw {
+	return AdditionalPropEscapeU2728ObjectRaw{
 		Yay:                   gentypehelper.MapSingleValueToElastic[string](d.Yay),
 		AdditionalProperties_: d.AdditionalProperties_,
 	}
@@ -501,7 +512,7 @@ func (d AddtionalPropEscapeU2728Object) ToRaw() AddtionalPropEscapeU2728ObjectRa
 //
 // The presence of this implementation indicates the dynamic field for this object are
 // defined to be other than "strict" in its mapping.json.
-func (d AddtionalPropEscapeU2728Object) MarshalJSON() ([]byte, error) {
+func (d AdditionalPropEscapeU2728Object) MarshalJSON() ([]byte, error) {
 	buf := gentypehelper.GetBuf()
 	defer gentypehelper.PutBuf(buf)
 	var (
@@ -545,7 +556,7 @@ func (d AddtionalPropEscapeU2728Object) MarshalJSON() ([]byte, error) {
 //
 // The presence of this implementation indicates the dynamic field for this object are
 // defined to be other than "strict" in its mapping.json.
-func (d *AddtionalPropEscapeU2728Object) UnmarshalJSON(data []byte) error {
+func (d *AdditionalPropEscapeU2728Object) UnmarshalJSON(data []byte) error {
 	dec := json.NewDecoder(bytes.NewBuffer(data))
 	token, err := dec.Token()
 	if err != nil {
@@ -588,16 +599,16 @@ func (d *AddtionalPropEscapeU2728Object) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-type AddtionalPropEscapeU2728ObjectRaw struct {
-	Yay                   elastic.Elastic[string] `json:"yay"`
+type AdditionalPropEscapeU2728ObjectRaw struct {
+	Yay                   elastic.Elastic[string] `json:"yay,omitempty"`
 	AdditionalProperties_ map[string]any
 }
 
 // ToPlain converts d into its raw equivalent.
 // It avoids copying data where it is possilbe. Mutation to fields is not advised.
-func (d AddtionalPropEscapeU2728ObjectRaw) ToPlain() AddtionalPropEscapeU2728Object {
-	return AddtionalPropEscapeU2728Object{
-		Yay:                   d.Yay.ValueSingle(),
+func (d AdditionalPropEscapeU2728ObjectRaw) ToPlain() AdditionalPropEscapeU2728Object {
+	return AdditionalPropEscapeU2728Object{
+		Yay:                   d.Yay.Value(),
 		AdditionalProperties_: d.AdditionalProperties_,
 	}
 }
@@ -607,7 +618,7 @@ func (d AddtionalPropEscapeU2728ObjectRaw) ToPlain() AddtionalPropEscapeU2728Obj
 //
 // The presence of this implementation indicates the dynamic field for this object are
 // defined to be other than "strict" in its mapping.json.
-func (d AddtionalPropEscapeU2728ObjectRaw) MarshalJSON() ([]byte, error) {
+func (d AdditionalPropEscapeU2728ObjectRaw) MarshalJSON() ([]byte, error) {
 	buf := gentypehelper.GetBuf()
 	defer gentypehelper.PutBuf(buf)
 	var (
@@ -615,20 +626,23 @@ func (d AddtionalPropEscapeU2728ObjectRaw) MarshalJSON() ([]byte, error) {
 		err error
 	)
 	buf.WriteByte('{')
-	buf.WriteString("\"yay\":")
-	bin, err = serde.Marshal(d.Yay)
-	if err != nil {
-		return nil, err
+	// This field is tagged with ",omitempty".
+	if !reflect.ValueOf(d.Yay).IsZero() {
+		buf.WriteString("\"yay\":")
+		bin, err = json.Marshal(d.Yay)
+		if err != nil {
+			return nil, err
+		}
+		buf.Write(bin)
+		buf.WriteByte(',')
 	}
-	buf.Write(bin)
-	buf.WriteByte(',')
 	keys := make([]string, 0, len(d.AdditionalProperties_))
 	for k := range d.AdditionalProperties_ {
 		keys = append(keys, k)
 	}
 	sort.Strings(keys)
 	for _, key := range keys {
-		bin, err = serde.Marshal(d.AdditionalProperties_[key])
+		bin, err = json.Marshal(d.AdditionalProperties_[key])
 		if err != nil {
 			return nil, err
 		}
@@ -651,7 +665,7 @@ func (d AddtionalPropEscapeU2728ObjectRaw) MarshalJSON() ([]byte, error) {
 //
 // The presence of this implementation indicates the dynamic field for this object are
 // defined to be other than "strict" in its mapping.json.
-func (d *AddtionalPropEscapeU2728ObjectRaw) UnmarshalJSON(data []byte) error {
+func (d *AdditionalPropEscapeU2728ObjectRaw) UnmarshalJSON(data []byte) error {
 	dec := json.NewDecoder(bytes.NewBuffer(data))
 	token, err := dec.Token()
 	if err != nil {

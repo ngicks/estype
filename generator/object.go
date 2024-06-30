@@ -12,18 +12,21 @@ import (
 )
 
 const (
-	elasticTypeQual       = "github.com/ngicks/und/elastic"
-	undefinedableTypeQual = "github.com/ngicks/und/undefinedable"
-	jsonfieldTypeQual     = "github.com/ngicks/und/jsonfield"
+	elasticTypeQual       = "github.com/ngicks/und/sliceund/elastic"
+	undefinedableTypeQual = "github.com/ngicks/und/sliceund"
 	utilTypeQual          = "github.com/ngicks/estype/util"
 	additionalPropId      = "AdditionalProperties_"
 )
 
 var (
 	elasticTypeId       = typeId{Id: "Elastic", Qualifier: elasticTypeQual}
-	undefinedableTypeId = typeId{Id: "Undefinedable", Qualifier: undefinedableTypeQual}
-	jsonfieldTypeId     = typeId{Id: "JsonField", Qualifier: jsonfieldTypeQual}
+	undefinedableTypeId = typeId{Id: "Und", Qualifier: undefinedableTypeQual}
 )
+
+func isUnd(t typeId) bool {
+	return (t.Id == elasticTypeId.Id && t.Qualifier == elasticTypeId.Qualifier) ||
+		(t.Id == undefinedableTypeId.Id && t.Qualifier == undefinedableTypeId.Qualifier)
+}
 
 type structField struct {
 	Name string
@@ -57,10 +60,10 @@ func genObjectLike(ctx *generatorContext, dryRun bool) (plain, raw typeId) {
 	switch x := ctx.localState.prop.Val.(type) {
 	case mapping.ObjectProperty:
 		props = x.Properties.Value()
-		dynamic = x.Dynamic.Option
+		dynamic = option.FlattenOption(x.Dynamic.Unwrap())
 	case mapping.NestedProperty:
 		props = x.Properties.Value()
-		dynamic = x.Dynamic.Option
+		dynamic = option.FlattenOption(x.Dynamic.Unwrap())
 	default:
 		panic(fmt.Errorf("unknown type: %T", ctx.localState.prop))
 	}
@@ -98,7 +101,8 @@ func genObjectLike(ctx *generatorContext, dryRun bool) (plain, raw typeId) {
 					if i.DisallowNull {
 						tyId = undefinedableTypeId
 					} else {
-						tyId = jsonfieldTypeId
+						// add tag to identify disallow null?
+						tyId = undefinedableTypeId
 					}
 				} else {
 					// The type may only allow a single value

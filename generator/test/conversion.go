@@ -2,7 +2,7 @@ package test
 
 import (
 	gentypehelper "github.com/ngicks/estype/gentypehelper"
-	elastic "github.com/ngicks/und/elastic"
+	elastic "github.com/ngicks/und/sliceund/elastic"
 )
 
 type Conversion struct {
@@ -24,10 +24,10 @@ func (d Conversion) ToRaw() ConversionRaw {
 }
 
 type ConversionRaw struct {
-	MultipleOptional elastic.Elastic[ConversionMultipleOptionalNestedRaw] `json:"multiple_optional"`
-	MultipleRequired elastic.Elastic[ConversionMultipleRequiredNestedRaw] `json:"multiple_required"`
-	SingleOptional   elastic.Elastic[ConversionSingleOptionalObjectRaw]   `json:"single_optional"`
-	SingleRequired   elastic.Elastic[ConversionSingleRequiredObjectRaw]   `json:"single_required"`
+	MultipleOptional elastic.Elastic[ConversionMultipleOptionalNestedRaw] `json:"multiple_optional,omitempty"`
+	MultipleRequired elastic.Elastic[ConversionMultipleRequiredNestedRaw] `json:"multiple_required,omitempty"`
+	SingleOptional   elastic.Elastic[ConversionSingleOptionalObjectRaw]   `json:"single_optional,omitempty"`
+	SingleRequired   elastic.Elastic[ConversionSingleRequiredObjectRaw]   `json:"single_required,omitempty"`
 }
 
 // ToPlain converts d into its raw equivalent.
@@ -56,15 +56,15 @@ func (d ConversionMultipleOptionalNested) ToRaw() ConversionMultipleOptionalNest
 }
 
 type ConversionMultipleOptionalNestedRaw struct {
-	Age  elastic.Elastic[int32]                                   `json:"age"`
-	Name elastic.Elastic[ConversionMultipleOptionalNameObjectRaw] `json:"name"`
+	Age  elastic.Elastic[int32]                                   `json:"age,omitempty"`
+	Name elastic.Elastic[ConversionMultipleOptionalNameObjectRaw] `json:"name,omitempty"`
 }
 
 // ToPlain converts d into its raw equivalent.
 // It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d ConversionMultipleOptionalNestedRaw) ToPlain() ConversionMultipleOptionalNested {
 	return ConversionMultipleOptionalNested{
-		Age:  d.Age.ValueSingle(),
+		Age:  d.Age.Value(),
 		Name: gentypehelper.MapElasticToPlainSingle[ConversionMultipleOptionalNameObject](d.Name),
 	}
 }
@@ -84,16 +84,16 @@ func (d ConversionMultipleOptionalNameObject) ToRaw() ConversionMultipleOptional
 }
 
 type ConversionMultipleOptionalNameObjectRaw struct {
-	First elastic.Elastic[string] `json:"first"`
-	Last  elastic.Elastic[string] `json:"last"`
+	First elastic.Elastic[string] `json:"first,omitempty"`
+	Last  elastic.Elastic[string] `json:"last,omitempty"`
 }
 
 // ToPlain converts d into its raw equivalent.
 // It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d ConversionMultipleOptionalNameObjectRaw) ToPlain() ConversionMultipleOptionalNameObject {
 	return ConversionMultipleOptionalNameObject{
-		First: d.First.ValueSingle(),
-		Last:  d.Last.ValueSingle(),
+		First: d.First.Value(),
+		Last:  d.Last.Value(),
 	}
 }
 
@@ -112,15 +112,15 @@ func (d ConversionMultipleRequiredNested) ToRaw() ConversionMultipleRequiredNest
 }
 
 type ConversionMultipleRequiredNestedRaw struct {
-	Age  elastic.Elastic[int32]                                   `json:"age"`
-	Name elastic.Elastic[ConversionMultipleRequiredNameObjectRaw] `json:"name"`
+	Age  elastic.Elastic[int32]                                   `json:"age,omitempty"`
+	Name elastic.Elastic[ConversionMultipleRequiredNameObjectRaw] `json:"name,omitempty"`
 }
 
 // ToPlain converts d into its raw equivalent.
 // It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d ConversionMultipleRequiredNestedRaw) ToPlain() ConversionMultipleRequiredNested {
 	return ConversionMultipleRequiredNested{
-		Age:  d.Age.ValueSingle(),
+		Age:  d.Age.Value(),
 		Name: gentypehelper.MapElasticToPlainSingle[ConversionMultipleRequiredNameObject](d.Name),
 	}
 }
@@ -140,16 +140,16 @@ func (d ConversionMultipleRequiredNameObject) ToRaw() ConversionMultipleRequired
 }
 
 type ConversionMultipleRequiredNameObjectRaw struct {
-	First elastic.Elastic[string] `json:"first"`
-	Last  elastic.Elastic[string] `json:"last"`
+	First elastic.Elastic[string] `json:"first,omitempty"`
+	Last  elastic.Elastic[string] `json:"last,omitempty"`
 }
 
 // ToPlain converts d into its raw equivalent.
 // It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d ConversionMultipleRequiredNameObjectRaw) ToPlain() ConversionMultipleRequiredNameObject {
 	return ConversionMultipleRequiredNameObject{
-		First: d.First.ValueSingle(),
-		Last:  d.Last.ValueSingle(),
+		First: d.First.Value(),
+		Last:  d.Last.Value(),
 	}
 }
 
@@ -168,15 +168,15 @@ func (d ConversionSingleOptionalObject) ToRaw() ConversionSingleOptionalObjectRa
 }
 
 type ConversionSingleOptionalObjectRaw struct {
-	Age  elastic.Elastic[int32]                                 `json:"age"`
-	Name elastic.Elastic[ConversionSingleOptionalNameObjectRaw] `json:"name"`
+	Age  elastic.Elastic[int32]                                 `json:"age,omitempty"`
+	Name elastic.Elastic[ConversionSingleOptionalNameObjectRaw] `json:"name,omitempty"`
 }
 
 // ToPlain converts d into its raw equivalent.
 // It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d ConversionSingleOptionalObjectRaw) ToPlain() ConversionSingleOptionalObject {
 	return ConversionSingleOptionalObject{
-		Age:  d.Age.ValueSingle(),
+		Age:  d.Age.Value(),
 		Name: gentypehelper.MapElasticToPlainSingle[ConversionSingleOptionalNameObject](d.Name),
 	}
 }
@@ -196,16 +196,16 @@ func (d ConversionSingleOptionalNameObject) ToRaw() ConversionSingleOptionalName
 }
 
 type ConversionSingleOptionalNameObjectRaw struct {
-	First elastic.Elastic[string] `json:"first"`
-	Last  elastic.Elastic[string] `json:"last"`
+	First elastic.Elastic[string] `json:"first,omitempty"`
+	Last  elastic.Elastic[string] `json:"last,omitempty"`
 }
 
 // ToPlain converts d into its raw equivalent.
 // It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d ConversionSingleOptionalNameObjectRaw) ToPlain() ConversionSingleOptionalNameObject {
 	return ConversionSingleOptionalNameObject{
-		First: d.First.ValueSingle(),
-		Last:  d.Last.ValueSingle(),
+		First: d.First.Value(),
+		Last:  d.Last.Value(),
 	}
 }
 
@@ -224,15 +224,15 @@ func (d ConversionSingleRequiredObject) ToRaw() ConversionSingleRequiredObjectRa
 }
 
 type ConversionSingleRequiredObjectRaw struct {
-	Age  elastic.Elastic[int32]                                 `json:"age"`
-	Name elastic.Elastic[ConversionSingleRequiredNameObjectRaw] `json:"name"`
+	Age  elastic.Elastic[int32]                                 `json:"age,omitempty"`
+	Name elastic.Elastic[ConversionSingleRequiredNameObjectRaw] `json:"name,omitempty"`
 }
 
 // ToPlain converts d into its raw equivalent.
 // It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d ConversionSingleRequiredObjectRaw) ToPlain() ConversionSingleRequiredObject {
 	return ConversionSingleRequiredObject{
-		Age:  d.Age.ValueSingle(),
+		Age:  d.Age.Value(),
 		Name: gentypehelper.MapElasticToPlainSingle[ConversionSingleRequiredNameObject](d.Name),
 	}
 }
@@ -252,15 +252,15 @@ func (d ConversionSingleRequiredNameObject) ToRaw() ConversionSingleRequiredName
 }
 
 type ConversionSingleRequiredNameObjectRaw struct {
-	First elastic.Elastic[string] `json:"first"`
-	Last  elastic.Elastic[string] `json:"last"`
+	First elastic.Elastic[string] `json:"first,omitempty"`
+	Last  elastic.Elastic[string] `json:"last,omitempty"`
 }
 
 // ToPlain converts d into its raw equivalent.
 // It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d ConversionSingleRequiredNameObjectRaw) ToPlain() ConversionSingleRequiredNameObject {
 	return ConversionSingleRequiredNameObject{
-		First: d.First.ValueSingle(),
-		Last:  d.Last.ValueSingle(),
+		First: d.First.Value(),
+		Last:  d.Last.Value(),
 	}
 }

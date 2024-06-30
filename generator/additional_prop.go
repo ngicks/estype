@@ -37,7 +37,8 @@ func generateAdditionalPropMarshalJSON(ctx *generatorContext, tyId typeId, field
 	if !isUndSerde {
 		marshalerStmt = jen.Qual("encoding/json", "Marshal")
 	} else {
-		marshalerStmt = jen.Qual("github.com/ngicks/und/serde", "Marshal")
+		// now it can be marshaled though plain encoding/json
+		marshalerStmt = jen.Qual("encoding/json", "Marshal")
 	}
 	ctx.file.
 		Comment(

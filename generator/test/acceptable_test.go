@@ -12,7 +12,6 @@ import (
 	"github.com/ngicks/estype/helper/eshelper"
 	"github.com/ngicks/estype/spec/indices/indexstate"
 	"github.com/ngicks/estype/spec/mapping"
-	serde "github.com/ngicks/und/serde"
 	"github.com/stretchr/testify/require"
 )
 
@@ -95,8 +94,8 @@ func TestElasticsearchAcceptance(t *testing.T) {
 			toRaw:       toRaw[Dynamic, DynamicRaw],
 		}, {
 			mappings:    additionalPropEscapeMapping,
-			sampleInput: sampleAddtionalPropEscape,
-			toRaw:       toRaw[AddtionalPropEscape, AddtionalPropEscapeRaw],
+			sampleInput: sampleAdditionalPropEscape,
+			toRaw:       toRaw[AdditionalPropEscape, AdditionalPropEscapeRaw],
 		},
 	} {
 		var mapping map[string]indexstate.IndexState
@@ -110,7 +109,7 @@ func TestElasticsearchAcceptance(t *testing.T) {
 			Mappings: getMapping(mapping),
 		}
 
-		settingsJson, err := serde.Marshal(indexSettings)
+		settingsJson, err := json.Marshal(indexSettings)
 		require.NoError(err)
 
 		indexHelper, err := h.CreateRandomIndex(settingsJson)
@@ -149,7 +148,7 @@ func getMapping(m map[string]indexstate.IndexState) mapping.TypeMapping {
 
 func printJson(t *testing.T, v any) {
 	t.Helper()
-	bin, err := serde.Marshal(v)
+	bin, err := json.Marshal(v)
 	if err != nil {
 		panic(err)
 	}

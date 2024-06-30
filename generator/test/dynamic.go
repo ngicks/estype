@@ -6,9 +6,9 @@ import (
 	"errors"
 	"fmt"
 	gentypehelper "github.com/ngicks/estype/gentypehelper"
-	elastic "github.com/ngicks/und/elastic"
-	serde "github.com/ngicks/und/serde"
+	elastic "github.com/ngicks/und/sliceund/elastic"
 	"io"
+	"reflect"
 	"sort"
 )
 
@@ -31,10 +31,10 @@ func (d Dynamic) ToRaw() DynamicRaw {
 }
 
 type DynamicRaw struct {
-	NestedInherit elastic.Elastic[DynamicNestedInheritNestedRaw] `json:"nested_inherit"`
-	NestedRuntime elastic.Elastic[DynamicNestedRuntimeNestedRaw] `json:"nested_runtime"`
-	NestedStrict  elastic.Elastic[DynamicNestedStrictNestedRaw]  `json:"nested_strict"`
-	ObjectFalse   elastic.Elastic[DynamicObjectFalseObjectRaw]   `json:"object_false"`
+	NestedInherit elastic.Elastic[DynamicNestedInheritNestedRaw] `json:"nested_inherit,omitempty"`
+	NestedRuntime elastic.Elastic[DynamicNestedRuntimeNestedRaw] `json:"nested_runtime,omitempty"`
+	NestedStrict  elastic.Elastic[DynamicNestedStrictNestedRaw]  `json:"nested_strict,omitempty"`
+	ObjectFalse   elastic.Elastic[DynamicObjectFalseObjectRaw]   `json:"object_false,omitempty"`
 }
 
 // ToPlain converts d into its raw equivalent.
@@ -63,15 +63,15 @@ func (d DynamicNestedInheritNested) ToRaw() DynamicNestedInheritNestedRaw {
 }
 
 type DynamicNestedInheritNestedRaw struct {
-	Age  elastic.Elastic[int32]                             `json:"age"`
-	Name elastic.Elastic[DynamicNestedInheritNameObjectRaw] `json:"name"`
+	Age  elastic.Elastic[int32]                             `json:"age,omitempty"`
+	Name elastic.Elastic[DynamicNestedInheritNameObjectRaw] `json:"name,omitempty"`
 }
 
 // ToPlain converts d into its raw equivalent.
 // It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d DynamicNestedInheritNestedRaw) ToPlain() DynamicNestedInheritNested {
 	return DynamicNestedInheritNested{
-		Age:  d.Age.ValueSingle(),
+		Age:  d.Age.Value(),
 		Name: gentypehelper.MapElasticToPlainSingle[DynamicNestedInheritNameObject](d.Name),
 	}
 }
@@ -91,16 +91,16 @@ func (d DynamicNestedInheritNameObject) ToRaw() DynamicNestedInheritNameObjectRa
 }
 
 type DynamicNestedInheritNameObjectRaw struct {
-	First elastic.Elastic[string] `json:"first"`
-	Last  elastic.Elastic[string] `json:"last"`
+	First elastic.Elastic[string] `json:"first,omitempty"`
+	Last  elastic.Elastic[string] `json:"last,omitempty"`
 }
 
 // ToPlain converts d into its raw equivalent.
 // It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d DynamicNestedInheritNameObjectRaw) ToPlain() DynamicNestedInheritNameObject {
 	return DynamicNestedInheritNameObject{
-		First: d.First.ValueSingle(),
-		Last:  d.Last.ValueSingle(),
+		First: d.First.Value(),
+		Last:  d.Last.Value(),
 	}
 }
 
@@ -222,8 +222,8 @@ func (d *DynamicNestedRuntimeNested) UnmarshalJSON(data []byte) error {
 }
 
 type DynamicNestedRuntimeNestedRaw struct {
-	Age                   elastic.Elastic[int32]                             `json:"age"`
-	Name                  elastic.Elastic[DynamicNestedRuntimeNameObjectRaw] `json:"name"`
+	Age                   elastic.Elastic[int32]                             `json:"age,omitempty"`
+	Name                  elastic.Elastic[DynamicNestedRuntimeNameObjectRaw] `json:"name,omitempty"`
 	AdditionalProperties_ map[string]any
 }
 
@@ -231,7 +231,7 @@ type DynamicNestedRuntimeNestedRaw struct {
 // It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d DynamicNestedRuntimeNestedRaw) ToPlain() DynamicNestedRuntimeNested {
 	return DynamicNestedRuntimeNested{
-		Age:                   d.Age.ValueSingle(),
+		Age:                   d.Age.Value(),
 		Name:                  gentypehelper.MapElasticToPlainSingle[DynamicNestedRuntimeNameObject](d.Name),
 		AdditionalProperties_: d.AdditionalProperties_,
 	}
@@ -250,27 +250,33 @@ func (d DynamicNestedRuntimeNestedRaw) MarshalJSON() ([]byte, error) {
 		err error
 	)
 	buf.WriteByte('{')
-	buf.WriteString("\"age\":")
-	bin, err = serde.Marshal(d.Age)
-	if err != nil {
-		return nil, err
+	// This field is tagged with ",omitempty".
+	if !reflect.ValueOf(d.Age).IsZero() {
+		buf.WriteString("\"age\":")
+		bin, err = json.Marshal(d.Age)
+		if err != nil {
+			return nil, err
+		}
+		buf.Write(bin)
+		buf.WriteByte(',')
 	}
-	buf.Write(bin)
-	buf.WriteByte(',')
-	buf.WriteString("\"name\":")
-	bin, err = serde.Marshal(d.Name)
-	if err != nil {
-		return nil, err
+	// This field is tagged with ",omitempty".
+	if !reflect.ValueOf(d.Name).IsZero() {
+		buf.WriteString("\"name\":")
+		bin, err = json.Marshal(d.Name)
+		if err != nil {
+			return nil, err
+		}
+		buf.Write(bin)
+		buf.WriteByte(',')
 	}
-	buf.Write(bin)
-	buf.WriteByte(',')
 	keys := make([]string, 0, len(d.AdditionalProperties_))
 	for k := range d.AdditionalProperties_ {
 		keys = append(keys, k)
 	}
 	sort.Strings(keys)
 	for _, key := range keys {
-		bin, err = serde.Marshal(d.AdditionalProperties_[key])
+		bin, err = json.Marshal(d.AdditionalProperties_[key])
 		if err != nil {
 			return nil, err
 		}
@@ -456,8 +462,8 @@ func (d *DynamicNestedRuntimeNameObject) UnmarshalJSON(data []byte) error {
 }
 
 type DynamicNestedRuntimeNameObjectRaw struct {
-	First                 elastic.Elastic[string] `json:"first"`
-	Last                  elastic.Elastic[string] `json:"last"`
+	First                 elastic.Elastic[string] `json:"first,omitempty"`
+	Last                  elastic.Elastic[string] `json:"last,omitempty"`
 	AdditionalProperties_ map[string]any
 }
 
@@ -465,8 +471,8 @@ type DynamicNestedRuntimeNameObjectRaw struct {
 // It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d DynamicNestedRuntimeNameObjectRaw) ToPlain() DynamicNestedRuntimeNameObject {
 	return DynamicNestedRuntimeNameObject{
-		First:                 d.First.ValueSingle(),
-		Last:                  d.Last.ValueSingle(),
+		First:                 d.First.Value(),
+		Last:                  d.Last.Value(),
 		AdditionalProperties_: d.AdditionalProperties_,
 	}
 }
@@ -484,27 +490,33 @@ func (d DynamicNestedRuntimeNameObjectRaw) MarshalJSON() ([]byte, error) {
 		err error
 	)
 	buf.WriteByte('{')
-	buf.WriteString("\"first\":")
-	bin, err = serde.Marshal(d.First)
-	if err != nil {
-		return nil, err
+	// This field is tagged with ",omitempty".
+	if !reflect.ValueOf(d.First).IsZero() {
+		buf.WriteString("\"first\":")
+		bin, err = json.Marshal(d.First)
+		if err != nil {
+			return nil, err
+		}
+		buf.Write(bin)
+		buf.WriteByte(',')
 	}
-	buf.Write(bin)
-	buf.WriteByte(',')
-	buf.WriteString("\"last\":")
-	bin, err = serde.Marshal(d.Last)
-	if err != nil {
-		return nil, err
+	// This field is tagged with ",omitempty".
+	if !reflect.ValueOf(d.Last).IsZero() {
+		buf.WriteString("\"last\":")
+		bin, err = json.Marshal(d.Last)
+		if err != nil {
+			return nil, err
+		}
+		buf.Write(bin)
+		buf.WriteByte(',')
 	}
-	buf.Write(bin)
-	buf.WriteByte(',')
 	keys := make([]string, 0, len(d.AdditionalProperties_))
 	for k := range d.AdditionalProperties_ {
 		keys = append(keys, k)
 	}
 	sort.Strings(keys)
 	for _, key := range keys {
-		bin, err = serde.Marshal(d.AdditionalProperties_[key])
+		bin, err = json.Marshal(d.AdditionalProperties_[key])
 		if err != nil {
 			return nil, err
 		}
@@ -587,15 +599,15 @@ func (d DynamicNestedStrictNested) ToRaw() DynamicNestedStrictNestedRaw {
 }
 
 type DynamicNestedStrictNestedRaw struct {
-	Age  elastic.Elastic[int32]                            `json:"age"`
-	Name elastic.Elastic[DynamicNestedStrictNameObjectRaw] `json:"name"`
+	Age  elastic.Elastic[int32]                            `json:"age,omitempty"`
+	Name elastic.Elastic[DynamicNestedStrictNameObjectRaw] `json:"name,omitempty"`
 }
 
 // ToPlain converts d into its raw equivalent.
 // It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d DynamicNestedStrictNestedRaw) ToPlain() DynamicNestedStrictNested {
 	return DynamicNestedStrictNested{
-		Age:  d.Age.ValueSingle(),
+		Age:  d.Age.Value(),
 		Name: gentypehelper.MapElasticToPlainSingle[DynamicNestedStrictNameObject](d.Name),
 	}
 }
@@ -615,16 +627,16 @@ func (d DynamicNestedStrictNameObject) ToRaw() DynamicNestedStrictNameObjectRaw 
 }
 
 type DynamicNestedStrictNameObjectRaw struct {
-	First elastic.Elastic[string] `json:"first"`
-	Last  elastic.Elastic[string] `json:"last"`
+	First elastic.Elastic[string] `json:"first,omitempty"`
+	Last  elastic.Elastic[string] `json:"last,omitempty"`
 }
 
 // ToPlain converts d into its raw equivalent.
 // It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d DynamicNestedStrictNameObjectRaw) ToPlain() DynamicNestedStrictNameObject {
 	return DynamicNestedStrictNameObject{
-		First: d.First.ValueSingle(),
-		Last:  d.Last.ValueSingle(),
+		First: d.First.Value(),
+		Last:  d.Last.Value(),
 	}
 }
 
@@ -746,8 +758,8 @@ func (d *DynamicObjectFalseObject) UnmarshalJSON(data []byte) error {
 }
 
 type DynamicObjectFalseObjectRaw struct {
-	Age                   elastic.Elastic[int32]                           `json:"age"`
-	Name                  elastic.Elastic[DynamicObjectFalseNameObjectRaw] `json:"name"`
+	Age                   elastic.Elastic[int32]                           `json:"age,omitempty"`
+	Name                  elastic.Elastic[DynamicObjectFalseNameObjectRaw] `json:"name,omitempty"`
 	AdditionalProperties_ map[string]any
 }
 
@@ -755,7 +767,7 @@ type DynamicObjectFalseObjectRaw struct {
 // It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d DynamicObjectFalseObjectRaw) ToPlain() DynamicObjectFalseObject {
 	return DynamicObjectFalseObject{
-		Age:                   d.Age.ValueSingle(),
+		Age:                   d.Age.Value(),
 		Name:                  gentypehelper.MapElasticToPlainSingle[DynamicObjectFalseNameObject](d.Name),
 		AdditionalProperties_: d.AdditionalProperties_,
 	}
@@ -774,27 +786,33 @@ func (d DynamicObjectFalseObjectRaw) MarshalJSON() ([]byte, error) {
 		err error
 	)
 	buf.WriteByte('{')
-	buf.WriteString("\"age\":")
-	bin, err = serde.Marshal(d.Age)
-	if err != nil {
-		return nil, err
+	// This field is tagged with ",omitempty".
+	if !reflect.ValueOf(d.Age).IsZero() {
+		buf.WriteString("\"age\":")
+		bin, err = json.Marshal(d.Age)
+		if err != nil {
+			return nil, err
+		}
+		buf.Write(bin)
+		buf.WriteByte(',')
 	}
-	buf.Write(bin)
-	buf.WriteByte(',')
-	buf.WriteString("\"name\":")
-	bin, err = serde.Marshal(d.Name)
-	if err != nil {
-		return nil, err
+	// This field is tagged with ",omitempty".
+	if !reflect.ValueOf(d.Name).IsZero() {
+		buf.WriteString("\"name\":")
+		bin, err = json.Marshal(d.Name)
+		if err != nil {
+			return nil, err
+		}
+		buf.Write(bin)
+		buf.WriteByte(',')
 	}
-	buf.Write(bin)
-	buf.WriteByte(',')
 	keys := make([]string, 0, len(d.AdditionalProperties_))
 	for k := range d.AdditionalProperties_ {
 		keys = append(keys, k)
 	}
 	sort.Strings(keys)
 	for _, key := range keys {
-		bin, err = serde.Marshal(d.AdditionalProperties_[key])
+		bin, err = json.Marshal(d.AdditionalProperties_[key])
 		if err != nil {
 			return nil, err
 		}
@@ -980,8 +998,8 @@ func (d *DynamicObjectFalseNameObject) UnmarshalJSON(data []byte) error {
 }
 
 type DynamicObjectFalseNameObjectRaw struct {
-	First                 elastic.Elastic[string] `json:"first"`
-	Last                  elastic.Elastic[string] `json:"last"`
+	First                 elastic.Elastic[string] `json:"first,omitempty"`
+	Last                  elastic.Elastic[string] `json:"last,omitempty"`
 	AdditionalProperties_ map[string]any
 }
 
@@ -989,8 +1007,8 @@ type DynamicObjectFalseNameObjectRaw struct {
 // It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d DynamicObjectFalseNameObjectRaw) ToPlain() DynamicObjectFalseNameObject {
 	return DynamicObjectFalseNameObject{
-		First:                 d.First.ValueSingle(),
-		Last:                  d.Last.ValueSingle(),
+		First:                 d.First.Value(),
+		Last:                  d.Last.Value(),
 		AdditionalProperties_: d.AdditionalProperties_,
 	}
 }
@@ -1008,27 +1026,33 @@ func (d DynamicObjectFalseNameObjectRaw) MarshalJSON() ([]byte, error) {
 		err error
 	)
 	buf.WriteByte('{')
-	buf.WriteString("\"first\":")
-	bin, err = serde.Marshal(d.First)
-	if err != nil {
-		return nil, err
+	// This field is tagged with ",omitempty".
+	if !reflect.ValueOf(d.First).IsZero() {
+		buf.WriteString("\"first\":")
+		bin, err = json.Marshal(d.First)
+		if err != nil {
+			return nil, err
+		}
+		buf.Write(bin)
+		buf.WriteByte(',')
 	}
-	buf.Write(bin)
-	buf.WriteByte(',')
-	buf.WriteString("\"last\":")
-	bin, err = serde.Marshal(d.Last)
-	if err != nil {
-		return nil, err
+	// This field is tagged with ",omitempty".
+	if !reflect.ValueOf(d.Last).IsZero() {
+		buf.WriteString("\"last\":")
+		bin, err = json.Marshal(d.Last)
+		if err != nil {
+			return nil, err
+		}
+		buf.Write(bin)
+		buf.WriteByte(',')
 	}
-	buf.Write(bin)
-	buf.WriteByte(',')
 	keys := make([]string, 0, len(d.AdditionalProperties_))
 	for k := range d.AdditionalProperties_ {
 		keys = append(keys, k)
 	}
 	sort.Strings(keys)
 	for _, key := range keys {
-		bin, err = serde.Marshal(d.AdditionalProperties_[key])
+		bin, err = json.Marshal(d.AdditionalProperties_[key])
 		if err != nil {
 			return nil, err
 		}

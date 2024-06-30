@@ -5,8 +5,8 @@ import (
 	estime "github.com/ngicks/estype/fielddatatype/estime"
 	builtin "github.com/ngicks/estype/fielddatatype/estime/builtin"
 	gentypehelper "github.com/ngicks/estype/gentypehelper"
-	elastic "github.com/ngicks/und/elastic"
-	undefinedable "github.com/ngicks/und/undefinedable"
+	sliceund "github.com/ngicks/und/sliceund"
+	elastic "github.com/ngicks/und/sliceund/elastic"
 	"net/netip"
 	"time"
 )
@@ -70,7 +70,7 @@ func (d AllOptional) ToRaw() AllOptionalRaw {
 		Date:            gentypehelper.MapMultipleOptionalValueToElastic[AllOptionalDateDate](d.Date),
 		DateNano:        gentypehelper.MapMultipleOptionalValueToElastic[AllOptionalDateNanoDate](d.DateNano),
 		DateRange:       gentypehelper.MapMultipleOptionalValueToElastic[fielddatatype.Range[builtin.Default]](d.DateRange),
-		DenseVector:     undefinedable.FromPointer(d.DenseVector),
+		DenseVector:     sliceund.FromPointer(d.DenseVector),
 		Double:          gentypehelper.MapMultipleOptionalValueToElastic[float64](d.Double),
 		DoubleRange:     gentypehelper.MapMultipleOptionalValueToElastic[fielddatatype.Range[float64]](d.DoubleRange),
 		Flattened:       gentypehelper.MapMultipleOptionalValueToElastic[map[string]any](d.Flattened),
@@ -107,56 +107,56 @@ func (d AllOptional) ToRaw() AllOptionalRaw {
 }
 
 type AllOptionalRaw struct {
-	Agg             elastic.Elastic[fielddatatype.AggregateMetricDouble]  `json:"agg"`
-	Alias           elastic.Elastic[*struct{}]                            `json:"alias"`
-	Blob            elastic.Elastic[[]byte]                               `json:"blob"`
-	Bool            elastic.Elastic[fielddatatype.Boolean]                `json:"bool"`
-	Byte            elastic.Elastic[int8]                                 `json:"byte"`
-	Comp            elastic.Elastic[string]                               `json:"comp"`
-	ConstantKwd     elastic.Elastic[string]                               `json:"constant_kwd"`
-	Date            elastic.Elastic[AllOptionalDateDate]                  `json:"date"`
-	DateNano        elastic.Elastic[AllOptionalDateNanoDate]              `json:"dateNano"`
-	DateRange       elastic.Elastic[fielddatatype.Range[builtin.Default]] `json:"date_range"`
-	DenseVector     undefinedable.Undefinedable[[3]float64]               `json:"dense_vector"`
-	Double          elastic.Elastic[float64]                              `json:"double"`
-	DoubleRange     elastic.Elastic[fielddatatype.Range[float64]]         `json:"double_range"`
-	Flattened       elastic.Elastic[map[string]any]                       `json:"flattened"`
-	Float           elastic.Elastic[float32]                              `json:"float"`
-	FloatRange      elastic.Elastic[fielddatatype.Range[float32]]         `json:"float_range"`
-	Geopoint        elastic.Elastic[fielddatatype.GeoPoint]               `json:"geopoint"`
-	Geoshape        elastic.Elastic[fielddatatype.GeoShape]               `json:"geoshape"`
-	HalfFloat       elastic.Elastic[float32]                              `json:"half_float"`
-	Histogram       elastic.Elastic[fielddatatype.Histogram]              `json:"histogram"`
-	Integer         elastic.Elastic[int32]                                `json:"integer"`
-	IntegerRange    elastic.Elastic[fielddatatype.Range[int32]]           `json:"integer_range"`
-	IpAddr          elastic.Elastic[netip.Addr]                           `json:"ip_addr"`
-	IpRange         elastic.Elastic[fielddatatype.Range[netip.Addr]]      `json:"ip_range"`
-	Join            elastic.Elastic[map[string]any]                       `json:"join"`
-	Kwd             elastic.Elastic[string]                               `json:"kwd"`
-	Long            elastic.Elastic[int64]                                `json:"long"`
-	LongRange       elastic.Elastic[fielddatatype.Range[int64]]           `json:"long_range"`
-	Nested          elastic.Elastic[AllOptionalNestedObjectRaw]           `json:"nested"`
-	Object          elastic.Elastic[AllOptionalObjectObjectRaw]           `json:"object"`
-	Point           elastic.Elastic[map[string]any]                       `json:"point"`
-	Query           elastic.Elastic[map[string]any]                       `json:"query"`
-	RankFeature     elastic.Elastic[float64]                              `json:"rank_feature"`
-	RankFeatures    elastic.Elastic[map[string]float64]                   `json:"rank_features"`
-	ScaledFloat     elastic.Elastic[float64]                              `json:"scaled_float"`
-	SearchAsYouType elastic.Elastic[string]                               `json:"search_as_you_type"`
-	Shape           elastic.Elastic[fielddatatype.GeoShape]               `json:"shape"`
-	Short           elastic.Elastic[int16]                                `json:"short"`
-	Text            elastic.Elastic[string]                               `json:"text"`
-	TextWTokenCount elastic.Elastic[string]                               `json:"text_w_token_count"`
-	UnsignedLong    elastic.Elastic[uint64]                               `json:"unsigned_long"`
-	Version         elastic.Elastic[string]                               `json:"version"`
-	Wildcard        elastic.Elastic[string]                               `json:"wildcard"`
+	Agg             elastic.Elastic[fielddatatype.AggregateMetricDouble]  `json:"agg,omitempty"`
+	Alias           elastic.Elastic[*struct{}]                            `json:"alias,omitempty"`
+	Blob            elastic.Elastic[[]byte]                               `json:"blob,omitempty"`
+	Bool            elastic.Elastic[fielddatatype.Boolean]                `json:"bool,omitempty"`
+	Byte            elastic.Elastic[int8]                                 `json:"byte,omitempty"`
+	Comp            elastic.Elastic[string]                               `json:"comp,omitempty"`
+	ConstantKwd     elastic.Elastic[string]                               `json:"constant_kwd,omitempty"`
+	Date            elastic.Elastic[AllOptionalDateDate]                  `json:"date,omitempty"`
+	DateNano        elastic.Elastic[AllOptionalDateNanoDate]              `json:"dateNano,omitempty"`
+	DateRange       elastic.Elastic[fielddatatype.Range[builtin.Default]] `json:"date_range,omitempty"`
+	DenseVector     sliceund.Und[[3]float64]                              `json:"dense_vector,omitempty"`
+	Double          elastic.Elastic[float64]                              `json:"double,omitempty"`
+	DoubleRange     elastic.Elastic[fielddatatype.Range[float64]]         `json:"double_range,omitempty"`
+	Flattened       elastic.Elastic[map[string]any]                       `json:"flattened,omitempty"`
+	Float           elastic.Elastic[float32]                              `json:"float,omitempty"`
+	FloatRange      elastic.Elastic[fielddatatype.Range[float32]]         `json:"float_range,omitempty"`
+	Geopoint        elastic.Elastic[fielddatatype.GeoPoint]               `json:"geopoint,omitempty"`
+	Geoshape        elastic.Elastic[fielddatatype.GeoShape]               `json:"geoshape,omitempty"`
+	HalfFloat       elastic.Elastic[float32]                              `json:"half_float,omitempty"`
+	Histogram       elastic.Elastic[fielddatatype.Histogram]              `json:"histogram,omitempty"`
+	Integer         elastic.Elastic[int32]                                `json:"integer,omitempty"`
+	IntegerRange    elastic.Elastic[fielddatatype.Range[int32]]           `json:"integer_range,omitempty"`
+	IpAddr          elastic.Elastic[netip.Addr]                           `json:"ip_addr,omitempty"`
+	IpRange         elastic.Elastic[fielddatatype.Range[netip.Addr]]      `json:"ip_range,omitempty"`
+	Join            elastic.Elastic[map[string]any]                       `json:"join,omitempty"`
+	Kwd             elastic.Elastic[string]                               `json:"kwd,omitempty"`
+	Long            elastic.Elastic[int64]                                `json:"long,omitempty"`
+	LongRange       elastic.Elastic[fielddatatype.Range[int64]]           `json:"long_range,omitempty"`
+	Nested          elastic.Elastic[AllOptionalNestedObjectRaw]           `json:"nested,omitempty"`
+	Object          elastic.Elastic[AllOptionalObjectObjectRaw]           `json:"object,omitempty"`
+	Point           elastic.Elastic[map[string]any]                       `json:"point,omitempty"`
+	Query           elastic.Elastic[map[string]any]                       `json:"query,omitempty"`
+	RankFeature     elastic.Elastic[float64]                              `json:"rank_feature,omitempty"`
+	RankFeatures    elastic.Elastic[map[string]float64]                   `json:"rank_features,omitempty"`
+	ScaledFloat     elastic.Elastic[float64]                              `json:"scaled_float,omitempty"`
+	SearchAsYouType elastic.Elastic[string]                               `json:"search_as_you_type,omitempty"`
+	Shape           elastic.Elastic[fielddatatype.GeoShape]               `json:"shape,omitempty"`
+	Short           elastic.Elastic[int16]                                `json:"short,omitempty"`
+	Text            elastic.Elastic[string]                               `json:"text,omitempty"`
+	TextWTokenCount elastic.Elastic[string]                               `json:"text_w_token_count,omitempty"`
+	UnsignedLong    elastic.Elastic[uint64]                               `json:"unsigned_long,omitempty"`
+	Version         elastic.Elastic[string]                               `json:"version,omitempty"`
+	Wildcard        elastic.Elastic[string]                               `json:"wildcard,omitempty"`
 }
 
 // ToPlain converts d into its raw equivalent.
 // It avoids copying data where it is possilbe. Mutation to fields is not advised.
 func (d AllOptionalRaw) ToPlain() AllOptional {
 	return AllOptional{
-		Agg:             d.Agg.PlainSingle(),
+		Agg:             d.Agg.Pointer(),
 		Blob:            gentypehelper.MapElasticToMultipleValueOptional[[]byte](d.Blob),
 		Bool:            gentypehelper.MapElasticToMultipleValueOptional[fielddatatype.Boolean](d.Bool),
 		Byte:            gentypehelper.MapElasticToMultipleValueOptional[int8](d.Byte),
@@ -165,7 +165,7 @@ func (d AllOptionalRaw) ToPlain() AllOptional {
 		Date:            gentypehelper.MapElasticToMultipleValueOptional[AllOptionalDateDate](d.Date),
 		DateNano:        gentypehelper.MapElasticToMultipleValueOptional[AllOptionalDateNanoDate](d.DateNano),
 		DateRange:       gentypehelper.MapElasticToMultipleValueOptional[fielddatatype.Range[builtin.Default]](d.DateRange),
-		DenseVector:     d.DenseVector.Plain(),
+		DenseVector:     d.DenseVector.Pointer(),
 		Double:          gentypehelper.MapElasticToMultipleValueOptional[float64](d.Double),
 		DoubleRange:     gentypehelper.MapElasticToMultipleValueOptional[fielddatatype.Range[float64]](d.DoubleRange),
 		Flattened:       gentypehelper.MapElasticToMultipleValueOptional[map[string]any](d.Flattened),
@@ -174,20 +174,20 @@ func (d AllOptionalRaw) ToPlain() AllOptional {
 		Geopoint:        gentypehelper.MapElasticToMultipleValueOptional[fielddatatype.GeoPoint](d.Geopoint),
 		Geoshape:        gentypehelper.MapElasticToMultipleValueOptional[fielddatatype.GeoShape](d.Geoshape),
 		HalfFloat:       gentypehelper.MapElasticToMultipleValueOptional[float32](d.HalfFloat),
-		Histogram:       d.Histogram.PlainSingle(),
+		Histogram:       d.Histogram.Pointer(),
 		Integer:         gentypehelper.MapElasticToMultipleValueOptional[int32](d.Integer),
 		IntegerRange:    gentypehelper.MapElasticToMultipleValueOptional[fielddatatype.Range[int32]](d.IntegerRange),
 		IpAddr:          gentypehelper.MapElasticToMultipleValueOptional[netip.Addr](d.IpAddr),
 		IpRange:         gentypehelper.MapElasticToMultipleValueOptional[fielddatatype.Range[netip.Addr]](d.IpRange),
-		Join:            d.Join.PlainSingle(),
+		Join:            d.Join.Pointer(),
 		Kwd:             gentypehelper.MapElasticToMultipleValueOptional[string](d.Kwd),
 		Long:            gentypehelper.MapElasticToMultipleValueOptional[int64](d.Long),
 		LongRange:       gentypehelper.MapElasticToMultipleValueOptional[fielddatatype.Range[int64]](d.LongRange),
 		Nested:          gentypehelper.MapElasticToPlainMultipleOptional[AllOptionalNestedObject](d.Nested),
 		Object:          gentypehelper.MapElasticToPlainMultipleOptional[AllOptionalObjectObject](d.Object),
 		Point:           gentypehelper.MapElasticToMultipleValueOptional[map[string]any](d.Point),
-		Query:           d.Query.PlainSingle(),
-		RankFeature:     d.RankFeature.PlainSingle(),
+		Query:           d.Query.Pointer(),
+		RankFeature:     d.RankFeature.Pointer(),
 		RankFeatures:    gentypehelper.MapElasticToMultipleValueOptional[map[string]float64](d.RankFeatures),
 		ScaledFloat:     gentypehelper.MapElasticToMultipleValueOptional[float64](d.ScaledFloat),
 		SearchAsYouType: gentypehelper.MapElasticToMultipleValueOptional[string](d.SearchAsYouType),
@@ -306,8 +306,8 @@ func (d AllOptionalNestedObject) ToRaw() AllOptionalNestedObjectRaw {
 }
 
 type AllOptionalNestedObjectRaw struct {
-	Age  elastic.Elastic[int32]                          `json:"age"`
-	Name elastic.Elastic[AllOptionalNestedNameObjectRaw] `json:"name"`
+	Age  elastic.Elastic[int32]                          `json:"age,omitempty"`
+	Name elastic.Elastic[AllOptionalNestedNameObjectRaw] `json:"name,omitempty"`
 }
 
 // ToPlain converts d into its raw equivalent.
@@ -334,8 +334,8 @@ func (d AllOptionalNestedNameObject) ToRaw() AllOptionalNestedNameObjectRaw {
 }
 
 type AllOptionalNestedNameObjectRaw struct {
-	First elastic.Elastic[string] `json:"first"`
-	Last  elastic.Elastic[string] `json:"last"`
+	First elastic.Elastic[string] `json:"first,omitempty"`
+	Last  elastic.Elastic[string] `json:"last,omitempty"`
 }
 
 // ToPlain converts d into its raw equivalent.
@@ -362,8 +362,8 @@ func (d AllOptionalObjectObject) ToRaw() AllOptionalObjectObjectRaw {
 }
 
 type AllOptionalObjectObjectRaw struct {
-	Age  elastic.Elastic[int32]                          `json:"age"`
-	Name elastic.Elastic[AllOptionalObjectNameObjectRaw] `json:"name"`
+	Age  elastic.Elastic[int32]                          `json:"age,omitempty"`
+	Name elastic.Elastic[AllOptionalObjectNameObjectRaw] `json:"name,omitempty"`
 }
 
 // ToPlain converts d into its raw equivalent.
@@ -390,8 +390,8 @@ func (d AllOptionalObjectNameObject) ToRaw() AllOptionalObjectNameObjectRaw {
 }
 
 type AllOptionalObjectNameObjectRaw struct {
-	First elastic.Elastic[string] `json:"first"`
-	Last  elastic.Elastic[string] `json:"last"`
+	First elastic.Elastic[string] `json:"first,omitempty"`
+	Last  elastic.Elastic[string] `json:"last,omitempty"`
 }
 
 // ToPlain converts d into its raw equivalent.

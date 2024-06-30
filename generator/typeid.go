@@ -77,7 +77,7 @@ func (t typeId) IsOptional(option typeIdRenderOption) bool {
 }
 
 func (t typeId) MustOmit(option typeIdRenderOption) bool {
-	return t.NonWritable || (t.DisallowNull && option.IsOptional())
+	return isUnd(t) || t.NonWritable || (t.DisallowNull && option.IsOptional())
 }
 
 // IgnoreInConversion reports whether t must not be converted between plain and raw types.

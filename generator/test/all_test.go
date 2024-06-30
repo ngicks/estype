@@ -10,8 +10,8 @@ import (
 	"github.com/google/go-cmp/cmp"
 	"github.com/ngicks/estype/fielddatatype"
 	"github.com/ngicks/estype/fielddatatype/estime/builtin"
-	elastic "github.com/ngicks/und/elastic"
-	undefinedable "github.com/ngicks/und/undefinedable"
+	"github.com/ngicks/und/sliceund"
+	elastic "github.com/ngicks/und/sliceund/elastic"
 	"github.com/stretchr/testify/require"
 )
 
@@ -63,10 +63,10 @@ func TestLosslessConversion(t *testing.T) {
 			toPlain:            toPlain[Dynamic, *DynamicRaw],
 		},
 		{
-			inputPlain:         sampleAddtionalPropEscape,
-			unmarshalTargetRaw: &AddtionalPropEscapeRaw{},
-			backConvert:        backConvert[AddtionalPropEscape, AddtionalPropEscapeRaw],
-			toPlain:            toPlain[AddtionalPropEscape, *AddtionalPropEscapeRaw],
+			inputPlain:         sampleAdditionalPropEscape,
+			unmarshalTargetRaw: &AdditionalPropEscapeRaw{},
+			backConvert:        backConvert[AdditionalPropEscape, AdditionalPropEscapeRaw],
+			toPlain:            toPlain[AdditionalPropEscape, *AdditionalPropEscapeRaw],
 		},
 	} {
 		marshaled1st, err := json.Marshal(tc.inputPlain)
@@ -215,7 +215,7 @@ var sampleEmptyAllRaw = AllRaw{
 	Date:            elastic.Null[AllDateDate](),
 	DateNano:        elastic.Null[AllDateNanoDate](),
 	DateRange:       elastic.Null[fielddatatype.Range[builtin.Default]](),
-	DenseVector:     undefinedable.Undefined[[3]float64](),
+	DenseVector:     sliceund.Undefined[[3]float64](),
 	Double:          elastic.Null[float64](),
 	DoubleRange:     elastic.Null[fielddatatype.Range[float64]](),
 	Flattened:       elastic.Null[map[string]any](),
